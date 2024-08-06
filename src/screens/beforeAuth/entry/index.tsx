@@ -23,7 +23,7 @@ const EntryScreen: React.FC = () => {
     isPortrait ? height : width,
   );
 
-  const navigation:any = useNavigation();
+  const navigation: any = useNavigation();
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
@@ -38,7 +38,7 @@ const EntryScreen: React.FC = () => {
 
         <View style={screenStyles.bannerContainer}>
           <Image
-            source={require('../../../assets/images/background/entryBg.jpg')}
+            source={require('../../../assets/images/background/entryBanner.jpg')}
             style={screenStyles.bannerImg}
           />
         </View>
@@ -56,7 +56,9 @@ const EntryScreen: React.FC = () => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={screenStyles.loginBtn} onPress={()=>navigation.navigate('login')}>
+          <TouchableOpacity
+            style={screenStyles.loginBtn}
+            onPress={() => navigation.navigate('login')}>
             <Text style={screenStyles.subHeading}>
               Already Have an account ?{' '}
               <Text style={{color: 'blue'}}>Login</Text>

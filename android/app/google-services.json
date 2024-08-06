@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "504621257106",
+    "project_id": "noom-29f53",
+    "storage_bucket": "noom-29f53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504621257106:android:6fc1574db0f7e90ca1314b",
+        "android_client_info": {
+          "package_name": "com.noom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL9pifehPxGsQdifG-q4UcDscberaBvG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

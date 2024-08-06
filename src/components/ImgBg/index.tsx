@@ -2,14 +2,9 @@ import {View, Text, ImageBackground} from 'react-native';
 import React from 'react';
 import {ImageBgProps} from '../../types/types';
 
-const ImageBg: React.FC<ImageBgProps> = ({image, children}) => {
-  // console.log(image)
+const ImageBg: React.FC<ImageBgProps> = ({image , children, height, width}) => {
   return (
-    <ImageBackground
-       source={require('../../assets/images/background/loginBg.jpg')}
-    //   source={image}
-      width={200}
-      height={200}>
+    <ImageBackground source={image} width={300} height={width}>
       {children}
     </ImageBackground>
   );

@@ -1,3 +1,4 @@
+import { ImageSourcePropType } from "react-native";
 
 
 
@@ -8,6 +9,19 @@ export interface SignupProps {
 
 export interface ImageBgProps{
 
-    image:string;
-    children:React.ReactNode
+    image:string | ImageSourcePropType;
+    children:React.ReactNode;
+
+    width:number;
+    height:number;
+}
+
+
+export interface CustomButtonProps{
+    btnWidth:number;
+    btnHeight:number;
+    btnColor:string;
+    label:string;
+    icon:string | undefined;
+    labelColor:string
 }
