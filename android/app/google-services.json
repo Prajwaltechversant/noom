@@ -12,7 +12,20 @@
           "package_name": "com.noom"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "504621257106-i9oniuek096fu0q690jt3b3vr3umjt7v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noom",
+            "certificate_hash": "85d230ececf5eb712250c59268c33af8c62d331a"
+          }
+        },
+        {
+          "client_id": "504621257106-diq4n3e8kqm0hi2gk2kttl0cvp9last7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCL9pifehPxGsQdifG-q4UcDscberaBvG8"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504621257106-diq4n3e8kqm0hi2gk2kttl0cvp9last7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -8,8 +8,10 @@ const textStyle = StyleSheet.create({
 
     },
     headingText:{
-        fontSize:40,
-        fontWeight:'900'
+        fontSize:30,
+        fontWeight:'700',
+        color:'black',
+        
     },
 
     labelText:{

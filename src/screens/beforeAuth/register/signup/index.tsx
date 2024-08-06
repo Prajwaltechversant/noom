@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {useScreenContext} from '../../../../context/screenContext';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
@@ -18,9 +18,12 @@ const Signup: React.FC = ({route}: any) => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-  const navigation = useNavigation();
+  const navigation:any = useNavigation();
 
-  console.log(route.params.uid);
+  const [error, setError] = useState({
+    emailError: '',
+    passwordError: '',
+  });
 
   return (
     <View style={screenStyles.container}>
@@ -51,13 +54,15 @@ const Signup: React.FC = ({route}: any) => {
             </View>
           </View>
         ) : (
-          <View  style={[screenStyles.btnContainer,]}>
+          <View style={[screenStyles.btnContainer]}>
             <View>
               <TouchableOpacity
                 style={[
                   screenStyles.signupBtn,
                   {backgroundColor: colorPalette.btnPrimary},
-                ]}>
+                ]}
+                onPress={()=>navigation.navigate('emailSignup')}
+                >
                 <Text style={screenStyles.btnText}>Sign up With email</Text>
               </TouchableOpacity>
             </View>
@@ -65,20 +70,20 @@ const Signup: React.FC = ({route}: any) => {
             <View>
               <TouchableOpacity
                 style={[
-                    screenStyles.signupBtn,
-                    {backgroundColor: colorPalette.btnSec},
+                  screenStyles.signupBtn,
+                  {backgroundColor: colorPalette.btnSec},
                 ]}>
-                <Text>Sign up With email</Text>
+                <Text>Sign up With google</Text>
               </TouchableOpacity>
             </View>
 
             <View>
               <TouchableOpacity
                 style={[
-                    screenStyles.signupBtn,
-                    {backgroundColor: colorPalette.btnSec},
+                  screenStyles.signupBtn,
+                  {backgroundColor: colorPalette.btnSec},
                 ]}>
-                <Text>Sign up With email</Text>
+                <Text>Sign up With facebook</Text>
               </TouchableOpacity>
             </View>
           </View>
