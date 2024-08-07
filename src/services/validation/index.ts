@@ -9,7 +9,7 @@ export const validation = (type: Inputs, value: any) => {
     switch (type) {
         case 'email':
             if (!value) {
-                return false;
+                return { error: 'Please enter email', value: false }
             } else {
                 if (validator.isEmail(value)) {
                     return { error: undefined, value: true }
@@ -29,7 +29,7 @@ export const validation = (type: Inputs, value: any) => {
 
         case 'password':
             if (!value) {
-                return false;
+                return { error: 'Please enter password', value: false }
             }
             else {
                 if (pwdRegx.test(value)) {

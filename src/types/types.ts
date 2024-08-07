@@ -1,5 +1,5 @@
 import { ImageSourcePropType, TextInput } from "react-native";
-import { TextInputProps } from "react-native-paper";
+import { ButtonProps, TextInputProps } from "react-native-paper";
 
 
 
@@ -19,19 +19,20 @@ export interface ImageBgProps {
 
 
 export interface CustomButtonProps {
-    btnWidth: number;
+    btnWidth: number 
     btnHeight: number;
     btnColor: string;
     label: string;
-    icon: string | undefined;
-    labelColor: string
+    icon?: string | undefined;
+    labelColor?: string;
+    borderRadius?:number;
 }
 
 
 export type  CustomTextInput = {
     label: string;
     rightIcon?: string;
-    backgroundColor: string;
-    textColor: string;
+    backgroundColor?: string;
+    textColor?: string;
 
 }

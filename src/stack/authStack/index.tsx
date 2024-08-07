@@ -17,33 +17,8 @@ import {signUpWithEmail} from '../../services/signup';
 const Stack = createNativeStackNavigator();
 
 const RegisterStack = () => {
-  const loginData = useSelector(state => state.loginSlice);
 
-  const [error, setError] = React.useState<SignupWithEmailErrorType>({
-    emailErr: undefined,
-    passwordErr: undefined,
-  });
-  const {formData} = loginData;
   const dispatch = useDispatch();
-  const handleRegister = async () => {
-    let isEmail: any = validation('email', formData.email);
-    let isPassword: any = validation('password', formData.password);
-    if (!isEmail.value) {
-      console.log('owhdiowqhd')
-      setError({...error, emailErr: 'isEmail.error'});
-    }
-    if (!isPassword.value) {
-      setError({...error, passwordErr: isPassword.error});
-    } else {
-      setError({...error, passwordErr: undefined});
-    }
-    if (!error.emailErr && !error.passwordErr) {
-      signUpWithEmail(formData);
-    } else {
-      dispatch(addError(error));
-    }
-  };
-  console.log(error);
   return (
     <Stack.Navigator>
       <Stack.Screen name="registerMethods" component={RegisterMethods} />
@@ -51,20 +26,6 @@ const RegisterStack = () => {
       <Stack.Screen
         name="emailSignup"
         component={EmailSignup}
-        options={{
-          title: '',
-
-          headerRight: () => {
-            return (
-              <TouchableOpacity onPress={handleRegister}>
-                <Text
-                  style={[textStyle.labelText, {color: colorPalette.stream}]}>
-                  NEXT
-                </Text>
-              </TouchableOpacity>
-            );
-          },
-        }}
       />
     </Stack.Navigator>
   );

@@ -7,8 +7,6 @@ import auth from '@react-native-firebase/auth';
 
 export const signUpWithEmail =
     async ({ email, password }: SignupWithEmailtype) => {
-        // console.log(email)
-
 
         if (!email || !password) {
             Alert.alert("Please Provide email or password")

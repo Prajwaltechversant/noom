@@ -32,17 +32,11 @@ const EmailSignup = () => {
     email: undefined,
     password: undefined,
   });
-
-  const loginData = useSelector(state => state.loginSlice);
-  const {formError} = loginData;
-
   const [error, setError] = useState<SignupWithEmailErrorType>({
     emailErr: undefined,
     passwordErr: undefined,
   });
-
   const [showPassword, setShowPassword] = useState(false);
-
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -57,10 +51,42 @@ const EmailSignup = () => {
     dispatch(addData(formData));
   };
 
-  useMemo(() => {
-    setError({emailErr: formError?.email, passwordErr: formError?.password});
-  }, [formError]);
+  const handleSignup = async () => {
+    let isEmail: any = validation('email', formData.email);
+    let isPassword: any = validation('password', formData.password);
 
+    let newError = {...error};
+
+    if (!isEmail.value) {
+      newError.emailErr = isEmail.error;
+    } else {
+      newError.emailErr = undefined;
+    }
+    if (!isPassword.value) {
+      newError.passwordErr = isPassword.error;
+    } else {
+      newError.passwordErr = undefined;
+    }
+    setError(newError);
+    if (!newError.emailErr && !newError.passwordErr) {
+      setError({emailErr: undefined, passwordErr: undefined});
+      signUpWithEmail(formData);
+    }
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <TouchableOpacity onPress={handleSignup}>
+            <Text style={[textStyle.labelText, {color: colorPalette.stream}]}>
+              NEXT
+            </Text>
+          </TouchableOpacity>
+        );
+      },
+    });
+  }, [formData, error, navigation]);
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.headingText}>Create Your Account</Text>
@@ -70,10 +96,13 @@ const EmailSignup = () => {
           label="Email"
           textColor="Black"
           onChangeText={e => handleStateUpdate('email', e)}
-          // error={error?.email ? true : false}
-          secureTextEntry={showPassword}
+          error={error?.emailErr ? true : false}
           value={formData.email}
+        
         />
+        {error.emailErr && (
+          <Text style={textStyle.errorText}>{error.emailErr}</Text>
+        )}
 
         <CustomTextInputComponent
           backgroundColor="white"
@@ -83,7 +112,7 @@ const EmailSignup = () => {
           value={formData.password}
           secureTextEntry={showPassword}
           onChangeText={e => handleStateUpdate('password', e)}
-          // error={error?.password ? true : false}
+          error={error?.passwordErr ? true : false}
           right={
             <TextInput.Icon
               icon={showPassword ? 'eye-off' : 'eye'}
@@ -91,6 +120,9 @@ const EmailSignup = () => {
             />
           }
         />
+        {error.passwordErr && (
+          <Text style={textStyle.errorText}>{error.passwordErr}</Text>
+        )}
       </View>
     </View>
   );

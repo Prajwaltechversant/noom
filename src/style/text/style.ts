@@ -13,9 +13,15 @@ const textStyle = StyleSheet.create({
         color:'black',
         
     },
-
     labelText:{
-        color:colorPalette.black
+        color:colorPalette.black,
+        fontSize:15,
+        fontWeight:'400',
+
+
+    },
+    errorText:{
+        color:'red'
     }
    
 })

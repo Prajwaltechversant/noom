@@ -1,0 +1,54 @@
+import {View, Text, TouchableOpacity} from 'react-native';
+import React from 'react';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import {useScreenContext} from '../../../context/screenContext';
+import styles from './style';
+import {colorPalette} from '../../../assets/colorpalette/colorPalette';
+import CustomButton from '../../../components/button/customButton';
+import PaperButton from '../../../components/button/paperButton';
+import textStyle from '../../../style/text/style';
+const EntryScreen = () => {
+  const screenContext = useScreenContext();
+  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+    screenContext;
+
+  const screenStyles = styles(
+    screenContext,
+    isPortrait ? width : height,
+    isPortrait ? height : width,
+  );
+  return (
+    <View style={screenStyles.container}>
+      <View style={screenStyles.contentContainer}>
+        <View style={screenStyles.headingContainer}>
+          <FontAwesome6 name="diamond" color={colorPalette.black} size={width*0.13} />
+          <Text style={textStyle.headingText} numberOfLines={2}>{`Personalize your Noom Plan!`}</Text>
+          <Text numberOfLines={2} style={textStyle.labelText}>
+            Let's get to know you better so we can create the perfect plan for
+            you!
+          </Text>
+        </View>
+        <View style={screenStyles.buttonContainer}>
+          <PaperButton
+            btnColor={colorPalette.tarocco}
+            btnHeight={isPortrait ? width * 0.12 : width * 0.1}
+            btnWidth={isPortrait ? width * 0.8 : width * 0.8}
+            label="Start"
+            children={undefined}
+            borderRadius={10}
+            // style={{borderRadius:5}}
+            labelColor='white'
+          />
+
+          <TouchableOpacity>
+            <Text  style={[textStyle.labelText, {textAlign:'center'}]}>
+              Enter Your enique program Id
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default EntryScreen;

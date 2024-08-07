@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 const styles = (screenContext: any, width: number, height: number, btnColor: string,
-    labelColor: string, icon: string | undefined) => StyleSheet.create({
+    labelColor: string | undefined, icon: string | undefined) => StyleSheet.create({
 
 
         btn: {

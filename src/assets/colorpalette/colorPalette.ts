@@ -26,7 +26,9 @@ export const colorPalette = {
     btnPrimary:'#03a1fc',
     btnSec:'#70bbe6',
     stream:'#6cc1b6',
-    sky:'#b4e0d8'
+    sky:'#b4e0d8',
+
+    sand:'#e4dece'
 
 
 }
