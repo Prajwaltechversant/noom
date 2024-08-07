@@ -4,26 +4,29 @@ import { colorPalette } from "../../assets/colorpalette/colorPalette";
 
 
 const textStyle = StyleSheet.create({
-    container:{
+    container: {
 
     },
-    headingText:{
-        fontSize:30,
-        fontWeight:'700',
-        color:'black',
-        
-    },
-    labelText:{
-        color:colorPalette.black,
-        fontSize:15,
-        fontWeight:'400',
-
+    headingText: {
+        fontSize: 30,
+        fontWeight: '700',
+        color: 'black',
 
     },
-    errorText:{
-        color:'red'
+    labelText: {
+        color: colorPalette.black,
+        fontSize: 15,
+        fontWeight: '400',
+    },
+    errorText: {
+        color: 'red'
+    },
+    questionText: {
+        fontWeight: '700',
+        fontSize: 25,
+        color: 'black'
     }
-   
+
 })
 
 export default textStyle

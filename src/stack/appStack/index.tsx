@@ -6,6 +6,8 @@ import {useScreenContext} from '../../context/screenContext';
 import {colorPalette} from '../../assets/colorpalette/colorPalette';
 import textStyle from '../../style/text/style';
 import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import OnboardingScreen from '../../module/onboardingSurvey';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,7 +38,14 @@ const AppStack = () => {
                     alignItems: 'center',
                     gap: 5,
                   }}>
-                  <Text style={textStyle.headingText} onPress={()=>auth().signOut()} >NOOM</Text>
+                  <Text
+                    style={textStyle.headingText}
+                    onPress={() => {
+                      auth().signOut();
+                      GoogleSignin.signOut();
+                    }}>
+                    NOOM
+                  </Text>
                   <Text
                     style={[
                       {
@@ -55,6 +64,8 @@ const AppStack = () => {
           },
         }}
       />
+
+      <Stack.Screen name='onboarding' component={OnboardingScreen} />
     </Stack.Navigator>
   );
 };

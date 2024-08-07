@@ -19,6 +19,7 @@ import CustomTextInputComponent from '../../../components/textInput';
 import {SignupWithEmailtype} from '../../../types/signup';
 import {TextInput} from 'react-native-paper';
 import {login} from '../../../services/signin';
+import {faceBookSignup, googleSignup} from '../../../services/signup';
 
 export default function Login() {
   const screenContext = useScreenContext();
@@ -92,6 +93,7 @@ export default function Login() {
                 label="Login With facebook"
                 labelColor="white"
                 icon={'facebook-square'}
+                onPress={faceBookSignup}
               />
               <CustomButton
                 btnColor={colorPalette.Lagoon}
@@ -100,6 +102,7 @@ export default function Login() {
                 label="Login With google"
                 labelColor="white"
                 icon={'google'}
+                onPress={googleSignup}
               />
             </>
           ) : (

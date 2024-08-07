@@ -28,7 +28,8 @@ export const colorPalette = {
     stream:'#6cc1b6',
     sky:'#b4e0d8',
 
-    sand:'#e4dece'
+    sand:'#e4dece',
+    pine:'#2b4010'
 
 
 }

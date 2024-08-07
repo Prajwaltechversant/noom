@@ -7,6 +7,8 @@ import {colorPalette} from '../../../assets/colorpalette/colorPalette';
 import CustomButton from '../../../components/button/customButton';
 import PaperButton from '../../../components/button/paperButton';
 import textStyle from '../../../style/text/style';
+import { useNavigation } from '@react-navigation/native';
+
 const EntryScreen = () => {
   const screenContext = useScreenContext();
   const {width, fontScale, height, isPortrait, isTabletType, scale} =
@@ -17,6 +19,7 @@ const EntryScreen = () => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
+  const navigation:any = useNavigation()
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.contentContainer}>
@@ -38,6 +41,8 @@ const EntryScreen = () => {
             borderRadius={10}
             // style={{borderRadius:5}}
             labelColor='white'
+
+            onPress={()=>navigation.replace('onboarding')}
           />
 
           <TouchableOpacity>

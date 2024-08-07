@@ -7,6 +7,7 @@ import {SignupProps} from '../../../../types/types';
 import {Button, TextInput} from 'react-native-paper';
 import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
 import UidModal from '../../../../components/uidModal';
+import {faceBookSignup, googleSignup} from '../../../../services/signup';
 
 const Signup: React.FC = ({route}: any) => {
   const screenContext = useScreenContext();
@@ -18,7 +19,7 @@ const Signup: React.FC = ({route}: any) => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-  const navigation:any = useNavigation();
+  const navigation: any = useNavigation();
 
   const [error, setError] = useState({
     emailError: '',
@@ -61,8 +62,7 @@ const Signup: React.FC = ({route}: any) => {
                   screenStyles.signupBtn,
                   {backgroundColor: colorPalette.btnPrimary},
                 ]}
-                onPress={()=>navigation.navigate('emailSignup')}
-                >
+                onPress={() => navigation.navigate('emailSignup')}>
                 <Text style={screenStyles.btnText}>Sign up With email</Text>
               </TouchableOpacity>
             </View>
@@ -72,13 +72,16 @@ const Signup: React.FC = ({route}: any) => {
                 style={[
                   screenStyles.signupBtn,
                   {backgroundColor: colorPalette.btnSec},
-                ]}>
+                ]}
+                onPress={googleSignup}
+                >
                 <Text>Sign up With google</Text>
               </TouchableOpacity>
             </View>
 
             <View>
               <TouchableOpacity
+                onPress={faceBookSignup}
                 style={[
                   screenStyles.signupBtn,
                   {backgroundColor: colorPalette.btnSec},
