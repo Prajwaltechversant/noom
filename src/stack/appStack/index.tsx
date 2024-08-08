@@ -7,7 +7,7 @@ import {colorPalette} from '../../assets/colorpalette/colorPalette';
 import textStyle from '../../style/text/style';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import OnboardingScreen from '../../module/onboardingSurvey';
+import OnboardingScreen from '../../screens/afterAuth/onBoarding';
 
 const Stack = createNativeStackNavigator();
 
@@ -64,8 +64,14 @@ const AppStack = () => {
           },
         }}
       />
-
-      <Stack.Screen name='onboarding' component={OnboardingScreen} />
+      <Stack.Screen
+        name="onboarding"
+        component={OnboardingScreen}
+        options={{
+          title: 'Noom',
+          headerRight: () => <Text style={textStyle.labelText}>User Name</Text>,
+        }}
+      />
     </Stack.Navigator>
   );
 };

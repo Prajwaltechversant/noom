@@ -13,7 +13,6 @@ const RootStack: React.FC = () => {
     setUser(user);
     if (initializing) setInitializing(false);
   }
-
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;

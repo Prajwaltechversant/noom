@@ -7,7 +7,6 @@ export interface SignupProps {
     signupMethod: boolean;
 
 }
-
 export interface ImageBgProps {
 
     image: string | ImageSourcePropType;
@@ -19,20 +18,30 @@ export interface ImageBgProps {
 
 
 export interface CustomButtonProps {
-    btnWidth: number 
+    btnWidth: number
     btnHeight: number;
     btnColor: string;
     label: string;
     icon?: string | undefined;
     labelColor?: string;
-    borderRadius?:number;
+    borderRadius?: number;
+    leftIcon?:boolean;
 }
 
 
-export type  CustomTextInput = {
-    label: string;
+export type CustomTextInput = {
+    label?: string;
     rightIcon?: string;
     backgroundColor?: string;
     textColor?: string;
 
+}
+
+
+export type ScreenContextType = {
+    width:number;
+    height:number;
+    isPortrait:boolean;
+    scale:number;
+    fontScale:number
 }

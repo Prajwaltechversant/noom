@@ -91,10 +91,7 @@ export const onBoardingData = [
 
 
                 ]
-            }
-
-            ,
-
+            },
             {
                 type: 'button',
                 question: 'Are you pregnant?',
@@ -102,21 +99,18 @@ export const onBoardingData = [
                 key: 'pregnant',
                 options: [
                     {
-                        label: 'yes',
-                        key: true,
+                        label: 'Yes',
+                        key: false,
                         value: 'yes'
                     },
                     {
-                        label: 'no',
-                        key: false,
+                        label: 'No',
+                        key: true,
                         value: 'no'
                     },
 
-
-
                 ]
             },
-
             {
                 type: 'button',
                 question: 'What is your age?',
@@ -168,7 +162,6 @@ export const onBoardingData = [
                 content: 'We do not mean to pry, we just need to know so we can build a plan that is right for you.',
                 key: 'height',
             },
-
             {
                 type: 'checkbox',
                 question: 'Are you at risk of any of the following?',
@@ -333,57 +326,49 @@ export const onBoardingData = [
                     },
                 ]
             },
-
-
-
-
-        ]
-    },
-
-    {
-        section: 'weight loss profile',
-        screens: [
             {
-                type: 'yesno',
+                type:'yesno',
                 question: 'Do you relate to the statement below?',
                 key: 'weightgoal',
-                content: '“My weight has affected my ability to socialize or engage with friends and family.”',
+                content: 'My weight has affected my ability to socialize or engage with friends and family',
                 img: 'https://buyflow-web-assets.noom.com/bfc2/media/brocolli-picnic.fa1506cdbfe882470fa8005d3cb7f774.webp',
                 options: [
                     {
-                        label: 'Is important for progress in other areas of my life',
+                        label: 'Yes',
                         key: true,
-                        value: '5'
+                        value: '1'
                     },
                     {
-                        label: 'Doesn’t affect other areas of my life',
+                        label: 'No',
                         key: true,
-                        value: '4'
+                        value: '0'
                     },
                 ]
             },
-            {
-                type: 'quiz',
-                question: 'I would love my body...',
-                key: 'weightgoal',
-                content: '',
-                options: [
-                    {
-                        label: 'The same no matter my weight',
-                        key: true,
-                        value: '5'
-                    },
-                    {
-                        label: 'More if I were to achieve my weight goal',
-                        key: true,
-                        value: '4'
-                    },
-                ]
-            },
-
-
-
-
         ]
     },
+    // {
+    //     section: 'weight loss profile',
+    //     screens: [
+    //         {
+    //             type:'yesno',
+    //             question: 'Do you relate to the statement below?',
+    //             key: 'weightgoal',
+    //             content: 'My weight has affected my ability to socialize or engage with friends and family',
+    //             img: 'https://buyflow-web-assets.noom.com/bfc2/media/brocolli-picnic.fa1506cdbfe882470fa8005d3cb7f774.webp',
+    //             options: [
+    //                 {
+    //                     label: 'The same no matter my weight',
+    //                     key: true,
+    //                     value: '5'
+    //                 },
+    //                 {
+    //                     label: 'More if I were to achieve my weight goal',
+    //                     key: true,
+    //                     value: '4'
+    //                 },
+    //             ]
+    //         },
+    //     ]
+    // },
 ]

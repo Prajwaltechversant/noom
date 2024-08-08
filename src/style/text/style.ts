@@ -11,6 +11,7 @@ const textStyle = StyleSheet.create({
         fontSize: 30,
         fontWeight: '700',
         color: 'black',
+        textAlign: 'center'
 
     },
     labelText: {
@@ -24,7 +25,8 @@ const textStyle = StyleSheet.create({
     questionText: {
         fontWeight: '700',
         fontSize: 25,
-        color: 'black'
+        color: 'black',
+        textAlign:'center'
     }
 
 })

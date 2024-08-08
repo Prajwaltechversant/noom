@@ -17,10 +17,11 @@ import {signUpWithEmail} from '../../services/signup';
 const Stack = createNativeStackNavigator();
 
 const RegisterStack = () => {
-
   const dispatch = useDispatch();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator 
+    
+    >
       <Stack.Screen name="registerMethods" component={RegisterMethods} />
       <Stack.Screen name="signup" component={Signup} />
       <Stack.Screen
@@ -37,7 +38,6 @@ const AuthStack: React.FC = () => {
       <Stack.Screen
         name="Entry"
         component={EntryScreen}
-        // options={{headerShown: false}}
       />
       <Stack.Screen name="registerStack" component={RegisterStack} />
 

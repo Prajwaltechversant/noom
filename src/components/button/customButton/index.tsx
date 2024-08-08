@@ -4,10 +4,10 @@ import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
 import {CustomButtonProps} from '../../../types/types';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { TouchableOpacityProps } from 'react-native';
+import {TouchableOpacityProps} from 'react-native';
+import {Circle, Svg} from 'react-native-svg';
 
-
-type Props = CustomButtonProps & TouchableOpacityProps
+type Props = CustomButtonProps & TouchableOpacityProps;
 const CustomButton: React.FC<Props> = ({
   btnColor,
   label,
@@ -16,8 +16,8 @@ const CustomButton: React.FC<Props> = ({
   btnWidth,
   labelColor,
   borderRadius,
+  leftIcon,
   ...props
-
 }) => {
   const screenContext = useScreenContext();
   const {width, fontScale, height, isPortrait, isTabletType, scale} =
@@ -30,12 +30,42 @@ const CustomButton: React.FC<Props> = ({
     btnColor,
     labelColor,
     icon,
+    leftIcon,
   );
 
+  // console.log(heigh)
+
   return (
-    <TouchableOpacity style={[screenStyles.btn,{borderRadius:borderRadius}]} {...props}>
-      {icon && <AntDesign name={icon} color={labelColor} size={20} style={screenStyles.icon} />}
-      <Text style={{color:labelColor}}>{label}</Text>
+    <TouchableOpacity
+      style={[screenStyles.btn, {borderRadius: borderRadius}]}
+      {...props}>
+      {leftIcon && (
+        <Svg
+          style={{
+            width: btnHeight,
+            height: btnHeight,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Circle
+            cx={btnHeight / 2}
+            cy={btnHeight / 2}
+            r="15"
+            stroke="blue"
+            strokeWidth="2"
+            fill="green"
+          />
+        </Svg>
+      )}
+      {icon && (
+        <AntDesign
+          name={icon}
+          color={labelColor}
+          size={20}
+          style={screenStyles.icon}
+        />
+      )}
+      <Text style={{color: labelColor}}>{label}</Text>
     </TouchableOpacity>
   );
 };

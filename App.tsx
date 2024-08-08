@@ -6,14 +6,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import store from './src/redux/store/store';
 import EntryScreen from './src/screens/afterAuth/AppEntryScreen';
+import QuizScreen from './src/module/onboardingSurvey/quizScreen';
 
 const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={{flex: 1}}>
         <ScreenContextProvider>
-          <RootStack />
-          {/* <EntryScreen /> */}
+          {/* <RootStack /> */}
+          <QuizScreen />
         </ScreenContextProvider>
       </SafeAreaView>
     </Provider>

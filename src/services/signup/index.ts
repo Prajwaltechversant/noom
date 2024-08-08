@@ -42,13 +42,8 @@ export const signUpWithEmail =
 
 export const googleSignup = async () => {
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
-
-    // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-    // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
 }
 
@@ -60,7 +55,6 @@ export const faceBookSignup = async () => {
         throw 'User cancelled the login process';
     }
 
-    // Once signed in, get the users AccessToken
     const data = await AccessToken.getCurrentAccessToken();
 
     if (!data) {
