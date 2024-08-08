@@ -29,10 +29,10 @@ const QuizScreen: React.FC = () => {
   const [sliderValue, setSliderValue] = useState(0.5);
   const viewRef = useRef(null);
   const tabWidth = width * 0.8;
-  const translateX = useSharedValue(tabWidth/2);
-console.log(tabWidth/2)
+  const translateX = useSharedValue(tabWidth / 2);
+  console.log(tabWidth / 2);
   const gesture = Gesture.Pan()
-    .onStart(({y,translationX}) => {
+    .onStart(({y, translationX}) => {
       translateX.value = translationX;
     })
     .onUpdate(({y, translationX}) => {
@@ -40,14 +40,13 @@ console.log(tabWidth/2)
     })
     .onEnd(({y, translationX}) => {
       translateX.value = translationX;
-      console.log(tabWidth/4)
-      console.log(translationX)
-      if(tabWidth/4>translationX && tabWidth/6<translationX){
-        translateX.value = tabWidth/4
-      }else if (tabWidth/6>translationX && tabWidth/8<translationX){
-        translateX.value = tabWidth/8
+      console.log(tabWidth / 4);
+      console.log(translationX);
+      if (tabWidth / 4 > translationX && tabWidth / 6 < translationX) {
+        translateX.value = tabWidth / 4;
+      } else if (tabWidth / 6 > translationX && tabWidth / 8 < translationX) {
+        translateX.value = tabWidth / 8;
       }
-      
     });
 
   const animatedStyles = useAnimatedStyle(() => {
@@ -98,7 +97,6 @@ console.log(tabWidth/2)
                 </View>
               </GestureDetector>
             </GestureHandlerRootView>
-
             {/* <Slider
               style={{width: 250, height: 10}}
               minimumValue={0}
