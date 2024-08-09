@@ -87,7 +87,7 @@ const OnboardingScreen = () => {
         console.log('Onboarding complete');
       }
     }
-        setProgress((currentScreenIndex / surveyData.length)*10);
+        setProgress((currentScreenIndex / surveyData.length));
 
   };
 console.log(progress)

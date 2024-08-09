@@ -9,6 +9,7 @@ interface Props{
 }
 
 const OnBoardingProgressBar:React.FC<Props> = ({progress,totalValue}) => {
+    console.log(progress,'dsdsd')
   return (
     <View>
       <Text style={textStyle.questionText}>onBoardingProgressBar</Text>
@@ -20,7 +21,8 @@ const OnBoardingProgressBar:React.FC<Props> = ({progress,totalValue}) => {
         minimumTrackTintColor="red"
         maximumTrackTintColor="yellow"
         thumbTintColor="transparent"
-        disabled
+        // disabled
+        
       />
     </View>
   );
