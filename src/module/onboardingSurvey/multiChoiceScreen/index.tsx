@@ -67,6 +67,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
         <FlatList
           data={section.options}
           key={section.key}
+          keyExtractor={item => Math.random().toString(36).substring(2)}
           renderItem={({item, index}) =>
             section.type != 'checkbox' ? (
               <CustomButton

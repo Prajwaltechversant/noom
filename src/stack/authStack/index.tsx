@@ -13,6 +13,7 @@ import {validation} from '../../services/validation';
 import {addError} from '../../redux/slices/Auth/loginSlice';
 import {SignupWithEmailErrorType} from '../../types/signup';
 import {signUpWithEmail} from '../../services/signup';
+import { screenNames } from '../../preferences/staticVariable';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,10 +23,10 @@ const RegisterStack = () => {
     <Stack.Navigator 
     
     >
-      <Stack.Screen name="registerMethods" component={RegisterMethods} />
-      <Stack.Screen name="signup" component={Signup} />
+      <Stack.Screen name={screenNames.REGISTER_METHODS} component={RegisterMethods} />
+      <Stack.Screen name={screenNames.SIGNUP} component={Signup} />
       <Stack.Screen
-        name="emailSignup"
+        name={screenNames.EMAIL_SIGNUP}
         component={EmailSignup}
       />
     </Stack.Navigator>
@@ -36,12 +37,11 @@ const AuthStack: React.FC = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen
-        name="Entry"
+        name={screenNames.AUTH_ENTRY_SCREEN}
         component={EntryScreen}
       />
-      <Stack.Screen name="registerStack" component={RegisterStack} />
-
-      <Stack.Screen name="login" component={Login} />
+      <Stack.Screen name={screenNames.REGISTER_STACK} component={RegisterStack} />
+      <Stack.Screen name={screenNames.LOGIN} component={Login} />
     </Stack.Navigator>
   );
 };

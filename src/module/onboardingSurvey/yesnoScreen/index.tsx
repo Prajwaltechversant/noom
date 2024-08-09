@@ -17,7 +17,7 @@ interface OnBoardProps {
     key: string;
     question: string;
     type: string;
-    optional:boolean
+    optional: boolean;
   };
   handleNext: () => void;
 }
@@ -38,7 +38,10 @@ const YesNoScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
         <Text style={textStyle.questionText}>{section.content}</Text>
         <View style={screenStyles.optionContainer}>
           {section.options.map(i => (
-            <TouchableOpacity style={screenStyles.box} onPress={handleNext}>
+            <TouchableOpacity
+              style={screenStyles.box}
+              onPress={handleNext}
+              key={Math.random().toString(36).substring(2)}>
               <Text style={textStyle.labelText}>{i.label}</Text>
             </TouchableOpacity>
           ))}

@@ -6,6 +6,7 @@ import {CustomButtonProps} from '../../../types/types';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacityProps} from 'react-native';
 import {Circle, Svg} from 'react-native-svg';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 
 type Props = CustomButtonProps & TouchableOpacityProps;
 const CustomButton: React.FC<Props> = ({
@@ -51,9 +52,9 @@ const CustomButton: React.FC<Props> = ({
             cx={btnHeight / 2}
             cy={btnHeight / 2}
             r="15"
-            stroke="blue"
+            stroke="black"
             strokeWidth="2"
-            fill="green"
+            fill={colorPalette.sand1}
           />
         </Svg>
       )}

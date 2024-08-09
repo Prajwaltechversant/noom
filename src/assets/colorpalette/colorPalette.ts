@@ -29,6 +29,7 @@ export const colorPalette = {
     sky:'#b4e0d8',
 
     sand:'#e4dece',
+    sand1:'#f6f4ee',
     pine:'#2b4010'
 
 

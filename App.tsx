@@ -7,14 +7,17 @@ import {Provider} from 'react-redux';
 import store from './src/redux/store/store';
 import EntryScreen from './src/screens/afterAuth/AppEntryScreen';
 import QuizScreen from './src/module/onboardingSurvey/quizScreen';
+import InfoScreen from './src/module/onboardingSurvey/infoScreens/infoScreen1';
+import PlanScreen from './src/module/onboardingSurvey/planScreen';
 
 const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={{flex: 1}}>
         <ScreenContextProvider>
-          {/* <RootStack /> */}
-          <QuizScreen />
+          <RootStack />
+          {/* <InfoScreen /> */}
+          {/* <PlanScreen /> */}
         </ScreenContextProvider>
       </SafeAreaView>
     </Provider>

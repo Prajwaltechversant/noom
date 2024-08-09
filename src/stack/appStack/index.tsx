@@ -8,6 +8,7 @@ import textStyle from '../../style/text/style';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import OnboardingScreen from '../../screens/afterAuth/onBoarding';
+import {screenNames} from '../../preferences/staticVariable';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +20,7 @@ const AppStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="appEntryScreen"
+        name={screenNames.APP_ENTRY_SCREEN}
         component={EntryScreen}
         options={{
           headerShown: true,
@@ -65,7 +66,7 @@ const AppStack = () => {
         }}
       />
       <Stack.Screen
-        name="onboarding"
+        name={screenNames.ONBAORDING}
         component={OnboardingScreen}
         options={{
           title: 'Noom',
