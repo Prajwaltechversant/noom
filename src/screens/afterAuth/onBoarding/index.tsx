@@ -12,6 +12,7 @@ import {updateSurveyProgress} from '../../../redux/slices/surveyProgressSlice/su
 import {screenNames} from '../../../preferences/staticVariable';
 import {useAppDispatch, useAppSelector} from '../../../redux/hook';
 import {useScreenContext} from '../../../context/screenContext';
+import {addSurveyData} from '../../../redux/slices/questionsSlice';
 
 const OnboardingScreen = () => {
   const screenContext = useScreenContext();
@@ -21,7 +22,6 @@ const OnboardingScreen = () => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-
   const navigation: any = useNavigation();
   const surveyProgress = useAppSelector(state => state.surveyProgressSlice);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(
@@ -30,7 +30,9 @@ const OnboardingScreen = () => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(
     surveyProgress.currentScreen,
   );
-  const [surveyData, setSurveyData] = useState<any>([]);
+  const surveyQuestion = useAppSelector(state => state.questions);
+
+  const [surveyData, setSurveyData] = useState<any[]>(surveyQuestion);
   const [section, setSection] = useState<any>();
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(surveyProgress.progress);
@@ -50,10 +52,15 @@ const OnboardingScreen = () => {
         setSurveyData(arr);
         setSection(arr[currentSectionIndex].screens[currentScreenIndex]);
         setLoading(false);
+        dispatch(addSurveyData(arr));
       });
   };
+
+  console.log(surveyQuestion, 'dwqd');
   useEffect(() => {
-    getData();
+    if (surveyData.length <= 0) {
+      getData();
+    }
   }, []);
 
   useMemo(() => {
@@ -62,7 +69,6 @@ const OnboardingScreen = () => {
       totalLength += item.screens.length;
     });
     setTotal(totalLength);
-    console.log('hehe');
   }, [surveyData]);
 
   useEffect(() => {

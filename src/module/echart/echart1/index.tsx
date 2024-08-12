@@ -107,7 +107,7 @@ const EChartComponent = () => {
     </html>
   `;
 
-    // const navigation: any = useNavigation();
+    const navigation: any = useNavigation();
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
@@ -135,7 +135,7 @@ const EChartComponent = () => {
         btnWidth={width * 0.8}
         label="Got it!"
         btnColor={colorPalette.Lagoon}
-        // onPress={() => navigation.replace(screenNames.ONBAORDING)}
+        onPress={() => navigation.replace(screenNames.ONBAORDING)}
       />
     </View>
   );
