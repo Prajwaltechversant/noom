@@ -2,11 +2,10 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import loginSlice from "../slices/Auth/loginSlice";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from '@react-native-async-storage/async-storage';
-import { surveyProgressSlice } from "../slices/surveySlice/surveySlice";
-
+import surveyProgressSliceReducer from "../slices/surveySlice/surveySlice"
 const rootReducers = combineReducers({
     loginSlice: loginSlice,
-    surveyProgressSlice: surveyProgressSlice
+    surveyProgressSlice: surveyProgressSliceReducer
 })
 
 

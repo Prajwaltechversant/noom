@@ -17,6 +17,7 @@ export const surveyProgressSlice = createSlice({
 
     reducers: {
         updateSurveyProgress: (state, action) => {
+            console.log(action,'s')
             return ({
                 ...state,
                 currentScreen: action.payload.currentScreen,

@@ -27,14 +27,17 @@ const OnboardingScreen = () => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-  const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
+  
+  const surveyProgress = useSelector(state => state.surveyProgressSlice);
+  console.log(surveyProgress);
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(surveyProgress.currentSection);
+  const [currentScreenIndex, setCurrentScreenIndex] = useState(surveyProgress.currentScreen);
   const [surveyData, setSurveyData] = useState<any>([]);
   const [section, setSection] = useState<any>();
   const [types, setTypes] = useState<string[]>();
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(surveyProgress.progress);
   const [screenIndex, setScreenIndex] = useState(0);
   // const progress = (currentSectionIndex / (totalSections - 1)) * 100;
 
@@ -52,9 +55,6 @@ const OnboardingScreen = () => {
         setLoading(!loading);
       });
   };
-
-  const d = useSelector(state => state);
-  console.log(d, 'dsd');
 
   useEffect(() => {
     getData();
@@ -86,12 +86,20 @@ const OnboardingScreen = () => {
     }
     setScreenIndex(screenIndex + 1);
     setProgress((screenIndex / total) * 100);
+    dispatch(
+      updateSurveyProgress({
+        currentScreen: currentScreenIndex,
+        currentSection: currentSectionIndex,
+        progress: progress,
+      }),
+    );
+    setScreenIndex(screenIndex);
+    setProgress((screenIndex / total) * 100);
   };
 
   const handlePrev = () => {
     const currentSection = surveyData[currentSectionIndex];
     const prevScreenIndex = currentScreenIndex - 1;
-
     if (prevScreenIndex >= 0) {
       setCurrentScreenIndex(prevScreenIndex);
       setSection(currentSection.screens[prevScreenIndex]);
@@ -106,8 +114,6 @@ const OnboardingScreen = () => {
         console.log('1st screen');
       }
     }
-    setScreenIndex(screenIndex);
-    setProgress((screenIndex / total) * 100);
   };
 
   switch (section.type) {
