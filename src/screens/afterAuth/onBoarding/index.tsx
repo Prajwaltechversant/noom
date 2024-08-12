@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 // import {onBoardingData} from '../../../services/dataSet';
 import {ActivityIndicator, Button} from 'react-native-paper';
 import textStyle from '../../../style/text/style';
@@ -15,6 +15,7 @@ import QuizScreen from '../../../module/onboardingSurvey/quizScreen';
 import {fetchSurvey} from '../../../services/apis';
 import firestore from '@react-native-firebase/firestore';
 import OnBoardingProgressBar from '../../../components/onBoarding/progressBar';
+import {updateSurveyProgress} from '../../../redux/slices/surveySlice/surveySlice';
 export type FormType = 'button' | 'input' | 'radio' | 'yesno' | 'checkbox';
 const OnboardingScreen = () => {
   const screenContext = useScreenContext();
@@ -34,13 +35,15 @@ const OnboardingScreen = () => {
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [screenIndex, setScreenIndex] = useState(0);
+  // const progress = (currentSectionIndex / (totalSections - 1)) * 100;
+
   const getData = async () => {
     firestore()
       .collection('survey')
       .get()
       .then((item): any => {
         let arr: any = [];
-        let t = 0;
         item.forEach(i => {
           arr.push(i.data());
         });
@@ -50,28 +53,22 @@ const OnboardingScreen = () => {
       });
   };
 
+  const d = useSelector(state => state);
+  console.log(d, 'dsd');
+
   useEffect(() => {
     getData();
   }, []);
-
+  const dispatch = useDispatch();
+  useMemo(() => {
+    let totalLength = 0;
+    surveyData.forEach((item: any) => {
+      totalLength = totalLength + item.screens.length - 1;
+    });
+    setTotal(totalLength);
+  }, [surveyData]);
   if (loading) return <ActivityIndicator />;
 
-  // const handleNext = () => {
-  //   const currentSection = onBoardingData[currentSectionIndex];
-  //   const nextScreenIndex = currentScreenIndex + 1;
-  //   if (nextScreenIndex < currentSection.screens.length) {
-  //     setCurrentScreenIndex(nextScreenIndex);
-  //     setSection(currentSection.screens[nextScreenIndex]);
-  //   } else {
-  //     const nextSectionIndex = currentSectionIndex + 1;
-  //     if (nextSectionIndex < onBoardingData.length) {
-  //       setCurrentSectionIndex(nextSectionIndex);
-  //       setCurrentScreenIndex(0);
-  //     } else {
-  //       console.log('Onboarding complete');
-  //     }
-  //   }
-  // };
   const handleNext = () => {
     const currentSection = surveyData[currentSectionIndex];
     const nextScreenIndex = currentScreenIndex + 1;
@@ -87,14 +84,31 @@ const OnboardingScreen = () => {
         console.log('Onboarding complete');
       }
     }
-        setProgress((currentScreenIndex / surveyData.length));
-
+    setScreenIndex(screenIndex + 1);
+    setProgress((screenIndex / total) * 100);
   };
-console.log(progress)
-  // useMemo(()=>{
-  //   setProgress(currentScreenIndex / surveyData.length);
 
-  // },[currentScreenIndex])
+  const handlePrev = () => {
+    const currentSection = surveyData[currentSectionIndex];
+    const prevScreenIndex = currentScreenIndex - 1;
+
+    if (prevScreenIndex >= 0) {
+      setCurrentScreenIndex(prevScreenIndex);
+      setSection(currentSection.screens[prevScreenIndex]);
+    } else {
+      const prevSectionIndex = currentSectionIndex - 1;
+      if (prevSectionIndex >= 0) {
+        const prevSection = surveyData[prevSectionIndex];
+        setCurrentSectionIndex(prevSectionIndex);
+        setCurrentScreenIndex(prevSection.screens.length - 1);
+        setSection(prevSection.screens[prevSection.screens.length - 1]);
+      } else {
+        console.log('1st screen');
+      }
+    }
+    setScreenIndex(screenIndex);
+    setProgress((screenIndex / total) * 100);
+  };
 
   switch (section.type) {
     case 'button':
@@ -103,6 +117,9 @@ console.log(progress)
           <OnBoardingProgressBar
             totalValue={surveyData.length}
             progress={progress}
+            handlePrev={handlePrev}
+            duration={500}
+            sectionTitle={surveyData[currentSectionIndex].section}
           />
           <ButtonGroupScreen section={section} handleNext={handleNext} />
         </>
@@ -113,6 +130,9 @@ console.log(progress)
           <OnBoardingProgressBar
             totalValue={surveyData.length}
             progress={progress}
+            handlePrev={handlePrev}
+            duration={500}
+            sectionTitle={surveyData[currentSectionIndex].section}
           />
           <ButtonGroupScreen section={section} handleNext={handleNext} />
         </>
@@ -123,18 +143,36 @@ console.log(progress)
           <OnBoardingProgressBar
             totalValue={surveyData.length}
             progress={progress}
+            handlePrev={handlePrev}
+            duration={500}
+            sectionTitle={surveyData[currentSectionIndex].section}
           />
           <YesNoScreen section={section} handleNext={handleNext} />
         </>
       );
     case 'quiz':
-      return <QuizScreen section={section} handleNext={handleNext} />;
+      return (
+        <>
+          <OnBoardingProgressBar
+            totalValue={surveyData.length}
+            progress={progress}
+            handlePrev={handlePrev}
+            duration={500}
+            sectionTitle={surveyData[currentSectionIndex].section}
+          />
+          <QuizScreen section={section} handleNext={handleNext} />
+        </>
+      );
+
     case 'checkbox':
       return (
         <>
           <OnBoardingProgressBar
             totalValue={surveyData.length}
             progress={progress}
+            handlePrev={handlePrev}
+            duration={500}
+            sectionTitle={surveyData[currentSectionIndex].section}
           />
           <ButtonGroupScreen section={section} handleNext={handleNext} />
         </>
@@ -145,6 +183,9 @@ console.log(progress)
           <OnBoardingProgressBar
             totalValue={surveyData.length}
             progress={progress}
+            handlePrev={handlePrev}
+            duration={500}
+            sectionTitle={surveyData[currentSectionIndex].section}
           />
           <SingleChoiceScreen section={section} handleNext={handleNext} />
         </>

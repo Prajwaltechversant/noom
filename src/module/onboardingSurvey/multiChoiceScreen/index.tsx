@@ -39,7 +39,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
   const [checked, setChecked] = React.useState(['']);
   const [checkedItem, setCheckedItem] = useState<any>([]);
   const [isPressed, setIsPressed] = useState('');
-
+  
   useEffect(() => {
     let arr: any = [];
     if (section.type === 'checkbox') {
@@ -47,16 +47,17 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
       setCheckedItem(arr);
     }
   }, []);
-
   const handleChecked = (item: string) => {
     let arr = [...checkedItem];
-    arr.forEach((i, index) => {
+    arr.forEach((i, index) => {``
       if (i.label === item) {
         arr[index].checked = !i.checked;
       }
     });
     setCheckedItem(arr);
   };
+
+  console.log('rendered')
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.questionText}>{section.question}</Text>
@@ -144,4 +145,4 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
   );
 };
 
-export default ButtonGroupScreen;
+export default React.memo(ButtonGroupScreen);

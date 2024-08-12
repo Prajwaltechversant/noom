@@ -21,14 +21,15 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
+
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.contentContainer}>
-        <Text style={textStyle.questionText} onPress={handleNext}>
+        <Text style={textStyle.questionText}>
           {section.question}
         </Text>
         {section.content && (
-          <Text style={textStyle.labelText} onPress={handleNext}>
+          <Text style={textStyle.labelText}>
             {section.content}
           </Text>
         )}
