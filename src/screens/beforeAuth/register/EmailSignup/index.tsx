@@ -15,6 +15,7 @@ import {TextInput} from 'react-native-paper';
 import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
 import {signUpWithEmail} from '../../../../services/signup';
 import {addData} from '../../../../redux/slices/Auth/loginSlice';
+import { useAppDispatch } from '../../../../redux/hook';
 
 const EmailSignup = () => {
   const screenContext = useScreenContext();
@@ -37,7 +38,7 @@ const EmailSignup = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch()
 
   const handleStateUpdate = (
     input: keyof SignupWithEmailtype,

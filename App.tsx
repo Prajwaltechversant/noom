@@ -11,6 +11,8 @@ import InfoScreen from './src/module/onboardingSurvey/infoScreens/infoScreen1';
 import PlanScreen from './src/module/onboardingSurvey/planScreen';
 import {PersistGate} from 'redux-persist/integration/react';
 import EChartComponent from './src/module/echart';
+import PaymentScreen1 from './src/module/payment/paymentScreen1';
+import PaymementScreen2 from './src/module/payment/paymentScreen2';
 
 const App = () => {
   return (
@@ -18,7 +20,9 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaView style={{flex: 1}}>
           <ScreenContextProvider>
-            <RootStack />
+            {/* <RootStack /> */}
+            {/* <EChartComponent  /> */}
+            <PaymementScreen2 />
       
           </ScreenContextProvider>
         </SafeAreaView>

@@ -15,7 +15,6 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
             marginVertical: screenContext.isPortrait ? height * 0.1 : height * 0.1
         },
         options: {
-            // marginVertical:1
         },
         checkBoxContainer: {
             width: screenContext.isPortrait ? width * 0.8 : width * 0.8,

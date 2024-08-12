@@ -5,6 +5,8 @@ import styles from './style';
 import textStyle from '../../../../style/text/style';
 import CustomButton from '../../../../components/button/customButton';
 import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
+import {useNavigation} from '@react-navigation/native';
+import {screenNames} from '../../../../preferences/staticVariable';
 
 type Page = 'intro1' | 'intro2';
 
@@ -13,7 +15,7 @@ interface Props {
   image: string;
 }
 
-const InfoScreen: React.FC<Props> = ({image, page}) => {
+const InfoScreen: React.FC = ({route}: any) => {
   const screenContext = useScreenContext();
   const {width, fontScale, height, isPortrait, isTabletType, scale} =
     screenContext;
@@ -22,9 +24,11 @@ const InfoScreen: React.FC<Props> = ({image, page}) => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
+  const navigation: any = useNavigation();
+
   return (
     <View style={screenStyles.container}>
-      {page === 'intro1' ? (
+      {route.params.page === 'intro1' ? (
         <Text style={textStyle.headingText}>
           You are in good hands username
         </Text>
@@ -36,11 +40,11 @@ const InfoScreen: React.FC<Props> = ({image, page}) => {
       <View style={screenStyles.contentWrapper}>
         <Image
           source={{
-            uri: image,
+            uri: route.params.image,
           }}
           style={screenStyles.contentImage}
         />
-        {page === 'intro1' ? (
+        {route.params.page === 'intro1' ? (
           <Text style={textStyle.labelText} numberOfLines={2}>
             You are not alone , wh've helped 1234 peoples lose weight!
           </Text>
@@ -50,12 +54,12 @@ const InfoScreen: React.FC<Props> = ({image, page}) => {
             due to our proven result
           </Text>
         )}
-
         <CustomButton
           btnHeight={width * 0.2}
           btnWidth={width * 0.8}
           label="Continue"
           btnColor={colorPalette.Lagoon}
+          onPress={() => navigation.replace(screenNames.ONBAORDING)}
         />
       </View>
     </View>

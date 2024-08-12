@@ -73,7 +73,6 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
     });
     dispatch(addData({qId: qid, aId: checkedId}));
   };
-  console.log(answer);
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.questionText}>{section.question}</Text>

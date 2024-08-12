@@ -10,8 +10,9 @@ const textStyle = StyleSheet.create({
     headingText: {
         fontSize: 30,
         fontWeight: '700',
-        color: 'black',
-        textAlign: 'center'
+        color: colorPalette.berry,
+        textAlign: 'center',
+        
 
     },
     labelText: {

@@ -1,38 +1,29 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
-import {ActivityIndicator, Button} from 'react-native-paper';
-import textStyle from '../../../style/text/style';
-import CustomButton from '../../../components/button/customButton';
-import {useScreenContext} from '../../../context/screenContext';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {ActivityIndicator} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-import styles from './style';
+import firestore from '@react-native-firebase/firestore';
+import OnBoardingProgressBar from '../../../components/onBoarding/progressBar';
 import ButtonGroupScreen from '../../../module/onboardingSurvey/multiChoiceScreen';
 import YesNoScreen from '../../../module/onboardingSurvey/yesnoScreen';
 import SingleChoiceScreen from '../../../module/onboardingSurvey/singleChoiceScreen';
 import QuizScreen from '../../../module/onboardingSurvey/quizScreen';
-import {fetchSurvey} from '../../../services/apis';
-import firestore from '@react-native-firebase/firestore';
-import OnBoardingProgressBar from '../../../components/onBoarding/progressBar';
+import styles from './style';
 import {updateSurveyProgress} from '../../../redux/slices/surveyProgressSlice/surveySlice';
 import {screenNames} from '../../../preferences/staticVariable';
 import {useAppDispatch, useAppSelector} from '../../../redux/hook';
-export type FormType = 'button' | 'input' | 'radio' | 'yesno' | 'checkbox';
+import {useScreenContext} from '../../../context/screenContext';
+
 const OnboardingScreen = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
-    screenContext;
+  const {width, height, isPortrait} = screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
+
   const navigation: any = useNavigation();
-
   const surveyProgress = useAppSelector(state => state.surveyProgressSlice);
-  const surveyA = useAppSelector(state => state.onBoarding);
-  console.log(surveyProgress);
-
-  console.log(surveyA);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(
     surveyProgress.currentSection,
   );
@@ -41,11 +32,11 @@ const OnboardingScreen = () => {
   );
   const [surveyData, setSurveyData] = useState<any>([]);
   const [section, setSection] = useState<any>();
-  const [types, setTypes] = useState<string[]>();
   const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState(0);
   const [progress, setProgress] = useState(surveyProgress.progress);
   const [screenIndex, setScreenIndex] = useState(0);
+  const [total, setTotal] = useState(0);
+  const dispatch = useAppDispatch();
 
   const getData = async () => {
     firestore()
@@ -58,27 +49,46 @@ const OnboardingScreen = () => {
         });
         setSurveyData(arr);
         setSection(arr[currentSectionIndex].screens[currentScreenIndex]);
-        setLoading(!loading);
+        setLoading(false);
       });
   };
 
   useEffect(() => {
     getData();
   }, []);
-  const dispatch = useAppDispatch();
-  console.log(progress);
+
   useMemo(() => {
     let totalLength = 0;
     surveyData.forEach((item: any) => {
-      totalLength = totalLength + item.screens.length - 1;
+      totalLength += item.screens.length;
     });
     setTotal(totalLength);
   }, [surveyData]);
+  
+  useEffect(() => {
+    if (currentSectionIndex === 1) {
+      navigation.navigate(screenNames.infoScreen1, {
+        image:
+          'https://firebasestorage.googleapis.com/v0/b/noom-29f53.appspot.com/o/onBoarding%20Images%2F1719851300137-removebg-preview.png?alt=media&token=6ec2e6c2-17ca-4fb1-92a4-ab9fc8d26223',
+        page: 'intro1',
+      });
+    } else if (currentSectionIndex === 2) {
+      navigation.navigate(screenNames.Echart_Screen1);
+    } else if (currentSectionIndex === 3) {
+      navigation.navigate(screenNames.infoScreen1, {
+        image:
+          'https://firebasestorage.googleapis.com/v0/b/noom-29f53.appspot.com/o/onBoarding%20Images%2F1719851300137-removebg-preview.png?alt=media&token=6ec2e6c2-17ca-4fb1-92a4-ab9fc8d26223',
+        page: 'intro2',
+      });
+    } else null;
+  }, [progress]);
+
   if (loading) return <ActivityIndicator />;
 
   const handleNext = () => {
     const currentSection = surveyData[currentSectionIndex];
     const nextScreenIndex = currentScreenIndex + 1;
+
     if (nextScreenIndex < currentSection.screens.length) {
       setCurrentScreenIndex(nextScreenIndex);
       setSection(currentSection.screens[nextScreenIndex]);
@@ -87,27 +97,34 @@ const OnboardingScreen = () => {
       if (nextSectionIndex < surveyData.length) {
         setCurrentSectionIndex(nextSectionIndex);
         setCurrentScreenIndex(0);
+        setSection(surveyData[nextSectionIndex].screens[0]);
       } else {
         navigation.navigate(screenNames.Plan_Screen);
       }
     }
-    setScreenIndex(screenIndex + 1);
-    setProgress((screenIndex / total) * 100);
+
+    const updatedScreenIndex = screenIndex + 1;
+    const currentProgress = (updatedScreenIndex / total) * 100;
+    setScreenIndex(updatedScreenIndex);
+    setProgress(currentProgress);
 
     dispatch(
       updateSurveyProgress({
-        currentScreen: currentScreenIndex,
-        currentSection: currentSectionIndex,
-        progress: progress,
+        currentScreen:
+          nextScreenIndex < currentSection.screens.length ? nextScreenIndex : 0,
+        currentSection:
+          currentSectionIndex < surveyData.length
+            ? currentSectionIndex
+            : currentSectionIndex,
+        progress: currentProgress,
       }),
     );
-    setScreenIndex(screenIndex);
-    setProgress((screenIndex / total) * 100);
   };
 
   const handlePrev = () => {
     const currentSection = surveyData[currentSectionIndex];
     const prevScreenIndex = currentScreenIndex - 1;
+
     if (prevScreenIndex >= 0) {
       setCurrentScreenIndex(prevScreenIndex);
       setSection(currentSection.screens[prevScreenIndex]);
@@ -116,29 +133,35 @@ const OnboardingScreen = () => {
       if (prevSectionIndex >= 0) {
         const prevSection = surveyData[prevSectionIndex];
         setCurrentSectionIndex(prevSectionIndex);
-        setCurrentScreenIndex(prevSection.screens.length - 1);
-        setSection(prevSection.screens[prevSection.screens.length - 1]);
+        const lastScreenIndex = prevSection.screens.length - 1;
+        setCurrentScreenIndex(lastScreenIndex);
+        setSection(prevSection.screens[lastScreenIndex]);
       } else {
-        console.log('1st screen');
+        console.log('Already at the first screen');
       }
     }
+
+    const updatedScreenIndex = screenIndex > 0 ? screenIndex - 1 : 0;
+    const currentProgress = (updatedScreenIndex / total) * 100;
+    setScreenIndex(updatedScreenIndex);
+    setProgress(currentProgress);
+
+    dispatch(
+      updateSurveyProgress({
+        currentScreen: prevScreenIndex >= 0 ? prevScreenIndex : 0,
+        currentSection:
+          currentSectionIndex - 1 >= 0
+            ? currentSectionIndex - 1
+            : currentSectionIndex,
+        progress: currentProgress,
+      }),
+    );
   };
 
-  switch (section.type) {
+  switch (section?.type) {
     case 'button':
-      return (
-        <>
-          <OnBoardingProgressBar
-            totalValue={surveyData.length}
-            progress={progress}
-            handlePrev={handlePrev}
-            duration={500}
-            sectionTitle={surveyData[currentSectionIndex].section}
-          />
-          <ButtonGroupScreen section={section} handleNext={handleNext} />
-        </>
-      );
     case 'radio':
+    case 'checkbox':
       return (
         <>
           <OnBoardingProgressBar
@@ -146,7 +169,7 @@ const OnboardingScreen = () => {
             progress={progress}
             handlePrev={handlePrev}
             duration={500}
-            sectionTitle={surveyData[currentSectionIndex].section}
+            sectionTitle={surveyData[currentSectionIndex]?.section}
           />
           <ButtonGroupScreen section={section} handleNext={handleNext} />
         </>
@@ -159,7 +182,7 @@ const OnboardingScreen = () => {
             progress={progress}
             handlePrev={handlePrev}
             duration={500}
-            sectionTitle={surveyData[currentSectionIndex].section}
+            sectionTitle={surveyData[currentSectionIndex]?.section}
           />
           <YesNoScreen section={section} handleNext={handleNext} />
         </>
@@ -172,23 +195,9 @@ const OnboardingScreen = () => {
             progress={progress}
             handlePrev={handlePrev}
             duration={500}
-            sectionTitle={surveyData[currentSectionIndex].section}
+            sectionTitle={surveyData[currentSectionIndex]?.section}
           />
           <QuizScreen section={section} handleNext={handleNext} />
-        </>
-      );
-
-    case 'checkbox':
-      return (
-        <>
-          <OnBoardingProgressBar
-            totalValue={surveyData.length}
-            progress={progress}
-            handlePrev={handlePrev}
-            duration={500}
-            sectionTitle={surveyData[currentSectionIndex].section}
-          />
-          <ButtonGroupScreen section={section} handleNext={handleNext} />
         </>
       );
     default:
@@ -199,11 +208,12 @@ const OnboardingScreen = () => {
             progress={progress}
             handlePrev={handlePrev}
             duration={500}
-            sectionTitle={surveyData[currentSectionIndex].section}
+            sectionTitle={surveyData[currentSectionIndex]?.section}
           />
           <SingleChoiceScreen section={section} handleNext={handleNext} />
         </>
       );
   }
 };
-export default OnboardingScreen;
+
+export default React.memo(OnboardingScreen);

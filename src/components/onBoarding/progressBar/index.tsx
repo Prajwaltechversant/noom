@@ -4,14 +4,14 @@ import textStyle from '../../../style/text/style';
 import Slider from '@react-native-community/slider';
 import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
- import Ionicons from 'react-native-vector-icons/Ionicons'
-import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {colorPalette} from '../../../assets/colorpalette/colorPalette';
 interface Props {
   totalValue: number;
   progress: number;
   handlePrev: () => void;
   duration: number;
-  sectionTitle:string
+  sectionTitle: string;
 }
 
 const OnBoardingProgressBar: React.FC<Props> = ({
@@ -19,7 +19,7 @@ const OnBoardingProgressBar: React.FC<Props> = ({
   totalValue,
   handlePrev,
   duration = 500,
-  sectionTitle
+  sectionTitle,
 }) => {
   const screenContext = useScreenContext();
   const {width, fontScale, height, isPortrait, isTabletType, scale} =
@@ -39,19 +39,25 @@ const OnBoardingProgressBar: React.FC<Props> = ({
     }).start();
   }, [progress]);
 
+  console.log(progress);
 
-  console.log(progress)
+  const interploatedWidth = animatedWidth.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0%', '100%'],
+  });
 
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.progressBarHeader}>
         <TouchableOpacity onPress={handlePrev}>
-          <Ionicons name='arrow-back' color={colorPalette.black} size={25}/>
+          <Ionicons name="arrow-back" color={colorPalette.black} size={25} />
         </TouchableOpacity>
         <Text style={textStyle.labelText}>{sectionTitle}</Text>
       </View>
       <View style={screenStyles.animatedContainer}>
-        <Animated.View style={[screenStyles.fill, {width: animatedWidth}]} />
+        <Animated.View
+          style={[screenStyles.fill, {width: interploatedWidth}]}
+        />
       </View>
     </View>
   );

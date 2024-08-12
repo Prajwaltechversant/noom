@@ -82,4 +82,4 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
   );
 };
 
-export default SingleChoiceScreen;
+export default React.memo(SingleChoiceScreen);

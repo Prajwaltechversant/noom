@@ -1,4 +1,4 @@
-import {View, FlatList, TouchableOpacity} from 'react-native';
+import {View, FlatList, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
@@ -22,7 +22,10 @@ const PlanScreen = () => {
     isPortrait ? height : width,
   );
 
-  const [plans, setPlans] = useState();
+  const [plans, setPlans] = useState<any>([]);
+  const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
+  const [currentPlan, setCurrentPlan] = useState<any>([]);
+
   useEffect(() => {
     firestore()
       .collection('plans')
@@ -32,24 +35,39 @@ const PlanScreen = () => {
         i.forEach(item => {
           arr.push(item.data());
         });
-        console.log(arr[1].plans);
-        setPlans(arr[1].plans);
+        setPlans(arr);
+        setCurrentPlan(arr[currentPlanIndex]);
       });
   }, []);
+
   const up = async () => {
     try {
       onBoardingData.forEach(async item => {
         await firestore()
           .collection('survey')
           .doc(`${item.section}`)
-          .set({screens:[...item.screens],id:`${item.section}`,section:`${item.section}`});
-
+          .set({
+            screens: [...item.screens],
+            id: `${item.section}`,
+            section: `${item.section}`,
+          });
       });
     } catch (error) {
       console.log(error);
     }
   };
-
+  console.log(plans.length);
+  const handleNext = () => {
+    const nextScreenIndex = currentPlanIndex + 1;
+    if (nextScreenIndex < plans.length) {
+      console.log(nextScreenIndex, 'ohu');
+      setCurrentPlanIndex(nextScreenIndex);
+    } else {
+      console.log(2);
+    }
+    setCurrentPlan(nextScreenIndex);
+  };
+  if (plans.length <= 0) return null;
 
   return (
     <View style={screenStyles.container}>
@@ -57,7 +75,7 @@ const PlanScreen = () => {
         <FlatList
           ListHeaderComponent={<Text style={textStyle.headingText}>title</Text>}
           showsVerticalScrollIndicator={false}
-          data={plans}
+          data={currentPlan.plans}
           renderItem={({item}) => (
             <Card style={screenStyles.cardContainer}>
               <Card.Title
@@ -103,6 +121,7 @@ const PlanScreen = () => {
                     btnColor={colorPalette.berry}
                     borderRadius={20}
                     labelColor="white"
+                    onPress={handleNext}
                   />
                 </View>
               </Card.Actions>
