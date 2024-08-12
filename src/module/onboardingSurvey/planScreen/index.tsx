@@ -36,7 +36,6 @@ const PlanScreen = () => {
         setPlans(arr[1].plans);
       });
   }, []);
-  //   console.log(plans);
   const up = async () => {
     try {
       onBoardingData.forEach(async item => {

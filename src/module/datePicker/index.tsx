@@ -4,7 +4,11 @@ import DatePicker from 'react-native-date-picker';
 import CustomTextInputComponent from '../../components/textInput';
 import {TextInput} from 'react-native-paper';
 
-const DatePickerComponent: React.FC = () => {
+interface Props {
+  setAnswer: (e: any) => void;
+}
+
+const DatePickerComponent: React.FC<Props> = ({setAnswer}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   return (
@@ -25,6 +29,7 @@ const DatePickerComponent: React.FC = () => {
         onConfirm={date => {
           setOpen(false);
           setDate(date);
+          setAnswer(date.toDateString());
         }}
         onCancel={() => {
           setOpen(false);

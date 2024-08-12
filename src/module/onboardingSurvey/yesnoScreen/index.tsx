@@ -4,6 +4,8 @@ import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
+import {addData} from '../../../redux/slices/onBoardingAnswers';
+import { useAppDispatch } from '../../../redux/hook';
 
 interface OnBoardProps {
   section: {
@@ -12,12 +14,14 @@ interface OnBoardProps {
       label: string;
       key: boolean;
       value: string;
+      id: string;
     }[];
     img?: string;
     key: string;
     question: string;
     type: string;
     optional: boolean;
+    id: string;
   };
   handleNext: () => void;
 }
@@ -30,6 +34,8 @@ const YesNoScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
+  const qid = section.id;
+  const dispatch = useAppDispatch()
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.questionText}>{section.question}</Text>
@@ -40,7 +46,10 @@ const YesNoScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
           {section.options.map(i => (
             <TouchableOpacity
               style={screenStyles.box}
-              onPress={handleNext}
+              onPress={() => {
+                dispatch(addData({qId: qid, aId: i.id}));
+                handleNext()
+              }}
               key={Math.random().toString(36).substring(2)}>
               <Text style={textStyle.labelText}>{i.label}</Text>
             </TouchableOpacity>

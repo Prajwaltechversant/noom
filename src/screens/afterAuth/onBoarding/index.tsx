@@ -1,7 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-// import {onBoardingData} from '../../../services/dataSet';
 import {ActivityIndicator, Button} from 'react-native-paper';
 import textStyle from '../../../style/text/style';
 import CustomButton from '../../../components/button/customButton';
@@ -15,7 +13,9 @@ import QuizScreen from '../../../module/onboardingSurvey/quizScreen';
 import {fetchSurvey} from '../../../services/apis';
 import firestore from '@react-native-firebase/firestore';
 import OnBoardingProgressBar from '../../../components/onBoarding/progressBar';
-import {updateSurveyProgress} from '../../../redux/slices/surveySlice/surveySlice';
+import {updateSurveyProgress} from '../../../redux/slices/surveyProgressSlice/surveySlice';
+import {screenNames} from '../../../preferences/staticVariable';
+import {useAppDispatch, useAppSelector} from '../../../redux/hook';
 export type FormType = 'button' | 'input' | 'radio' | 'yesno' | 'checkbox';
 const OnboardingScreen = () => {
   const screenContext = useScreenContext();
@@ -27,11 +27,18 @@ const OnboardingScreen = () => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
-  
-  const surveyProgress = useSelector(state => state.surveyProgressSlice);
+
+  const surveyProgress = useAppSelector(state => state.surveyProgressSlice);
+  const surveyA = useAppSelector(state => state.onBoarding);
   console.log(surveyProgress);
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(surveyProgress.currentSection);
-  const [currentScreenIndex, setCurrentScreenIndex] = useState(surveyProgress.currentScreen);
+
+  console.log(surveyA);
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(
+    surveyProgress.currentSection,
+  );
+  const [currentScreenIndex, setCurrentScreenIndex] = useState(
+    surveyProgress.currentScreen,
+  );
   const [surveyData, setSurveyData] = useState<any>([]);
   const [section, setSection] = useState<any>();
   const [types, setTypes] = useState<string[]>();
@@ -39,7 +46,6 @@ const OnboardingScreen = () => {
   const [total, setTotal] = useState(0);
   const [progress, setProgress] = useState(surveyProgress.progress);
   const [screenIndex, setScreenIndex] = useState(0);
-  // const progress = (currentSectionIndex / (totalSections - 1)) * 100;
 
   const getData = async () => {
     firestore()
@@ -59,7 +65,8 @@ const OnboardingScreen = () => {
   useEffect(() => {
     getData();
   }, []);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  console.log(progress);
   useMemo(() => {
     let totalLength = 0;
     surveyData.forEach((item: any) => {
@@ -81,11 +88,12 @@ const OnboardingScreen = () => {
         setCurrentSectionIndex(nextSectionIndex);
         setCurrentScreenIndex(0);
       } else {
-        console.log('Onboarding complete');
+        navigation.navigate(screenNames.Plan_Screen);
       }
     }
     setScreenIndex(screenIndex + 1);
     setProgress((screenIndex / total) * 100);
+
     dispatch(
       updateSurveyProgress({
         currentScreen: currentScreenIndex,

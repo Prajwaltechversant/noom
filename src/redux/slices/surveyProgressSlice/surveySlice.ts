@@ -7,8 +7,6 @@ let initialState = {
     currentSection: 0,
     currentScreen: 0,
     progress: 0
-
-
 }
 
 export const surveyProgressSlice = createSlice({
@@ -17,7 +15,6 @@ export const surveyProgressSlice = createSlice({
 
     reducers: {
         updateSurveyProgress: (state, action) => {
-            console.log(action,'s')
             return ({
                 ...state,
                 currentScreen: action.payload.currentScreen,
@@ -29,5 +26,5 @@ export const surveyProgressSlice = createSlice({
 
 })
 
-export const { updateSurveyProgress} = surveyProgressSlice.actions;
+export const { updateSurveyProgress } = surveyProgressSlice.actions;
 export default surveyProgressSlice.reducer;

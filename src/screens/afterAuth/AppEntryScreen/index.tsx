@@ -8,6 +8,7 @@ import CustomButton from '../../../components/button/customButton';
 import PaperButton from '../../../components/button/paperButton';
 import textStyle from '../../../style/text/style';
 import {useNavigation} from '@react-navigation/native';
+import { screenNames } from '../../../preferences/staticVariable';
 
 const EntryScreen = () => {
   const screenContext = useScreenContext();
@@ -48,7 +49,7 @@ const EntryScreen = () => {
             borderRadius={10}
             // style={{borderRadius:5}}
             labelColor="white"
-            onPress={() => navigation.replace('onboarding')}
+            onPress={() => navigation.replace(screenNames.ONBAORDING)}
           />
 
           <TouchableOpacity>

@@ -16,8 +16,10 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { OnBoardProps } from '../multiChoiceScreen';
-const QuizScreen: React.FC<OnBoardProps> = ({handleNext,section}) => {
+import {OnBoardProps} from '../multiChoiceScreen';
+import {addData} from '../../../redux/slices/onBoardingAnswers';
+import { useAppDispatch } from '../../../redux/hook';
+const QuizScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
   const screenContext = useScreenContext();
   const {width, fontScale, height, isPortrait, isTabletType, scale} =
     screenContext;
@@ -35,9 +37,12 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext,section}) => {
     tabWidth / 4,
     tabWidth / 2,
   ];
-  console.log(sliderPositions);
+
   const translateX = useSharedValue(sliderPositions[4]);
-  console.log(tabWidth / 2);
+  const [answer, setAnswer] = useState('');
+  const qid = section.id;
+  const dispatch = useAppDispatch()
+  // console.log(tabWidth / 2);
   const gesture = Gesture.Pan()
     .onUpdate(({y, translationX}) => {
       translateX.value = translationX;
@@ -49,7 +54,12 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext,section}) => {
         })[0],
       );
       translateX.value = closestValue;
-    });
+      if (closestValue > sliderPositions[2]) {
+        setAnswer(section.options[1].id);
+      } else {
+        setAnswer(section.options[0].id);
+      }
+    }).runOnJS(true);
 
   return (
     <View style={screenStyles.container}>
@@ -58,7 +68,9 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext,section}) => {
         <View style={screenStyles.optionContainer}>
           <View style={screenStyles.options}>
             <View style={screenStyles.optionBox}>
-              <Text style={textStyle.questionText}>{section.options[0].label}</Text>
+              <Text style={textStyle.questionText}>
+                {section.options[0].label}
+              </Text>
             </View>
             <View style={screenStyles.optionSeparator}>
               <View style={screenStyles.seperatorBar}></View>
@@ -66,7 +78,9 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext,section}) => {
               <View style={screenStyles.seperatorBar}></View>
             </View>
             <View style={screenStyles.optionBox}>
-            <Text style={textStyle.questionText}>{section.options[1].label}</Text>
+              <Text style={textStyle.questionText}>
+                {section.options[1].label}
+              </Text>
             </View>
           </View>
         </View>
@@ -127,7 +141,10 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext,section}) => {
         btnHeight={width * 0.2}
         btnWidth={width * 0.8}
         label="Next"
-        onPress={handleNext}
+        onPress={() => {
+          dispatch(addData({qId: qid, aId: answer}));
+          handleNext();
+        }}
       />
       <View style={screenStyles.hintContainer}>
         <Text

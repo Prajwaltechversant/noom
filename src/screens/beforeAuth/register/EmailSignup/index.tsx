@@ -14,7 +14,6 @@ import {validation} from '../../../../services/validation';
 import {TextInput} from 'react-native-paper';
 import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
 import {signUpWithEmail} from '../../../../services/signup';
-import {useDispatch, useSelector} from 'react-redux';
 import {addData} from '../../../../redux/slices/Auth/loginSlice';
 
 const EmailSignup = () => {

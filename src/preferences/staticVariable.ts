@@ -23,7 +23,9 @@ export const screenNames = {
 
 
     APP_ENTRY_SCREEN:'appEntryScreen',
-    ONBAORDING:'onboarding'
+    ONBAORDING:'onboardingStack',
+    ONBBOARDING_SCREEN:'onboarding',
+    Plan_Screen : 'plan'
 
 
 }

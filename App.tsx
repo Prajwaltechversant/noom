@@ -10,6 +10,7 @@ import QuizScreen from './src/module/onboardingSurvey/quizScreen';
 import InfoScreen from './src/module/onboardingSurvey/infoScreens/infoScreen1';
 import PlanScreen from './src/module/onboardingSurvey/planScreen';
 import {PersistGate} from 'redux-persist/integration/react';
+import EChartComponent from './src/module/echart';
 
 const App = () => {
   return (
@@ -18,8 +19,7 @@ const App = () => {
         <SafeAreaView style={{flex: 1}}>
           <ScreenContextProvider>
             <RootStack />
-            {/* <InfoScreen /> */}
-            {/* <PlanScreen /> */}
+      
           </ScreenContextProvider>
         </SafeAreaView>
       </PersistGate>

@@ -8,6 +8,8 @@ import textStyle from '../../../style/text/style';
 import {colorPalette} from '../../../assets/colorpalette/colorPalette';
 import {Button} from 'react-native-paper';
 import {Checkbox} from 'react-native-paper';
+import {addData} from '../../../redux/slices/onBoardingAnswers';
+import { useAppDispatch } from '../../../redux/hook';
 
 export interface OnBoardProps {
   section: {
@@ -16,12 +18,14 @@ export interface OnBoardProps {
       label: string;
       key: boolean;
       value: string;
+      id: string;
     }[];
     key: string;
     question: string;
     type: string;
     extraContent?: string;
     optional?: boolean;
+    id: string;
   };
   handleNext: () => void;
 }
@@ -39,25 +43,37 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
   const [checked, setChecked] = React.useState(['']);
   const [checkedItem, setCheckedItem] = useState<any>([]);
   const [isPressed, setIsPressed] = useState('');
-  
+  const [answer, setAnswer] = useState<undefined | string>(undefined);
+
+  const dispatch = useAppDispatch()
+  const qid = section.id;
   useEffect(() => {
     let arr: any = [];
     if (section.type === 'checkbox') {
-      section.options.forEach(i => arr.push({label: i.label, checked: false}));
+      section.options.forEach(i =>
+        arr.push({label: i.label, checked: false, id: i.id}),
+      );
       setCheckedItem(arr);
     }
   }, []);
   const handleChecked = (item: string) => {
     let arr = [...checkedItem];
-    arr.forEach((i, index) => {``
+    let checkedId: any = [];
+    arr.forEach((i, index) => {
+      ``;
       if (i.label === item) {
         arr[index].checked = !i.checked;
       }
     });
     setCheckedItem(arr);
+    arr.forEach(item => {
+      if (item.checked) {
+        checkedId.push(item.id);
+      }
+    });
+    dispatch(addData({qId: qid, aId: checkedId}));
   };
-
-  console.log('rendered')
+  console.log(answer);
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.questionText}>{section.question}</Text>
@@ -82,7 +98,11 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
                 label={item.label}
                 onPress={() => {
                   setIsPressed(item.label);
-                  if (section.type !== 'radio') handleNext();
+                  setAnswer(item.id);
+                  if (section.type !== 'radio') {
+                    dispatch(addData({qId: qid, aId: item.id}));
+                    handleNext();
+                  }
                 }}
                 labelColor={
                   isPressed === item.label
@@ -138,7 +158,16 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
           btnHeight={isPortrait ? width * 0.2 : width * 0.08}
           label={'Next'}
           btnColor={colorPalette.berry}
-          onPress={handleNext}
+          onPress={() => {
+            if(section.type !=='checkbox'){
+              if (answer) {
+                handleNext();
+                dispatch(addData({qId: qid, aId: answer}));
+              }
+            }else{
+              handleNext()
+            }
+          }}
         />
       )}
     </View>

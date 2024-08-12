@@ -1,5 +1,5 @@
 import {View, Text} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
@@ -10,6 +10,8 @@ import {colorPalette} from '../../../assets/colorpalette/colorPalette';
 import PaperDropdown from '../../../components/dropdown';
 import DatePickerComponent from '../../datePicker';
 import {OnBoardProps} from '../multiChoiceScreen';
+import {addData} from '../../../redux/slices/onBoardingAnswers';
+import { useAppDispatch } from '../../../redux/hook';
 
 const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
   const screenContext = useScreenContext();
@@ -21,17 +23,17 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
+  const [answer, setAnswer] = useState<any>(undefined);
+
+  const dispatch = useAppDispatch()
+  const qid = section.id;
 
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.contentContainer}>
-        <Text style={textStyle.questionText}>
-          {section.question}
-        </Text>
+        <Text style={textStyle.questionText}>{section.question}</Text>
         {section.content && (
-          <Text style={textStyle.labelText}>
-            {section.content}
-          </Text>
+          <Text style={textStyle.labelText}>{section.content}</Text>
         )}
         <View>
           {section.type === 'input' ? (
@@ -39,17 +41,16 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
               label={section.question}
               mode="outlined"
               right={<Text style={textStyle.labelText}>lb</Text>}
+              onChangeText={e => setAnswer(e)}
             />
           ) : section.type === 'dropdown' ? (
             <PaperDropdown />
           ) : section.type === 'date' ? (
-            <DatePickerComponent />
+            <DatePickerComponent setAnswer={setAnswer} />
           ) : null}
         </View>
         {section.extraContent && (
-          <Text style={textStyle.labelText} onPress={handleNext}>
-            {section.extraContent}
-          </Text>
+          <Text style={textStyle.labelText}>{section.extraContent}</Text>
         )}
       </View>
 
@@ -59,7 +60,12 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
           btnHeight={isPortrait ? width * 0.2 : width * 0.08}
           label={'Next'}
           btnColor={colorPalette.berry}
-          onPress={handleNext}
+          onPress={() => {
+            if (answer) {
+              dispatch(addData({qId: qid, aId: answer}));
+              handleNext();
+            }
+          }}
         />
 
         {section.optional && (

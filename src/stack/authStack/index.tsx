@@ -8,17 +8,17 @@ import Login from '../../screens/beforeAuth/login';
 import EmailSignup from '../../screens/beforeAuth/register/EmailSignup';
 import textStyle from '../../style/text/style';
 import {colorPalette} from '../../assets/colorpalette/colorPalette';
-import {useDispatch, useSelector} from 'react-redux';
 import {validation} from '../../services/validation';
 import {addError} from '../../redux/slices/Auth/loginSlice';
 import {SignupWithEmailErrorType} from '../../types/signup';
 import {signUpWithEmail} from '../../services/signup';
 import { screenNames } from '../../preferences/staticVariable';
+import { useAppDispatch } from '../../redux/hook';
 
 const Stack = createNativeStackNavigator();
 
 const RegisterStack = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch()
   return (
     <Stack.Navigator 
     
