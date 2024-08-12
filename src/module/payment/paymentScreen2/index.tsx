@@ -20,24 +20,24 @@ const PaymementScreen2: React.FC = () => {
           10-Months Personalized Plan
         </Text>
       </View>
-      <View>
-        <Text>View Personalized Plan</Text>
-        <View style={screenStyles.personilzedBox}>
-          <Text numberOfLines={4}>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error
-            commodi consequuntur enim aspernatur provident blanditiis aut?
-            Dolorum porro, fugit, neque minus placeat consectetur dolorem totam,
-            unde dolore distinctio ipsa quo!
-          </Text>
-        </View>
-
+      <View style={screenStyles.content}>
         <View>
-            <Text>chart..</Text>
-        </View>
-      </View>
+          <Text>View Personalized Plan</Text>
+          <View style={screenStyles.personilzedBox}>
+            <Text numberOfLines={4} lineBreakMode='clip' style={{lineHeight:30,textAlign:'center'}}>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error
+              commodi consequuntur enim aspernatur provident blanditiis aut?
+              Dolorum porro, fugit, neque minus placeat consectetur dolorem
+              totam, unde dolore distinctio ipsa quo!
+            </Text>
+          </View>
 
-      <View>
-        
+          <View>
+            <Text>chart..</Text>
+          </View>
+        </View>
+
+        <View></View>
       </View>
     </ScrollView>
   );

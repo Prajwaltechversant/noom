@@ -6,10 +6,13 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
 
     container: {
-        alignItems: 'center',
         paddingTop: screenContext.isPortrait ? height * 0.03 : height * 0.002,
         backgroundColor: colorPalette.white,
         flex: 1,
+    },
+    content: {
+        padding: screenContext.isPortrait ? height * 0.03 : height * 0.002,
+
     },
     headerContainer: {
         backgroundColor: colorPalette.blossom,
@@ -17,9 +20,13 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     personilzedBox: {
         backgroundColor: colorPalette.cherry,
-        borderRadius:10,
-        paddingHorizontal:screenContext.isPortrait ? height * 0.03 : height * 0.002,
-    }
+        borderRadius: 10,
+        paddingHorizontal: screenContext.isPortrait ? height * 0.03 : height * 0.002,
+        height: screenContext.isPortrait ? height * 0.2 : height * 0.3,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
 })
 
 export default styles
