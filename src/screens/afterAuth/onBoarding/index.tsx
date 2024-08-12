@@ -52,7 +52,6 @@ const OnboardingScreen = () => {
         setLoading(false);
       });
   };
-
   useEffect(() => {
     getData();
   }, []);
@@ -63,8 +62,9 @@ const OnboardingScreen = () => {
       totalLength += item.screens.length;
     });
     setTotal(totalLength);
+    console.log('hehe');
   }, [surveyData]);
-  
+
   useEffect(() => {
     if (currentSectionIndex === 1) {
       navigation.navigate(screenNames.infoScreen1, {
@@ -99,7 +99,7 @@ const OnboardingScreen = () => {
         setCurrentScreenIndex(0);
         setSection(surveyData[nextSectionIndex].screens[0]);
       } else {
-        navigation.navigate(screenNames.Plan_Screen);
+        navigation.navigate(screenNames.Payment_Screen1);
       }
     }
 

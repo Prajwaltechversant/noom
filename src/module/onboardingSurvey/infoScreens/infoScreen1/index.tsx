@@ -66,4 +66,4 @@ const InfoScreen: React.FC = ({route}: any) => {
   );
 };
 
-export default InfoScreen;
+export default React.memo(InfoScreen);

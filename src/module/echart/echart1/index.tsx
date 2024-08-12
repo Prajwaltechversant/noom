@@ -1,14 +1,14 @@
 import React from 'react';
 import {Dimensions, View} from 'react-native';
 import {WebView} from 'react-native-webview';
-import {useScreenContext} from '../../context/screenContext';
+import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
 import {Text} from 'react-native-paper';
-import CustomButton from '../../components/button/customButton';
-import {colorPalette} from '../../assets/colorpalette/colorPalette';
-import {screenNames} from '../../preferences/staticVariable';
-import textStyle from '../../style/text/style';
+import CustomButton from '../../../components/button/customButton';
+import {colorPalette} from '../../../assets/colorpalette/colorPalette';
+import {screenNames} from '../../../preferences/staticVariable';
+import textStyle from '../../../style/text/style';
 
 const EChartComponent = () => {
   const screenContext = useScreenContext();
@@ -92,7 +92,6 @@ const EChartComponent = () => {
     <head>
       <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
       <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
-
 
     </head>
     <body>

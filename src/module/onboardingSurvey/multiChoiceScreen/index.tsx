@@ -9,7 +9,7 @@ import {colorPalette} from '../../../assets/colorpalette/colorPalette';
 import {Button} from 'react-native-paper';
 import {Checkbox} from 'react-native-paper';
 import {addData} from '../../../redux/slices/onBoardingAnswers';
-import { useAppDispatch } from '../../../redux/hook';
+import {useAppDispatch} from '../../../redux/hook';
 
 export interface OnBoardProps {
   section: {
@@ -45,7 +45,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
   const [isPressed, setIsPressed] = useState('');
   const [answer, setAnswer] = useState<undefined | string>(undefined);
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const qid = section.id;
   useEffect(() => {
     let arr: any = [];
@@ -77,7 +77,13 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
     <View style={screenStyles.container}>
       <Text style={textStyle.questionText}>{section.question}</Text>
       {section.content && (
-        <Text style={textStyle.labelText}>{section.content}</Text>
+        <Text
+          style={[
+            textStyle.labelText,
+            {textAlign: 'center', marginVertical: 10},
+          ]}>
+          {section.content}
+        </Text>
       )}
       <View style={screenStyles.optionContainer}>
         <FlatList
@@ -158,13 +164,13 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
           label={'Next'}
           btnColor={colorPalette.berry}
           onPress={() => {
-            if(section.type !=='checkbox'){
+            if (section.type !== 'checkbox') {
               if (answer) {
                 handleNext();
                 dispatch(addData({qId: qid, aId: answer}));
               }
-            }else{
-              handleNext()
+            } else {
+              handleNext();
             }
           }}
         />

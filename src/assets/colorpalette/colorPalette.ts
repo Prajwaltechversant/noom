@@ -30,7 +30,8 @@ export const colorPalette = {
 
     sand:'#e4dece',
     sand1:'#f6f4ee',
-    pine:'#2b4010'
+    pine:'#2b4010',
+    mint:'#c8e3b1'
 
 
 }

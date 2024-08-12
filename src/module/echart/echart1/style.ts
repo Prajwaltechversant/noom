@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { ScreenContextType } from "../../types/types";
-import { colorPalette } from "../../assets/colorpalette/colorPalette";
+import { ScreenContextType } from "../../../types/types";
+import { colorPalette } from "../../../assets/colorpalette/colorPalette";
 
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {

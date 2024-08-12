@@ -4,8 +4,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OnboardingScreen from '../../../screens/afterAuth/onBoarding';
 import PlanScreen from '../../../module/onboardingSurvey/planScreen';
 import {screenNames} from '../../../preferences/staticVariable';
-import EChartComponent from '../../../module/echart';
+import EChartComponent from '../../../module/echart/echart1';
 import InfoScreen from '../../../module/onboardingSurvey/infoScreens/infoScreen1';
+import PaymentScreen1 from '../../../module/payment/paymentScreen1';
+import PaymementScreen2 from '../../../module/payment/paymentScreen2';
 const Stack = createNativeStackNavigator();
 
 const OnboardingStack = () => {
@@ -21,6 +23,14 @@ const OnboardingStack = () => {
         component={EChartComponent}
       />
       <Stack.Screen name={screenNames.infoScreen1} component={InfoScreen} />
+      <Stack.Screen
+        name={screenNames.Payment_Screen1}
+        component={PaymentScreen1}
+      />
+      <Stack.Screen
+        name={screenNames.Payment_Screen2}
+        component={PaymementScreen2}
+      />
     </Stack.Navigator>
   );
 };

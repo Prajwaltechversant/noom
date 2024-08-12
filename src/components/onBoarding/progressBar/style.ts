@@ -16,7 +16,6 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         backgroundColor: colorPalette.salmon,
         borderRadius: 10,
         overflow: 'hidden',
-        borderWidth:1
 
     },
     fill: {

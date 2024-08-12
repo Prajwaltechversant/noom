@@ -11,7 +11,7 @@ import PaperDropdown from '../../../components/dropdown';
 import DatePickerComponent from '../../datePicker';
 import {OnBoardProps} from '../multiChoiceScreen';
 import {addData} from '../../../redux/slices/onBoardingAnswers';
-import { useAppDispatch } from '../../../redux/hook';
+import {useAppDispatch} from '../../../redux/hook';
 
 const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
   const screenContext = useScreenContext();
@@ -25,7 +25,7 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
   const navigation: any = useNavigation();
   const [answer, setAnswer] = useState<any>(undefined);
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const qid = section.id;
 
   return (
@@ -40,6 +40,7 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
             <CustomTextInputComponent
               label={section.question}
               mode="outlined"
+              value={answer}
               right={<Text style={textStyle.labelText}>lb</Text>}
               onChangeText={e => setAnswer(e)}
             />
@@ -63,6 +64,7 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
           onPress={() => {
             if (answer) {
               dispatch(addData({qId: qid, aId: answer}));
+              setAnswer('');
               handleNext();
             }
           }}
