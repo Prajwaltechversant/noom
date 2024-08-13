@@ -10,6 +10,12 @@ import {Divider, Text} from 'react-native-paper';
 import CustomButton from '../../../components/button/customButton';
 import {Image} from 'react-native';
 import CustomTextInputComponent from '../../../components/textInput';
+import {useAppDispatch, useAppSelector} from '../../../redux/hook';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import {updateOnBoardingStatus} from '../../../redux/slices/authStatus';
 
 const PaymementScreen2: React.FC = () => {
   const screenContext = useScreenContext();
@@ -24,6 +30,29 @@ const PaymementScreen2: React.FC = () => {
   const [showChartView, setShowChartView] = useState(false);
   const [showPaymentInfo, setShowPaymentInfo] = useState(true);
   const [showCardOption, setShowCardOptions] = useState(false);
+  const survey = useAppSelector(state => state.onBoarding);
+  const currentUId = auth().currentUser?.uid;
+  // console.log(survey);
+  const navigation: any = useNavigation();
+  const dispatch = useAppDispatch();
+
+  const handlepayment = () => {
+    try {
+      firestore()
+        .collection(`UserData/${currentUId}/survey`)
+        .add({
+          ...survey,
+        })
+        .then(() => {
+          console.log('surveyadded');
+          AsyncStorage.setItem('surveyStatus', 'true');
+          dispatch(updateOnBoardingStatus(true));
+          navigation.replace('profile');
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ScrollView style={screenStyles.container}>
       <View style={{alignItems: 'center'}}>
@@ -169,6 +198,7 @@ const PaymementScreen2: React.FC = () => {
                     />
                   </View>
                 )}
+
                 <View style={{alignItems: 'center'}}>
                   <CustomButton
                     btnWidth={width * 0.8}
@@ -176,6 +206,7 @@ const PaymementScreen2: React.FC = () => {
                     label={'Pay Now '}
                     btnColor={colorPalette.berry}
                     borderRadius={10}
+                    onPress={handlepayment}
                   />
                 </View>
               </>

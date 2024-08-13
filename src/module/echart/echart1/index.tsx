@@ -135,8 +135,8 @@ const EChartComponent = () => {
         btnWidth={width * 0.8}
         label="Got it!"
         btnColor={colorPalette.Lagoon}
-        onPress={() => navigation.replace(screenNames.ONBAORDING)}
-      />
+        onPress={() => navigation.goBack(screenNames.ONBAORDING)}
+        />
     </View>
   );
 };

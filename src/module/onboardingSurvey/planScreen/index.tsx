@@ -1,21 +1,23 @@
-import {View, FlatList, TouchableOpacity, Alert} from 'react-native';
+import {View, FlatList, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
 import firestore from '@react-native-firebase/firestore';
 import textStyle from '../../../style/text/style';
-import {Avatar, Button, Card, Text} from 'react-native-paper';
+import {Card, Text} from 'react-native-paper';
 import {Image} from 'react-native';
 import CustomButton from '../../../components/button/customButton';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {colorPalette} from '../../../assets/colorpalette/colorPalette';
-import {onBoardingData} from '../../../services/dataSet';
-import {fetchSurvey} from '../../../services/apis';
+import {useNavigation} from '@react-navigation/native';
+import {screenNames} from '../../../preferences/staticVariable';
+import {useDispatch} from 'react-redux';
+import {addPlanData} from '../../../redux/slices/planSlice';
+import {useAppSelector} from '../../../redux/hook';
+
 const PlanScreen = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
-    screenContext;
+  const {width, height, isPortrait} = screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
@@ -24,128 +26,116 @@ const PlanScreen = () => {
 
   const [plans, setPlans] = useState<any>([]);
   const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
-  const [currentPlan, setCurrentPlan] = useState<any>([]);
+  const navigation: any = useNavigation();
+  const [planId, setPlanId] = useState();
 
   useEffect(() => {
     firestore()
       .collection('plans')
       .get()
-      .then(i => {
-        let arr: any = [];
-        i.forEach(item => {
-          arr.push(item.data());
-        });
-        setPlans(arr);
-        setCurrentPlan(arr[currentPlanIndex]);
+      .then(snapshot => {
+        const planArray = snapshot.docs.map(doc => doc.data());
+        setPlans(planArray);
+        if (planArray.length > 0) {
+          setCurrentPlanIndex(0);
+          setPlanId(plans[0].id);
+        }
       });
   }, []);
 
-  const up = async () => {
-    try {
-      onBoardingData.forEach(async item => {
-        await firestore()
-          .collection('survey')
-          .doc(`${item.section}`)
-          .set({
-            screens: [...item.screens],
-            id: `${item.section}`,
-            section: `${item.section}`,
-          });
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  console.log(plans.length);
+  const plansData = useAppSelector(state => state.planDetails);
+
+  const dispatch = useDispatch();
   const handleNext = () => {
     const nextScreenIndex = currentPlanIndex + 1;
     if (nextScreenIndex < plans.length) {
-      console.log(nextScreenIndex, 'ohu');
       setCurrentPlanIndex(nextScreenIndex);
+      setPlanId(plans[nextScreenIndex].id);
     } else {
-      console.log(2);
+      // Navigate
+      navigation.navigate(screenNames.Payment_Screen1);
     }
-    setCurrentPlan(nextScreenIndex);
+    dispatch(addPlanData({planId: planId, itemId: planId}));
   };
-  if (plans.length <= 0) return null;
+
+  const currentPlan = plans[currentPlanIndex];
+  if (!currentPlan) return null;
 
   return (
     <View style={screenStyles.container}>
-      <View>
-        <FlatList
-          ListHeaderComponent={<Text style={textStyle.headingText}>title</Text>}
-          showsVerticalScrollIndicator={false}
-          data={currentPlan.plans}
-          renderItem={({item}) => (
-            <Card style={screenStyles.cardContainer}>
-              <Card.Title
-                title={'sdaf'}
-                titleStyle={{textAlign: 'center'}}
-                titleNumberOfLines={2}
-                style={screenStyles.cardTitle}
-              />
-              <Card.Content style={screenStyles.cardBody}>
-                <View style={screenStyles.imageContainer}>
-                  <Image
-                    source={{uri: item.image}}
-                    width={50}
-                    height={50}
-                    style={{borderRadius: 100}}
-                  />
-                </View>
-                <Text variant="titleLarge" style={screenStyles.title}>
-                  Card title
-                </Text>
-                <View style={screenStyles.descriptionContainer}>
-                  <FlatList
-                    data={item.description}
-                    renderItem={({item, index}) => (
-                      <View style={screenStyles.pointsContainer}>
-                        <View style={screenStyles.tickIcon}>
-                          <MaterialIcons name="done" color={'white'} />
-                        </View>
-                        <Text style={{textAlign: 'center'}} numberOfLines={4}>
-                          {item.slice(0, 40)}
-                        </Text>
-                      </View>
-                    )}
-                  />
-                </View>
-              </Card.Content>
-              <Card.Actions>
-                <View style={screenStyles.actionContainer}>
-                  <CustomButton
-                    label="Add it to my plan"
-                    btnWidth={width * 0.4}
-                    btnHeight={width * 0.1}
-                    btnColor={colorPalette.berry}
-                    borderRadius={20}
-                    labelColor="white"
-                    onPress={handleNext}
-                  />
-                </View>
-              </Card.Actions>
-            </Card>
-          )}
-          ListFooterComponent={
-            <TouchableOpacity
-              style={screenStyles.skipButton}
-              onPress={() => up()}>
-              <Text
-                style={[
-                  textStyle.labelText,
-                  {
-                    textDecorationStyle: 'double',
-                    fontStyle: 'normal',
-                    fontWeight: 'bold',
-                  },
-                ]}>
-                No, I dont't need 'title'
+      <FlatList
+        ListHeaderComponent={<Text style={textStyle.headingText}>Add these Plans</Text>}
+        showsVerticalScrollIndicator={false}
+        data={currentPlan.plans}
+        renderItem={({item}) => (
+          <Card style={screenStyles.cardContainer}>
+            <Card.Title
+              title={item.title || 'Plan Title'}
+              titleStyle={{textAlign: 'center'}}
+              titleNumberOfLines={2}
+              style={screenStyles.cardTitle}
+            />
+            <Card.Content style={screenStyles.cardBody}>
+              <View style={screenStyles.imageContainer}>
+                <Image
+                  source={{uri: item.image}}
+                  width={50}
+                  height={50}
+                  style={{borderRadius: 100}}
+                />
+              </View>
+              <Text variant="titleLarge" style={screenStyles.title}>
+                {item.title || 'Card title'}
               </Text>
-            </TouchableOpacity>
-          }
-        />
-      </View>
+              <View style={screenStyles.descriptionContainer}>
+                <FlatList
+                  data={item.description}
+                  renderItem={({item}) => (
+                    <View style={screenStyles.pointsContainer}>
+                      <View style={screenStyles.tickIcon}>
+                        <MaterialIcons name="done" color={'white'} />
+                      </View>
+                      <Text style={{textAlign: 'center'}} numberOfLines={4}>
+                        {item.slice(0, 40)}
+                      </Text>
+                    </View>
+                  )}
+                />
+              </View>
+            </Card.Content>
+            <Card.Actions>
+              <View style={screenStyles.actionContainer}>
+                <CustomButton
+                  label="Add it to my plan"
+                  btnWidth={width * 0.4}
+                  btnHeight={width * 0.1}
+                  btnColor={colorPalette.berry}
+                  borderRadius={20}
+                  labelColor="white"
+                  onPress={handleNext}
+                />
+              </View>
+            </Card.Actions>
+          </Card>
+        )}
+        ListFooterComponent={
+          <TouchableOpacity
+            style={screenStyles.skipButton}
+            onPress={handleNext}>
+            <Text
+              style={[
+                textStyle.labelText,
+                {
+                  textDecorationStyle: 'double',
+                  fontStyle: 'normal',
+                  fontWeight: 'bold',
+                },
+              ]}>
+              No, I don't need this plan
+            </Text>
+          </TouchableOpacity>
+        }
+      />
     </View>
   );
 };

@@ -5,19 +5,23 @@ import storage from '@react-native-async-storage/async-storage';
 import surveyProgressSliceReducer from "../slices/surveyProgressSlice/surveySlice"
 import onBoardingReducer from '../slices/onBoardingAnswers/index'
 import questionsSliceReducer from "../slices/questionsSlice";
+import planDetailSliceReducer from "../slices/planSlice";
+import authStatusSliceReducer from "../slices/authStatus";
 
 const rootReducers = combineReducers({
     loginSlice: loginSlice,
     surveyProgressSlice: surveyProgressSliceReducer,
-    onBoarding:onBoardingReducer,
-    questions:questionsSliceReducer
+    onBoarding: onBoardingReducer,
+    questions: questionsSliceReducer,
+    planDetails: planDetailSliceReducer,
+    authStatus: authStatusSliceReducer
 })
 
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['surveyProgressSlice', 'loginSlice','onBoarding','questions'],
+    whitelist: ['surveyProgressSlice', 'loginSlice', 'onBoarding', 'questions', 'planDetails', 'authStatus'],
 
 };
 

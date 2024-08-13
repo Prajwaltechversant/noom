@@ -13,6 +13,8 @@ import {PersistGate} from 'redux-persist/integration/react';
 import EChartComponent from './src/module/echart/echart1';
 import PaymentScreen1 from './src/module/payment/paymentScreen1';
 import PaymementScreen2 from './src/module/payment/paymentScreen2';
+import CustomComponentModal from './src/components/modal/customComponentModal';
+import Coursecarousel from './src/screens/afterAuth/courseCarousel';
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
         <SafeAreaView style={{flex: 1}}>
           <ScreenContextProvider>
             <RootStack />
+            {/* <Coursecarousel /> */}
+            {/* <CustomComponentModal children={<Text>heelo</Text>} visible={true} /> */}
           </ScreenContextProvider>
         </SafeAreaView>
       </PersistGate>

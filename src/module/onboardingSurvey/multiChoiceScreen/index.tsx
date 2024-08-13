@@ -46,7 +46,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
   const [answer, setAnswer] = useState<undefined | string>(undefined);
 
   const dispatch = useAppDispatch();
-  const qid = section.id;
+  const qid = section?.id;
   useEffect(() => {
     let arr: any = [];
     if (section.type === 'checkbox') {

@@ -10,7 +10,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems: 'center'
     },
     cardContainer: {
-        width: screenContext.isPortrait ? width * 0.8 : width * .8,
+        width: screenContext.isPortrait ? width * 0.9 : width * .8,
         marginVertical: screenContext.isPortrait ? width * 0.08 : width * .08,
         justifyContent: 'center',
         backgroundColor: colorPalette.sand1
@@ -35,7 +35,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     descriptionContainer: {
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     pointsContainer: {
         flexDirection: 'row',

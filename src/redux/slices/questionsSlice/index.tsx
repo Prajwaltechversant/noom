@@ -7,7 +7,7 @@ export const questionsSlice = createSlice({
 
   reducers: {
     addSurveyData: (state, action) => {
-      state = action.payload;
+      return(action.payload)
     },
   },
 });

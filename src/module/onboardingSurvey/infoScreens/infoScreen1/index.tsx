@@ -7,6 +7,7 @@ import CustomButton from '../../../../components/button/customButton';
 import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
 import {useNavigation} from '@react-navigation/native';
 import {screenNames} from '../../../../preferences/staticVariable';
+import auth from '@react-native-firebase/auth';
 
 type Page = 'intro1' | 'intro2';
 
@@ -15,7 +16,7 @@ interface Props {
   image: string;
 }
 
-const InfoScreen: React.FC = ({route}: any) => {
+const InfoScreen: React.FC<Props> = ({route}: any) => {
   const screenContext = useScreenContext();
   const {width, fontScale, height, isPortrait, isTabletType, scale} =
     screenContext;
@@ -25,12 +26,13 @@ const InfoScreen: React.FC = ({route}: any) => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
+  const currentUser = auth().currentUser?.email;
 
   return (
     <View style={screenStyles.container}>
       {route.params.page === 'intro1' ? (
         <Text style={textStyle.headingText}>
-          You are in good hands username
+          You are in good hands {currentUser?.slice(0, 7)}
         </Text>
       ) : (
         <Text style={textStyle.headingText}>
@@ -59,7 +61,7 @@ const InfoScreen: React.FC = ({route}: any) => {
           btnWidth={width * 0.8}
           label="Continue"
           btnColor={colorPalette.Lagoon}
-          onPress={() => navigation.replace(screenNames.ONBAORDING)}
+          onPress={() => navigation.goBack(screenNames.ONBAORDING)}
         />
       </View>
     </View>

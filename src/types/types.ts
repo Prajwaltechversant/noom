@@ -25,7 +25,7 @@ export interface CustomButtonProps {
     icon?: string | undefined;
     labelColor?: string;
     borderRadius?: number;
-    leftIcon?:boolean;
+    leftIcon?: boolean;
 }
 
 
@@ -39,9 +39,20 @@ export type CustomTextInput = {
 
 
 export type ScreenContextType = {
-    width:number;
-    height:number;
-    isPortrait:boolean;
-    scale:number;
-    fontScale:number
+    width: number;
+    height: number;
+    isPortrait: boolean;
+    scale: number;
+    fontScale: number
+}
+
+export type CourseType = {
+    title: string;
+    id: number;
+    description: string;
+    thumbnail: string;
+    images: string[];
+    createdAt: Date;
+    type: string;
+
 }

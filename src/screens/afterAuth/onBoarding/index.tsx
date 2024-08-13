@@ -13,6 +13,9 @@ import {screenNames} from '../../../preferences/staticVariable';
 import {useAppDispatch, useAppSelector} from '../../../redux/hook';
 import {useScreenContext} from '../../../context/screenContext';
 import {addSurveyData} from '../../../redux/slices/questionsSlice';
+import CustomComponentModal from '../../../components/modal/customComponentModal';
+import InfoScreen1 from '../../../module/onboardingSurvey/infoScreens/infoScreen1';
+import EChartComponent from '../../../module/echart/echart1';
 
 const OnboardingScreen = () => {
   const screenContext = useScreenContext();
@@ -24,45 +27,53 @@ const OnboardingScreen = () => {
   );
   const navigation: any = useNavigation();
   const surveyProgress = useAppSelector(state => state.surveyProgressSlice);
+  const surveyQuestion = useAppSelector(state => state.questions);
+
   const [currentSectionIndex, setCurrentSectionIndex] = useState(
     surveyProgress.currentSection,
   );
   const [currentScreenIndex, setCurrentScreenIndex] = useState(
     surveyProgress.currentScreen,
   );
-  const surveyQuestion = useAppSelector(state => state.questions);
-
   const [surveyData, setSurveyData] = useState<any[]>(surveyQuestion);
   const [section, setSection] = useState<any>();
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(surveyProgress.progress);
   const [screenIndex, setScreenIndex] = useState(0);
   const [total, setTotal] = useState(0);
+  const [visibleModal, setVisibleModal] = React.useState(false);
+
   const dispatch = useAppDispatch();
 
   const getData = async () => {
-    firestore()
-      .collection('survey')
-      .get()
-      .then((item): any => {
-        let arr: any = [];
-        item.forEach(i => {
-          arr.push(i.data());
+    if (surveyData.length === 0) {
+      firestore()
+        .collection('survey')
+        .get()
+        .then((item): any => {
+          let arr: any = [];
+          item.forEach(i => {
+            arr.push(i.data());
+          });
+          setSurveyData(arr);
+          setSection(arr[currentSectionIndex]?.screens?.[currentScreenIndex]);
+          setLoading(false);
+          dispatch(addSurveyData(arr));
         });
-        setSurveyData(arr);
-        setSection(arr[currentSectionIndex].screens[currentScreenIndex]);
-        setLoading(false);
-        dispatch(addSurveyData(arr));
-      });
+    } else {
+      setLoading(false);
+    }
   };
-
-  console.log(surveyQuestion, 'dwqd');
+  console.log(currentSectionIndex, currentScreenIndex);
   useEffect(() => {
     if (surveyData.length <= 0) {
       getData();
+    } else {
+      setSection(surveyData[currentSectionIndex].screens[0]);
+      setLoading(false);
     }
   }, []);
-
+  console.log(section);
   useMemo(() => {
     let totalLength = 0;
     surveyData.forEach((item: any) => {
@@ -72,15 +83,15 @@ const OnboardingScreen = () => {
   }, [surveyData]);
 
   useEffect(() => {
-    if (currentSectionIndex === 1) {
+    if (currentSectionIndex === 1 && currentScreenIndex === 1) {
       navigation.navigate(screenNames.infoScreen1, {
         image:
           'https://firebasestorage.googleapis.com/v0/b/noom-29f53.appspot.com/o/onBoarding%20Images%2F1719851300137-removebg-preview.png?alt=media&token=6ec2e6c2-17ca-4fb1-92a4-ab9fc8d26223',
         page: 'intro1',
       });
-    } else if (currentSectionIndex === 2) {
+    } else if (currentSectionIndex === 2 && currentScreenIndex === 1) {
       navigation.navigate(screenNames.Echart_Screen1);
-    } else if (currentSectionIndex === 3) {
+    } else if (currentSectionIndex === 3 && currentScreenIndex === 1) {
       navigation.navigate(screenNames.infoScreen1, {
         image:
           'https://firebasestorage.googleapis.com/v0/b/noom-29f53.appspot.com/o/onBoarding%20Images%2F1719851300137-removebg-preview.png?alt=media&token=6ec2e6c2-17ca-4fb1-92a4-ab9fc8d26223',
@@ -88,7 +99,6 @@ const OnboardingScreen = () => {
       });
     } else null;
   }, [progress]);
-
   if (loading) return <ActivityIndicator />;
 
   const handleNext = () => {

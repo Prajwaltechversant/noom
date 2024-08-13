@@ -1,11 +1,12 @@
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
 import CustomButton from '../../../components/button/customButton';
 import {colorPalette} from '../../../assets/colorpalette/colorPalette';
+import {screenNames} from '../../../preferences/staticVariable';
 
 const PaymentScreen1 = () => {
   const screenContext = useScreenContext();
@@ -16,9 +17,11 @@ const PaymentScreen1 = () => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-  //   const navigation: any = useNavigation();
+  const navigation: any = useNavigation();
 
   const plans = [0.5, 3, 10, 18.37];
+
+  const [plan, setPlan] = useState(0);
 
   return (
     <View style={screenStyles.container}>
@@ -43,7 +46,9 @@ const PaymentScreen1 = () => {
           data={plans}
           renderItem={({item}) => (
             <View style={screenStyles.amountContainer}>
-              <TouchableOpacity style={screenStyles.amountBox}>
+              <TouchableOpacity
+                style={screenStyles.amountBox}
+                onPress={() => setPlan(item)}>
                 <Text style={screenStyles.amountText}>{item}</Text>
               </TouchableOpacity>
             </View>
@@ -60,6 +65,13 @@ const PaymentScreen1 = () => {
           btnWidth={width * 0.8}
           btnHeight={height * 0.1}
           btnColor={colorPalette.berry}
+          onPress={() => {
+            if (plan > 0) {
+              navigation.navigate(screenNames.Payment_Screen2, {
+                selctedPlan: plan,
+              });
+            }
+          }}
         />
       </View>
     </View>

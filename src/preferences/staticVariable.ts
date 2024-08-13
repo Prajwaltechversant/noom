@@ -24,7 +24,13 @@ export const screenNames = {
     infoScreen1: 'infoScreen1',
     infoScreen2: 'infoScreen2',
     Payment_Screen1: 'paymentScreen1',
-    Payment_Screen2: 'paymentScreen2'
+    Payment_Screen2: 'paymentScreen2',
+    Help_Screen: 'helpScreen',
+    Message_Screen: 'messageScreen',
+    My_Articles: 'myArticles',
+    Recipies: 'recipiesScreen',
+    Setting: 'settingsScreen',
+    Weighgraph: 'WeighGraph'
 
 
 }
