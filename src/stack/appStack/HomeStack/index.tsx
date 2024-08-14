@@ -10,8 +10,9 @@ const Stack = createNativeStackNavigator();
 
 const HomeNativeStack = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
+    <Stack.Navigator screenOptions={{headerShown:false}}>
+      <Stack.Screen name="Home" component={Home}
+      />
       <Stack.Screen  name='courseCarouselPage' component={Coursecarousel} />
     </Stack.Navigator>
   );

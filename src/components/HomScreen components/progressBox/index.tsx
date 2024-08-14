@@ -12,7 +12,7 @@ interface Props {
   item: CourseType;
 }
 
-const CourseItem: React.FC<Props> = ({item}) => {
+const ProgressItem: React.FC<Props> = ({item}) => {
   const screenContext = useScreenContext();
   const {width, fontScale, height, isPortrait, isTabletType, scale} =
     screenContext;
@@ -57,4 +57,4 @@ const CourseItem: React.FC<Props> = ({item}) => {
   );
 };
 
-export default CourseItem;
+export default ProgressItem;

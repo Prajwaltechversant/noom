@@ -29,7 +29,11 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     optionBox: {
         width: screenContext.isPortrait ? width * 0.3 : width * 0.2,
         height: screenContext.isPortrait ? width * 0.4 : width * 0.2,
-        justifyContent: 'center', alignContent: 'center', alignItems: 'center'
+        justifyContent: 'center', alignContent: 'center', alignItems: 'center',
+        backgroundColor: colorPalette.offWhite,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: colorPalette.sand
     },
     optionSeparator: {
         width: screenContext.isPortrait ? width * 0.1 : width * 0.1,

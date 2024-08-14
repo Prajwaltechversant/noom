@@ -10,11 +10,15 @@ import MyArticleScreen from '../../../screens/afterAuth/drawer screens/my articl
 import SettingsScreen from '../../../screens/afterAuth/drawer screens/settings';
 import HelpScreen from '../../../screens/afterAuth/drawer screens/Help';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import HeaderTab from '../../../components/headerTab';
 const Drawer = createDrawerNavigator();
 
 const DrawerStack = () => {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      screenOptions={{
+        headerRight: () => <HeaderTab />,
+      }}>
       <Drawer.Screen
         name="drawer"
         component={HomeTabStack}
@@ -27,7 +31,9 @@ const DrawerStack = () => {
         name={screenNames.Message_Screen}
         component={MessageScreen}
         options={{
-          drawerIcon: () => <AntDesign name="message1" color={'black'} size={20} />,
+          drawerIcon: () => (
+            <AntDesign name="message1" color={'black'} size={20} />
+          ),
         }}
       />
       <Drawer.Screen
