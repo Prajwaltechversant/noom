@@ -52,6 +52,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     footerBtn:{
         bottom:10,
         backgroundColor:'transparent',
+        position:'absolute',
         
     }
 

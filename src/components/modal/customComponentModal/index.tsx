@@ -17,12 +17,12 @@ type Props = {
 
 type ModalProp = Props & ModalProps;
 
-const CustomComponentModal = ({children,visible, ...props}: ModalProp) => {
+const CustomComponentModal = ({children, visible, ...props}: ModalProp) => {
   const [visibleModal, setVisibleModal] = React.useState(false);
 
   const showModal = () => setVisibleModal(visible);
   const hideModal = () => setVisibleModal(false);
-  const containerStyle = {backgroundColor: 'red',};
+  const containerStyle = {backgroundColor: 'red'};
   const screenContext = useScreenContext();
   const {width, height, isPortrait} = screenContext;
   const screenStyles = styles(
@@ -36,8 +36,8 @@ const CustomComponentModal = ({children,visible, ...props}: ModalProp) => {
         <Modal
           visible={visible}
           onDismiss={hideModal}
-          contentContainerStyle={[containerStyle,{padding:2}]}>
-          <View style={{height, width}}>{children}</View>
+          contentContainerStyle={[containerStyle, {padding: 2}]}>
+          <View style={{height, width, zIndex: 1}}>{children}</View>
         </Modal>
       </Portal>
     </PaperProvider>

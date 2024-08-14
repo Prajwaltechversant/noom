@@ -7,6 +7,7 @@ import onBoardingReducer from '../slices/onBoardingAnswers/index'
 import questionsSliceReducer from "../slices/questionsSlice";
 import planDetailSliceReducer from "../slices/planSlice";
 import authStatusSliceReducer from "../slices/authStatus";
+import dailylCourseStatusReducer from "../slices/DailyCourse";
 
 const rootReducers = combineReducers({
     loginSlice: loginSlice,
@@ -14,14 +15,15 @@ const rootReducers = combineReducers({
     onBoarding: onBoardingReducer,
     questions: questionsSliceReducer,
     planDetails: planDetailSliceReducer,
-    authStatus: authStatusSliceReducer
+    authStatus: authStatusSliceReducer,
+    dailyStatus: dailylCourseStatusReducer
 })
 
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['surveyProgressSlice', 'loginSlice', 'onBoarding', 'questions', 'planDetails', 'authStatus'],
+    whitelist: ['surveyProgressSlice', 'loginSlice', 'onBoarding', 'questions', 'planDetails', 'authStatus', 'dailyStatus'],
 
 };
 

@@ -54,5 +54,7 @@ export type CourseType = {
     images: string[];
     createdAt: Date;
     type: string;
+    isCompleted: boolean;
+    audio: string;
 
 }

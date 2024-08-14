@@ -30,7 +30,10 @@ export const screenNames = {
     My_Articles: 'myArticles',
     Recipies: 'recipiesScreen',
     Setting: 'settingsScreen',
-    Weighgraph: 'WeighGraph'
+    Weighgraph: 'WeighGraph',
+
+
+    HomeScreen :'Home'
 
 
 }

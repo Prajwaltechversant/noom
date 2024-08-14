@@ -11,7 +11,6 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     eachItem: {
         height:height*0.8, width,
-        borderWidth: 1,
         alignItems: 'center'
     },
     image:{

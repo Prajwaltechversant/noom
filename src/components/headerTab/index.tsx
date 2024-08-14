@@ -1,9 +1,9 @@
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {useScreenContext} from '../../context/screenContext';
 import styles from './style';
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import { colorPalette } from '../../assets/colorpalette/colorPalette';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {colorPalette} from '../../assets/colorpalette/colorPalette';
 const HeaderTab: React.FC = () => {
   const screenContext = useScreenContext();
   const {width, fontScale, height, isPortrait} = screenContext;
@@ -14,7 +14,13 @@ const HeaderTab: React.FC = () => {
   );
   return (
     <View style={screenStyles.container}>
-      <AntDesign name='gift' color={colorPalette.black} size={20}/>
+      <TouchableOpacity>
+        <AntDesign name="flag" color={colorPalette.black} size={25} />
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <AntDesign name="message1" color={colorPalette.black} size={25} />
+      </TouchableOpacity>
     </View>
   );
 };

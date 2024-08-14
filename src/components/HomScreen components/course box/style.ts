@@ -10,11 +10,11 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         flex: 1,
         marginVertical: screenContext.isPortrait ? height * 0.008 : height * 0.002,
         borderRadius: screenContext.isPortrait ? height * 0.01 : height * 0.002,
-        elevation:5,
-        shadowColor:colorPalette.black,
+        elevation: 5,
+        shadowColor: colorPalette.black,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignSelf:"auto"
+        alignSelf: "auto"
     },
     col1: {
         flexDirection: 'column',
@@ -24,6 +24,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     col2: {
         // borderWidth: 1
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     text: {
         color: colorPalette.black,
@@ -34,7 +36,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         justifyContent: 'space-evenly',
         width: '100%',
         padding: 1,
-        marginVertical:5
+        marginVertical: 5
 
     },
     actionBox: {
@@ -48,9 +50,10 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         flexDirection: 'row'
     },
     thumbnail: {
-        width: width * 0.2,
-        height: width * 0.2,
-        borderRadius: 50
+        width: width * 0.1,
+        height: width * 0.1,
+        borderRadius: 50,
+        resizeMode:'center'
     }
 })
 

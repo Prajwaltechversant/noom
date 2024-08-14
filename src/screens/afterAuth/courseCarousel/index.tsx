@@ -5,10 +5,13 @@ import styles from './style';
 import {useNavigation} from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
 import CustomButton from '../../../components/button/customButton';
-import { colorPalette } from '../../../assets/colorpalette/colorPalette';
-import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import {colorPalette} from '../../../assets/colorpalette/colorPalette';
+import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import {screenNames} from '../../../preferences/staticVariable';
 
-const Coursecarousel = ({route}:any) => {
+const Coursecarousel = ({route}: any) => {
   const screenContext = useScreenContext();
   const {width, fontScale, height, isPortrait, isTabletType, scale} =
     screenContext;
@@ -17,25 +20,41 @@ const Coursecarousel = ({route}:any) => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const ref = useRef<FlatList>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [buttonLabel, setButtonLabel] = useState("Read");
-  
-  const data = route.params.data; 
+  const [buttonLabel, setButtonLabel] = useState('Read');
+  const currentUid = auth().currentUser?.uid;
 
+  const data = route.params.data;
+  const id = route.params.id;
+  const isCompleted = route.params.isCompleted;
   const handleScroll = () => {
     let nextIndex = currentIndex + 1;
-
     if (nextIndex < data.length) {
       setCurrentIndex(nextIndex);
       ref.current?.scrollToIndex({index: nextIndex});
     }
-
     if (nextIndex === data.length - 1) {
-      setButtonLabel("Save and Go Back");
+      setButtonLabel('Save and Go Back');
     } else if (nextIndex === data.length) {
-      navigation.goBack();
+      try {
+        if (!isCompleted) {
+          firestore()
+            .collection(`UserData/${currentUid}/dailyCourse`)
+            .doc(id)
+            .update({
+              isCompleted: true,
+            })
+            .then(() => {
+              navigation.navigate(screenNames.HomeScreen);
+            });
+        } else {
+          navigation.navigate(screenNames.HomeScreen);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   return (
@@ -64,7 +83,6 @@ const Coursecarousel = ({route}:any) => {
               ]}>
               {item.todo}
             </Text>
-            <Text style={textStyle.headingText}>{index}</Text>
           </View>
         )}
         scrollEnabled={false}
@@ -78,7 +96,7 @@ const Coursecarousel = ({route}:any) => {
         btnHeight={50}
         btnColor={colorPalette.berry}
         onPress={handleScroll}
-        labelColor='white'
+        labelColor="white"
       />
     </View>
   );

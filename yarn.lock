@@ -6880,6 +6880,11 @@ react-native-svg@^15.5.0:
     css-tree "^1.1.3"
     warn-once "0.1.1"
 
+react-native-track-player@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/react-native-track-player/-/react-native-track-player-4.1.1.tgz"
+  integrity sha512-E5N/eK/+HtAVJUAzXpm1cWz8ROheV9jb0TI6h2bM+333U+DWibTTnT2T1122FkCoXLXIYavtm2FR2if+5jH8cA==
+
 react-native-vector-icons@^10.1.0:
   version "10.1.0"
   resolved "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-10.1.0.tgz"
