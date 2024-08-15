@@ -1,21 +1,22 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {useScreenContext} from '../../../context/screenContext';
+import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
 import CustomTextInputComponent from '../../../components/textInput';
 import CustomButton from '../../../components/button/customButton';
-import {colorPalette} from '../../../assets/colorpalette/colorPalette';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import PaperDropdown from '../../../components/dropdown';
 import DatePickerComponent from '../../datePicker';
-import {OnBoardProps} from '../multiChoiceScreen';
-import {addData} from '../../../redux/slices/onBoardingAnswers';
-import {useAppDispatch} from '../../../redux/hook';
+import { OnBoardProps } from '../multiChoiceScreen';
+import { addData } from '../../../redux/slices/onBoardingAnswers';
+import { useAppDispatch } from '../../../redux/hook';
+import auth from '@react-native-firebase/auth';
 
-const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
+const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
@@ -38,9 +39,11 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
         <View>
           {section.type === 'input' ? (
             <CustomTextInputComponent
+              textColor='black'
               label={section.question}
               mode="outlined"
               value={answer}
+              inputMode={section.value === 'number' ? 'numeric' : section.value === 'email' ? 'email' : 'text'}
               right={<Text style={textStyle.labelText}>lb</Text>}
               onChangeText={e => setAnswer(e)}
             />
@@ -63,7 +66,8 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
           btnColor={colorPalette.berry}
           onPress={() => {
             if (answer) {
-              dispatch(addData({qId: qid, aId: answer}));
+              if (qid === 'name') auth().currentUser?.updateProfile({ displayName: answer })
+              dispatch(addData({ qId: qid, aId: answer }));
               setAnswer('');
               handleNext();
             }

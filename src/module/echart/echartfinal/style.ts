@@ -7,8 +7,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems: 'center',
         paddingTop: screenContext.isPortrait ? height * 0.03 : height * 0.002,
         backgroundColor: colorPalette.white,
-        flex: 1,
-        justifyContent: 'space-between'
+        // flex: 1,
+        justifyContent: 'space-between',
     },
     headerContainer: {
         backgroundColor: colorPalette.offWhite,

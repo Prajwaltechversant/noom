@@ -1,16 +1,17 @@
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {useScreenContext} from '../../../context/screenContext';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
 import CustomButton from '../../../components/button/customButton';
-import {colorPalette} from '../../../assets/colorpalette/colorPalette';
-import {screenNames} from '../../../preferences/staticVariable';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import { screenNames } from '../../../preferences/staticVariable';
+import { useAppSelector } from '../../../redux/hook';
 
 const PaymentScreen1 = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
@@ -18,20 +19,28 @@ const PaymentScreen1 = () => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
+  const addOns = useAppSelector(state=>state.planDetails)
+  console.log(addOns)
 
   const plans = [0.5, 3, 10, 18.37];
 
   const [plan, setPlan] = useState(0);
+
 
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
         <Text style={textStyle.headingText}>Try noom For a week</Text>
         <Text style={[screenStyles.headerText]}>
-          Money shouldn't stand in the way of finding a plan that finally works.
+          <Text style={{ fontStyle: "italic", fontWeight: '900' }}>
+            Money shouldn't </Text>
+          stand in the way of finding a plan that finally works.
         </Text>
         <Text style={screenStyles.headerText}>
-          It costs us approximately $10 * to offer a 7 day trail. Please pick an
+          <Text style={{ fontStyle: "italic", fontWeight: '900' }}>
+            It costs us approximately $10
+          </Text>
+          to offer a 7 day trail. Please pick an
           amount that's reasonable for you.
         </Text>
       </View>
@@ -44,12 +53,22 @@ const PaymentScreen1 = () => {
         <FlatList
           horizontal
           data={plans}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <View style={screenStyles.amountContainer}>
               <TouchableOpacity
-                style={screenStyles.amountBox}
+                style={[screenStyles.amountBox,
+                {
+                  backgroundColor: plan === item ? colorPalette.salmon : colorPalette.berry,
+
+                }
+                ]}
                 onPress={() => setPlan(item)}>
-                <Text style={screenStyles.amountText}>{item}</Text>
+                <Text style={[screenStyles.amountText,
+                {
+                  color: plan === item ? colorPalette.berry : colorPalette.salmon,
+
+                }
+                ]}>{item}</Text>
               </TouchableOpacity>
             </View>
           )}

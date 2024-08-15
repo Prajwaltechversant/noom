@@ -1,18 +1,18 @@
-import {View, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { View, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EntryScreen from '../../screens/afterAuth/AppEntryScreen';
-import {useScreenContext} from '../../context/screenContext';
-import {colorPalette} from '../../assets/colorpalette/colorPalette';
+import { useScreenContext } from '../../context/screenContext';
+import { colorPalette } from '../../assets/colorpalette/colorPalette';
 import textStyle from '../../style/text/style';
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import OnboardingScreen from '../../screens/afterAuth/onBoarding';
-import {screenNames} from '../../preferences/staticVariable';
+import { screenNames } from '../../preferences/staticVariable';
 import OnboardingStack from './onBoardingStack';
 import ProfileScreen1 from '../../screens/afterAuth/profileScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useAppSelector} from '../../redux/hook';
+import { useAppSelector } from '../../redux/hook';
 import Home from '../../screens/afterAuth/HomeScreen';
 import DrawerStack from './DrawerStack';
 
@@ -20,10 +20,11 @@ const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const [surveyStatus, setSurveyStatus] = useState(false);
   const currentUser = auth().currentUser?.email;
+  const displayName = auth().currentUser?.displayName;
 
   const onBaodringStatus = useAppSelector(
     state => state.authStatus.isOnBoardingCompleted,
@@ -92,7 +93,7 @@ const AppStack = () => {
                 options={{
                   title: 'Noom',
                   headerRight: () => (
-                    <Text style={textStyle.labelText}>{currentUser}</Text>
+                    <Text style={textStyle.labelText}>{displayName !== null ? displayName : currentUser}</Text>
                   ),
                 }}
               />
@@ -112,7 +113,7 @@ const AppStack = () => {
         <Stack.Screen
           name="Home"
           component={DrawerStack}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
       )}
     </Stack.Navigator>

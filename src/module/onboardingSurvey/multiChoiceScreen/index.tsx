@@ -26,6 +26,7 @@ export interface OnBoardProps {
     extraContent?: string;
     optional?: boolean;
     id: string;
+    value:string
   };
   handleNext: () => void;
 }

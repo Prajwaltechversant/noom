@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {ActivityIndicator} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import OnBoardingProgressBar from '../../../components/onBoarding/progressBar';
 import ButtonGroupScreen from '../../../module/onboardingSurvey/multiChoiceScreen';
@@ -8,18 +8,18 @@ import YesNoScreen from '../../../module/onboardingSurvey/yesnoScreen';
 import SingleChoiceScreen from '../../../module/onboardingSurvey/singleChoiceScreen';
 import QuizScreen from '../../../module/onboardingSurvey/quizScreen';
 import styles from './style';
-import {updateSurveyProgress} from '../../../redux/slices/surveyProgressSlice/surveySlice';
-import {screenNames} from '../../../preferences/staticVariable';
-import {useAppDispatch, useAppSelector} from '../../../redux/hook';
-import {useScreenContext} from '../../../context/screenContext';
-import {addSurveyData} from '../../../redux/slices/questionsSlice';
+import { updateSurveyProgress } from '../../../redux/slices/surveyProgressSlice/surveySlice';
+import { screenNames } from '../../../preferences/staticVariable';
+import { useAppDispatch, useAppSelector } from '../../../redux/hook';
+import { useScreenContext } from '../../../context/screenContext';
+import { addSurveyData } from '../../../redux/slices/questionsSlice';
 import CustomComponentModal from '../../../components/modal/customComponentModal';
 import InfoScreen1 from '../../../module/onboardingSurvey/infoScreens/infoScreen1';
 import EChartComponent from '../../../module/echart/echart1';
 
 const OnboardingScreen = () => {
   const screenContext = useScreenContext();
-  const {width, height, isPortrait} = screenContext;
+  const { width, height, isPortrait } = screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
@@ -115,7 +115,7 @@ const OnboardingScreen = () => {
         setCurrentScreenIndex(0);
         setSection(surveyData[nextSectionIndex].screens[0]);
       } else {
-        navigation.navigate(screenNames.Payment_Screen1);
+        navigation.navigate(screenNames.Plan_Screen);
       }
     }
 

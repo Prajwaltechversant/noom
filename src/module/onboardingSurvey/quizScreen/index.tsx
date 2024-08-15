@@ -1,6 +1,6 @@
-import {View, Text} from 'react-native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {useScreenContext} from '../../../context/screenContext';
+import { View, Text, Alert } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import textStyle from '../../../style/text/style';
 import CustomButton from '../../../components/button/customButton';
@@ -16,12 +16,12 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {OnBoardProps} from '../multiChoiceScreen';
-import {addData} from '../../../redux/slices/onBoardingAnswers';
+import { OnBoardProps } from '../multiChoiceScreen';
+import { addData } from '../../../redux/slices/onBoardingAnswers';
 import { useAppDispatch } from '../../../redux/hook';
-const QuizScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
+const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
@@ -39,28 +39,35 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
   ];
 
   const translateX = useSharedValue(sliderPositions[4]);
-  const [answer, setAnswer] = useState('');
+  const [answer, setAnswer] = useState<string | undefined>(undefined);
   const qid = section.id;
   const dispatch = useAppDispatch()
-  // console.log(tabWidth / 2);
+  const findClosestValue = (value: number) => {
+    return sliderPositions.reduce((prev, curr) =>
+      Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
+    );
+  };
+
   const gesture = Gesture.Pan()
-    .onUpdate(({y, translationX}) => {
+    .onUpdate(({ translationX }) => {
       translateX.value = translationX;
     })
-    .onEnd(({y, translationX}) => {
-      const closestValue = withSpring(
-        sliderPositions.sort((a, b) => {
-          return Math.abs(a - translationX) - Math.abs(b - translationX);
-        })[0],
-      );
-      translateX.value = closestValue;
-      if (closestValue > sliderPositions[2]) {
-        setAnswer(section.options[1].id);
+    .onEnd(() => {
+      const closestPosition = findClosestValue(translateX.value);
+      translateX.value = withSpring(closestPosition);
+      if (closestPosition == sliderPositions[3]) {
+        setAnswer('3');
+      } else if (closestPosition == sliderPositions[1]) {
+        setAnswer('2');
+      } else if (closestPosition == sliderPositions[0]) {
+        setAnswer('1');
+      } else if (closestPosition == sliderPositions[4]) {
+        setAnswer('4');
       } else {
-        setAnswer(section.options[0].id);
+        setAnswer(undefined)
       }
     }).runOnJS(true);
-
+  console.log(answer)
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.contentContainer}>
@@ -74,7 +81,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
             </View>
             <View style={screenStyles.optionSeparator}>
               <View style={screenStyles.seperatorBar}></View>
-              <Text style={{color: 'red', fontSize: 20}}>Or</Text>
+              <Text style={{ color: 'red', fontSize: 20 }}>Or</Text>
               <View style={screenStyles.seperatorBar}></View>
             </View>
             <View style={screenStyles.optionBox}>
@@ -89,29 +96,29 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
             <Text
               style={[
                 textStyle.labelText,
-                {textAlign: 'center'},
+                { textAlign: 'center' },
               ]}>{`Agree \n Most`}</Text>
             <Text
               style={[
                 textStyle.labelText,
-                {textAlign: 'center'},
+                { textAlign: 'center' },
               ]}>{`Agree a \nlittle more`}</Text>
             <Text
               style={[
                 textStyle.labelText,
-                {textAlign: 'center', color: 'white'},
+                { textAlign: 'center', color: 'white' },
               ]}>
               center
             </Text>
             <Text
               style={[
                 textStyle.labelText,
-                {textAlign: 'center'},
+                { textAlign: 'center' },
               ]}>{`Agree a\n little more`}</Text>
             <Text
               style={[
                 textStyle.labelText,
-                {textAlign: 'center'},
+                { textAlign: 'center' },
               ]}>{`Agree\n most`}</Text>
           </View>
 
@@ -123,7 +130,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     width: tabWidth,
-                    transform: [{translateX}],
+                    transform: [{ translateX }],
                     height: tabWidth * 0.2,
                   },
                 ]}>
@@ -142,19 +149,23 @@ const QuizScreen: React.FC<OnBoardProps> = ({handleNext, section}) => {
         btnWidth={width * 0.8}
         label="Next"
         onPress={() => {
-          dispatch(addData({qId: qid, aId: answer}));
-          handleNext();
+          if (answer) {
+            dispatch(addData({ qId: qid, aId: answer }));
+            handleNext();
+          }else{
+            Alert.alert("'Please Choose your answer")
+          }
         }}
       />
       <View style={screenStyles.hintContainer}>
         <Text
           numberOfLines={2}
-          style={[textStyle.labelText, {textAlign: 'center'}]}>
+          style={[textStyle.labelText, { textAlign: 'center' }]}>
           Drag the circle towards the statement you agree with most
         </Text>
         <Text
           numberOfLines={3}
-          style={[textStyle.labelText, {textAlign: 'center'}]}>
+          style={[textStyle.labelText, { textAlign: 'center' }]}>
           If both fit, choose one you agree with more. if neither fit,choose the
           one you're agree closest to agreeing with
         </Text>

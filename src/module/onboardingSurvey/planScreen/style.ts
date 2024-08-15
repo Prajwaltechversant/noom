@@ -4,21 +4,23 @@ import { colorPalette } from "../../../assets/colorpalette/colorPalette";
 
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
-        paddingTop: screenContext.isPortrait ? height * 0.03 : height * 0.002,
-        backgroundColor: colorPalette.sand,
+        // paddingTop: screenContext.isPortrait ? height * 0.03 : height * 0.002,
+        backgroundColor: colorPalette.white,
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     cardContainer: {
         width: screenContext.isPortrait ? width * 0.9 : width * .8,
         marginVertical: screenContext.isPortrait ? width * 0.08 : width * .08,
         justifyContent: 'center',
-        backgroundColor: colorPalette.sand1
+        backgroundColor: colorPalette.sand
+        , borderRadius: 20,
+        elevation: 5
     },
     cardTitle: {
         backgroundColor: colorPalette.blossom,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20
     },
     imageContainer: {
         justifyContent: 'center', alignItems: 'center'
@@ -39,14 +41,14 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     pointsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         gap: 10,
+    
         marginVertical: screenContext.isPortrait ? width * 0.03 : width * .02,
 
     },
     tickIcon: {
-        backgroundColor: 'green',
+        backgroundColor: '#51D71B',
         borderRadius: 100,
         alignItems: 'center',
         justifyContent: 'space-evenly',
@@ -55,8 +57,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     cardBody: {
         paddingVertical: screenContext.isPortrait ? width * 0.03 : width * .02
     },
-    skipButton:{
-        alignItems:'center'
+    skipButton: {
+        alignItems: 'center'
     }
 
 

@@ -6,7 +6,6 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
 
     container: {
-        paddingTop: screenContext.isPortrait ? height * 0.03 : height * 0.002,
         backgroundColor: colorPalette.white,
         flex: 1,
         height:'100%'
@@ -32,8 +31,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     collapseViewBtn: {
         marginVertical: screenContext.isPortrait ? height * 0.03 : height * 0.002,
-        elevation: 5,
-        backgroundColor: colorPalette.sand,
+        // backgroundColor: colorPalette.sand,
         borderRadius: 10,
 
     },
