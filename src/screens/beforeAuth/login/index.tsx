@@ -6,24 +6,24 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ImageBg from '../../../components/ImgBg';
-import {useScreenContext} from '../../../context/screenContext';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../../../components/button/customButton';
-import {colorPalette} from '../../../assets/colorpalette/colorPalette';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import textStyle from '../../../style/text/style';
 import PrivacyPolicy from '../../../components/privacyPolicy';
 import CustomTextInputComponent from '../../../components/textInput';
-import {SignupWithEmailtype} from '../../../types/signup';
-import {TextInput} from 'react-native-paper';
-import {login} from '../../../services/signin';
-import {faceBookSignup, googleSignup} from '../../../services/signup';
+import { SignupWithEmailtype } from '../../../types/signup';
+import { TextInput } from 'react-native-paper';
+import { login } from '../../../services/signin';
+import { faceBookSignup, googleSignup } from '../../../services/signup';
 
 export default function Login() {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
@@ -43,11 +43,11 @@ export default function Login() {
     input: keyof SignupWithEmailtype,
     value: string,
   ) => {
-    setFormData({...formData, [input]: value});
+    setFormData({ ...formData, [input]: value });
   };
 
   const handleLogin = async () => {
-    const {email, password} = formData;
+    const { email, password } = formData;
     if (!password || !email) {
       Alert.alert('Please add the details');
     } else {
@@ -108,13 +108,16 @@ export default function Login() {
           ) : (
             <>
               <CustomTextInputComponent
-                mode="outlined"
+                mode="flat"
                 label={'email'}
                 onChangeText={e => handleStateUpdate('email', e)}
+                underlineColor='transprent'
+                outlineColor='transparent'
+                textColor="black"
               />
               <CustomTextInputComponent
-                mode="outlined"
-                label={'email'}
+                mode="flat"
+                label={'Password'}
                 textColor="black"
                 secureTextEntry={showPassword}
                 onChangeText={e => handleStateUpdate('password', e)}

@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
+import { ScreenContextType } from "../../../types/types";
 
-const styles =(screenContext, width, height) => StyleSheet.create({
+const styles =(screenContext:ScreenContextType, width:number, height:number) => StyleSheet.create({
     container:{
         height,
         width,

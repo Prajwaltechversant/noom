@@ -1,9 +1,9 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
-import {useScreenContext} from '../../context/screenContext';
+import { useScreenContext } from '../../context/screenContext';
 import styles from './style';
-import {TextInput, TextInputProps} from 'react-native-paper';
-import {CustomButtonProps, CustomTextInput} from '../../types/types';
+import { TextInput, TextInputProps } from 'react-native-paper';
+import { CustomButtonProps, CustomTextInput } from '../../types/types';
 
 type Props = CustomTextInput & TextInputProps;
 
@@ -15,7 +15,7 @@ const CustomTextInputComponent: React.FC<Props> = ({
   ...props
 }) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
 
   const screenStyles = styles(
@@ -29,8 +29,19 @@ const CustomTextInputComponent: React.FC<Props> = ({
       placeholderTextColor={textColor}
       style={screenStyles.container}
       textColor={'black'}
-      mode="flat"
       {...props}
+      theme={{
+        colors: {
+          primary: 'black',
+          onSurface: 'white',
+          background: 'red',
+
+        },
+        roundness: 9,
+        
+      }}
+
+
     />
   );
 };

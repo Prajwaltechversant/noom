@@ -33,7 +33,7 @@ export type CustomTextInput = {
     label?: string;
     rightIcon?: string;
     backgroundColor?: string;
-    textColor?: string;
+    textColor: string;
 
 }
 

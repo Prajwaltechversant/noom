@@ -80,7 +80,7 @@ const CourseItem: React.FC<Props> = ({item}) => {
             <FontAwesome name="book" size={20} color={'black'} />
             <Text style={screenStyles.text}>Read</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={screenStyles.actionBox} onPress={()=>}>
+          <TouchableOpacity style={screenStyles.actionBox}>
             <Feather name="speaker" size={20} color={'black'} />
             <Text style={screenStyles.text}>Listen</Text>
           </TouchableOpacity>

@@ -36,7 +36,7 @@ export const validation = (type: Inputs, value: any) => {
                     return { error: undefined, value: true }
                 }
                 else {
-                    return { error: 'Please use strong password', value: false }
+                    return { error: 'Password must be at least 6 characters long \n &  include at least one letter and one number.', value: false }
                 }
             }
     }
