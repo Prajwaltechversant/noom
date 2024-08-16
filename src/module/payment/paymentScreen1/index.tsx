@@ -19,11 +19,9 @@ const PaymentScreen1 = () => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
-  const addOns = useAppSelector(state=>state.planDetails)
-  console.log(addOns)
+
 
   const plans = [0.5, 3, 10, 18.37];
-
   const [plan, setPlan] = useState(0);
 
 

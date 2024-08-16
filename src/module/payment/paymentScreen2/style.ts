@@ -58,8 +58,14 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: colorPalette.sand,
+        backgroundColor: colorPalette.white,
+        elevation:8,
         borderRadius: 10
+    },
+    planBox:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        marginVertical:10
     }
 
 })

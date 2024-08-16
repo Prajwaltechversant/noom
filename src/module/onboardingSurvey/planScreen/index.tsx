@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { screenNames } from '../../../preferences/staticVariable';
 import { useDispatch } from 'react-redux';
 import { addPlanData } from '../../../redux/slices/planSlice';
+import auth from '@react-native-firebase/auth';
 
 const PlanScreen = () => {
   const screenContext = useScreenContext();
@@ -24,8 +25,9 @@ const PlanScreen = () => {
 
   const [plans, setPlans] = useState<any[]>([]);
   const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
-  const navigation:any = useNavigation();
+  const navigation: any = useNavigation();
   const [planId, setPlanId] = useState<string | undefined>();
+  const currentUId = auth().currentUser?.uid;
 
   const dispatch = useDispatch();
 
@@ -37,7 +39,7 @@ const PlanScreen = () => {
         setPlans(planArray);
         if (planArray.length > 0) {
           setCurrentPlanIndex(0);
-          setPlanId(planArray[0].id); 
+          setPlanId(planArray[0].id);
         }
       } catch (error) {
         console.error("Error fetching plans: ", error);
@@ -46,18 +48,29 @@ const PlanScreen = () => {
     loadPlans();
   }, []);
 
-  const handleNext = () => {
+
+  const handleNext = (itemid: number) => {
     const nextScreenIndex = currentPlanIndex + 1;
     if (nextScreenIndex < plans.length) {
       setCurrentPlanIndex(nextScreenIndex);
-      setPlanId(plans[nextScreenIndex]?.id); 
+      setPlanId(plans[nextScreenIndex]?.id);
     } else {
       navigation.navigate(screenNames.Payment_Screen1);
     }
     if (planId) {
-      dispatch(addPlanData({ planId: planId, itemId: planId }));
+      dispatch(addPlanData({ planId: planId, itemId: itemid }));
     }
   };
+
+  const handleSkip = () => {
+    const nextScreenIndex = currentPlanIndex + 1;
+    if (nextScreenIndex < plans.length) {
+      setCurrentPlanIndex(nextScreenIndex);
+    } else {
+      navigation.navigate(screenNames.Payment_Screen1);
+    }
+
+  }
 
   const currentPlan = plans[currentPlanIndex];
   if (!currentPlan) return null;
@@ -111,7 +124,7 @@ const PlanScreen = () => {
                   btnColor={colorPalette.berry}
                   borderRadius={20}
                   labelColor="white"
-                  onPress={handleNext}
+                  onPress={() => handleNext(item.id)}
                 />
               </View>
             </Card.Actions>
@@ -120,7 +133,7 @@ const PlanScreen = () => {
         ListFooterComponent={
           <TouchableOpacity
             style={screenStyles.skipButton}
-            onPress={handleNext}>
+            onPress={handleSkip}>
             <Text
               style={[
                 textStyle.labelText,

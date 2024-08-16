@@ -1,5 +1,5 @@
 import { View, ScrollView, TouchableOpacity, FlatList } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import EChartFinal from '../../echart/echartfinal';
@@ -17,6 +17,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { updateOnBoardingStatus } from '../../../redux/slices/authStatus';
 import PlanItem from '../../../components/onBoarding/planItem';
+import { useSelector } from 'react-redux';
+import Feather from 'react-native-vector-icons/Feather'
+import { removePlan } from '../../../redux/slices/planSlice';
+
+
+type CardDetails = 'number' | 'cvv' | 'exp'
 
 const PaymementScreen2: React.FC = ({ route }: any) => {
   const screenContext = useScreenContext();
@@ -37,6 +43,36 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
   const dispatch = useAppDispatch();
   const currentUser = auth().currentUser?.email;
   const displayName = auth().currentUser?.displayName;
+  const addOnPlans = useAppSelector(state => state.planDetails)
+  console.log(addOnPlans)
+  const [planDetails, setPlanDetails] = useState<any>([])
+  const [cardDetails, setCardDetails] = useState({
+    number: '', cvv: '', exp: ''
+  })
+
+  useEffect(() => {
+    const loadItems = async () => {
+      try {
+        const snapshot = await firestore().collection('plans').get();
+        const planArray = snapshot.docs.map(doc => doc.data());
+
+        const filteredItems = planArray.flatMap(plan =>
+          plan.plans.filter((planItem: any) =>
+            addOnPlans.some((addOn: any) =>
+              plan.id === addOn.planId && planItem.id === addOn.itemId
+            )
+          )
+        );
+
+        setPlanDetails(filteredItems);
+      } catch (error) {
+        console.error("Error ", error);
+      }
+    };
+
+    loadItems();
+  }, [addOnPlans]);
+
 
   const handlepayment = () => {
     try {
@@ -54,6 +90,25 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDelete = (id: any) => {
+
+    let newState = [...planDetails]
+    setPlanDetails(newState.filter(item => item.id !== id))
+    dispatch(removePlan(id))
+  }
+
+
+  const handleChange = (text: any) => {
+    const cleanedText = text.replace(/\D/g, '');
+    let formattedText = '';
+    if (cleanedText.length > 2) {
+      formattedText = `${cleanedText.slice(0, 2)}/${cleanedText.slice(2, 4)}`;
+    } else {
+      formattedText = cleanedText;
+    }
+    setCardDetails({ ...cardDetails, exp: formattedText })
   };
   return (
     <ScrollView style={screenStyles.container}>
@@ -111,6 +166,26 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
 
               </>
             )}
+
+            {
+              planDetails.map((item: any) => (
+                <>
+                  <View style={screenStyles.planBox}>
+                    <View>
+                      <Text style={[textStyle.labelText, { textTransform: 'capitalize' }]}>{item.title}</Text>
+                      <Text style={{ textDecorationColor: 'blue', textDecorationStyle: 'double', textDecorationLine: "underline", color: 'blue', marginTop: 4 }}>Learn More</Text>
+                    </View>
+                    <View>
+                      <Text style={{ textAlign: 'right' }}>${item.amount}</Text>
+                      <TouchableOpacity onPress={() => handleDelete(item.id)}>
+                        <Feather style={{ textAlign: 'right' }} name='x' size={30} color={colorPalette.black} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <Divider />
+                </>
+              ))
+            }
 
             <TouchableOpacity
               style={screenStyles.collapseViewBtn}
@@ -183,6 +258,7 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                       mode="outlined"
                       outlineColor="transparent"
                       inputMode="numeric"
+                      onChangeText={e => setCardDetails({ ...cardDetails, number: e })}
                     />
 
                     <CustomTextInputComponent
@@ -191,6 +267,22 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                       mode="outlined"
                       outlineColor="transparent"
                       inputMode="numeric"
+
+                      maxLength={3}
+                      onChangeText={e => setCardDetails({ ...cardDetails, cvv: e })}
+
+                    />
+                    <CustomTextInputComponent
+                      textColor='black'
+                      label={'exp'}
+                      mode="outlined"
+                      outlineColor="transparent"
+                      inputMode="numeric"
+                      maxLength={5}
+                      placeholder='MM/YY'
+                      onChangeText={handleChange}
+                      value={cardDetails.exp}
+
                     />
                   </View>
                 )}

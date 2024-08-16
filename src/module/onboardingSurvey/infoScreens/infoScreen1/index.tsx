@@ -1,12 +1,12 @@
-import {View, Text, Image} from 'react-native';
+import { View, Text, Image } from 'react-native';
 import React from 'react';
-import {useScreenContext} from '../../../../context/screenContext';
+import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
 import textStyle from '../../../../style/text/style';
 import CustomButton from '../../../../components/button/customButton';
-import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
-import {useNavigation} from '@react-navigation/native';
-import {screenNames} from '../../../../preferences/staticVariable';
+import { colorPalette } from '../../../../assets/colorpalette/colorPalette';
+import { useNavigation } from '@react-navigation/native';
+import { screenNames } from '../../../../preferences/staticVariable';
 import auth from '@react-native-firebase/auth';
 
 type Page = 'intro1' | 'intro2';
@@ -16,9 +16,9 @@ interface Props {
   image: string;
 }
 
-const InfoScreen: React.FC<Props> = ({route}: any) => {
+const InfoScreen: React.FC = ({ route }: any) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
