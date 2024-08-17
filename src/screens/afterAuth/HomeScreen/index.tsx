@@ -41,7 +41,7 @@ const Home: React.FC = () => {
   const [selctedDate, setSelctedDate] = useState(weekdays[new Date().getDay()]);
   const [todaysCourse, setTodaysCourse] = useState<any[]>([]);
   const [selctedTimestamp, setSelctedTimeStamp] = useState(
-    firebase.firestore.Timestamp.fromDate(date),
+    firebase.firestore.Timestamp.fromDate(new Date())
   );
   const [dayText, setDayText] = useState<undefined | string>('Today');
   const [isSelected, setIsSelcted] = useState(false);
@@ -72,60 +72,74 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    firestore()
-      .collection('courses')
-      .limit(3)
-      .get()
-      .then(item => {
-        let arr: any = [];
-        item.forEach(i => {
-          arr.push(i.data());
-        });
+    const fetchAndAddCourses = async () => {
+      try {
+        const coursesSnapshot = await firestore().collection('courses').limit(3).get();
+        const courses = coursesSnapshot.docs.map(doc => doc.data());
+  
+        console.log(courses.length, 'courses fetched');
+  
         if (selctedDate === weekdays[date.getDay()]) {
-          if (arr.length > 0) {
-            if (Number(isFirst) < Number(new Date().setHours(0, 0, 0, 0))) {
-              arr.forEach((item: any) => {
-                firestore()
-                  .collection(`UserData/${currentUid}/dailyCourse`)
-                  .doc(item.id)
-                  .set({
-                    ...item,
-                    isCompleted: false,
-                    addedDate: firebase.firestore.Timestamp.now(),
-                  })
-                  .then(item => {
-                    console.log('course added');
-                    dispatch(addDailyStatus(new Date().setHours(0, 0, 0, 0)));
-                  });
+          if (courses.length > 0) {
+            const todayStart = new Date().setHours(0, 0, 0, 0);
+            if (Number(isFirst) < Number(todayStart)) {
+              const batch = firestore().batch();
+              courses.forEach(course => {
+                const docRef = firestore().collection(`UserData/${currentUid}/dailyCourse`).doc(course.id);
+                batch.set(docRef, {
+                  ...course,
+                  isCompleted: false,
+                  addedDate: firebase.firestore.Timestamp.now(),
+                });
               });
+              await batch.commit();
+              // console.log('Courses added successfully');
+              dispatch(addDailyStatus(todayStart));
             }
           }
         }
-      });
-  }, []);
-
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
+    };
+  
+    fetchAndAddCourses();
+  }, [selctedDate, weekdays, date, currentUid, isFirst, dispatch]);
+  
   useEffect(() => {
+    const fetchTodaysCourses = async () => {
+      try {
+        const startOfDay = new Date(selctedTimestamp.toDate().setHours(0, 0, 0, 0));
+        const endOfDay = new Date(selctedTimestamp.toDate().setHours(23, 59, 59, 999));  
+        const snapshot = await firestore()
+          .collection(`UserData/${currentUid}/dailyCourse`)
+          .where('addedDate', '>=', firebase.firestore.Timestamp.fromDate(startOfDay))
+          .where('addedDate', '<=', firebase.firestore.Timestamp.fromDate(endOfDay))
+          .get();
+  
+        const courses = snapshot.docs.map(doc => doc.data());
+        setTodaysCourse(courses);
+      } catch (error) {
+        console.error('Error fetching tdata', error);
+      }
+    };
+  
+    fetchTodaysCourses();
+
     const startOfDay = new Date(selctedTimestamp.toDate().setHours(0, 0, 0, 0));
-    const endOfDay = new Date(
-      selctedTimestamp.toDate().setHours(23, 59, 59, 999),
-    );
-    let arr: any = [];
+    const endOfDay = new Date(selctedTimestamp.toDate().setHours(23, 59, 59, 999));
     const subscriber = firestore()
       .collection(`UserData/${currentUid}/dailyCourse`)
-      .where(
-        'addedDate',
-        '>=',
-        firebase.firestore.Timestamp.fromDate(startOfDay),
-      )
+      .where('addedDate', '>=', firebase.firestore.Timestamp.fromDate(startOfDay))
       .where('addedDate', '<=', firebase.firestore.Timestamp.fromDate(endOfDay))
-      .onSnapshot(documentSnapshot => {
-        documentSnapshot.forEach(item => {
-          arr.push(item.data());
-        }),
-          setTodaysCourse(arr);
+      .onSnapshot(snapshot => {
+        const updatedCourses = snapshot.docs.map(doc => doc.data());
+        setTodaysCourse(updatedCourses);
       });
+  
     return () => subscriber();
-  }, [selctedTimestamp.seconds]);
+  }, [selctedTimestamp, currentUid]);
+  
 
   return (
     <View style={screenStyles.container}>
@@ -165,7 +179,7 @@ const Home: React.FC = () => {
               data={todaysCourse}
               keyExtractor={item => Math.random().toString(36).substring(2)}
               renderItem={({item, index}) => {
-                return <CourseItem item={item} setmodalVisible={setmodalVisible} />;
+                return <CourseItem item={item}  />;
               }}
               ListEmptyComponent={<ActivityIndicator />}
             />
