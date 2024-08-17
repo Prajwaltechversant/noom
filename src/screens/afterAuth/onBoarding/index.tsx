@@ -16,6 +16,7 @@ import { addSurveyData } from '../../../redux/slices/questionsSlice';
 import CustomComponentModal from '../../../components/modal/customComponentModal';
 import InfoScreen1 from '../../../module/onboardingSurvey/infoScreens/infoScreen1';
 import EChartComponent from '../../../module/echart/echart1';
+import Loader from '../../../components/Loader';
 
 const OnboardingScreen = () => {
   const screenContext = useScreenContext();
@@ -73,7 +74,7 @@ const OnboardingScreen = () => {
       setLoading(false);
     }
   }, []);
-  console.log(section);
+  // console.log(section);
   useMemo(() => {
     let totalLength = 0;
     surveyData.forEach((item: any) => {
@@ -99,7 +100,7 @@ const OnboardingScreen = () => {
       });
     } else null;
   }, [progress]);
-  if (loading) return <ActivityIndicator />;
+  if (loading) return <Loader />;
 
   const handleNext = () => {
     const currentSection = surveyData[currentSectionIndex];

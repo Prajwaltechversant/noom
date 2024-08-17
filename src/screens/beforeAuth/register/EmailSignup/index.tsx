@@ -1,8 +1,8 @@
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './style';
-import {useScreenContext} from '../../../../context/screenContext';
-import {useNavigation} from '@react-navigation/native';
+import { useScreenContext } from '../../../../context/screenContext';
+import { useNavigation } from '@react-navigation/native';
 import CustomTextInputComponent from '../../../../components/textInput';
 import textStyle from '../../../../style/text/style';
 import Feather from 'react-native-vector-icons/Feather';
@@ -10,16 +10,16 @@ import {
   SignupWithEmailErrorType,
   SignupWithEmailtype,
 } from '../../../../types/signup';
-import {validation} from '../../../../services/validation';
-import {TextInput} from 'react-native-paper';
-import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
-import {signUpWithEmail} from '../../../../services/signup';
-import {addData} from '../../../../redux/slices/Auth/loginSlice';
+import { validation } from '../../../../services/validation';
+import { TextInput } from 'react-native-paper';
+import { colorPalette } from '../../../../assets/colorpalette/colorPalette';
+import { signUpWithEmail } from '../../../../services/signup';
+import { addData } from '../../../../redux/slices/Auth/loginSlice';
 import { useAppDispatch } from '../../../../redux/hook';
 
 const EmailSignup = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
 
   const screenStyles = styles(
@@ -55,7 +55,7 @@ const EmailSignup = () => {
     let isEmail: any = validation('email', formData.email);
     let isPassword: any = validation('password', formData.password);
 
-    let newError = {...error};
+    let newError = { ...error };
 
     if (!isEmail.value) {
       newError.emailErr = isEmail.error;
@@ -69,8 +69,12 @@ const EmailSignup = () => {
     }
     setError(newError);
     if (!newError.emailErr && !newError.passwordErr) {
-      setError({emailErr: undefined, passwordErr: undefined});
-      signUpWithEmail(formData);
+      setError({ emailErr: undefined, passwordErr: undefined });
+      const res:any = await signUpWithEmail(formData);
+      // console.log(res,'a')
+     if(res.length>0){
+      Alert.alert(res)
+     }
     }
   };
 
@@ -79,7 +83,7 @@ const EmailSignup = () => {
       headerRight: () => {
         return (
           <TouchableOpacity onPress={handleSignup}>
-            <Text style={[textStyle.labelText, {color: colorPalette.stream}]}>
+            <Text style={[textStyle.labelText, { color: colorPalette.stream }]}>
               NEXT
             </Text>
           </TouchableOpacity>
@@ -98,7 +102,7 @@ const EmailSignup = () => {
           onChangeText={e => handleStateUpdate('email', e)}
           error={error?.emailErr ? true : false}
           value={formData.email}
-        
+
         />
         {error.emailErr && (
           <Text style={textStyle.errorText}>{error.emailErr}</Text>

@@ -20,6 +20,7 @@ import { SignupWithEmailtype } from '../../../types/signup';
 import { TextInput } from 'react-native-paper';
 import { login } from '../../../services/signin';
 import { faceBookSignup, googleSignup } from '../../../services/signup';
+import Loader from '../../../components/Loader';
 
 export default function Login() {
   const screenContext = useScreenContext();
@@ -34,6 +35,7 @@ export default function Login() {
   const [isLogin, setIsLogin] = useState(false);
   const navigation: any = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState<SignupWithEmailtype>({
     email: undefined,
     password: undefined,
@@ -51,13 +53,18 @@ export default function Login() {
     if (!password || !email) {
       Alert.alert('Please add the details');
     } else {
+      setIsLoading(true)
       const response: any = await login(formData);
+      setIsLoading(false)
+
       if (!response?.res) {
         console.log(response);
         Alert.alert(response.error);
       }
     }
   };
+
+  if(loading) return <Loader/>
 
   return (
     <ImageBg

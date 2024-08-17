@@ -1,25 +1,26 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import textStyle from '../../../style/text/style';
 import DayItem from '../../../components/HomScreen components/dayItemComponent';
-import {useScreenContext} from '../../../context/screenContext';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import CourseItem from '../../../components/HomScreen components/course box';
 import CustomButton from '../../../components/button/customButton';
-import {ActivityIndicator, Button} from 'react-native-paper';
-import firestore, {Filter} from '@react-native-firebase/firestore';
-import {firebase} from '@react-native-firebase/auth';
+import { ActivityIndicator, Button } from 'react-native-paper';
+import firestore, { Filter } from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth';
 import ProgressItem from '../../../components/HomScreen components/progressBox';
 import auth from '@react-native-firebase/auth';
-import {useAppDispatch, useAppSelector} from '../../../redux/hook';
-import {addDailyStatus} from '../../../redux/slices/DailyCourse';
+import { useAppDispatch, useAppSelector } from '../../../redux/hook';
+import { addDailyStatus } from '../../../redux/slices/DailyCourse';
 import CustomComponentModal from '../../../components/modal/customComponentModal';
 import PlayerModal from '../../../components/HomScreen components/playerModal';
+import Loader from '../../../components/Loader';
 
 const Home: React.FC = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait} = screenContext;
+  const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
@@ -34,7 +35,7 @@ const Home: React.FC = () => {
   const weekdays: any = [];
   const [modalVisible, setmodalVisible] = useState(false);
   while (!weekdays[date.getDay()]) {
-    weekdays[date.getDay()] = date.toLocaleString(locale, {weekday: 'long'});
+    weekdays[date.getDay()] = date.toLocaleString(locale, { weekday: 'long' });
     // .slice(0, 3);
     date.setDate(date.getDate() + 1);
   }
@@ -47,6 +48,7 @@ const Home: React.FC = () => {
   const [isSelected, setIsSelcted] = useState(false);
   const [isPrev, setIsPrev] = useState(false);
   const isFirst = useAppSelector(state => state.dailyStatus.isFirstTime);
+  const [isLoading, setIsLoading] = useState(false)
   const handleSelectedTimeStamp = () => {
     try {
       let todayIndex = weekdays.indexOf(weekdays[new Date().getDay()]);
@@ -73,12 +75,11 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const fetchAndAddCourses = async () => {
+      setIsLoading(true)
       try {
         const coursesSnapshot = await firestore().collection('courses').limit(3).get();
         const courses = coursesSnapshot.docs.map(doc => doc.data());
-  
-        console.log(courses.length, 'courses fetched');
-  
+
         if (selctedDate === weekdays[date.getDay()]) {
           if (courses.length > 0) {
             const todayStart = new Date().setHours(0, 0, 0, 0);
@@ -93,8 +94,9 @@ const Home: React.FC = () => {
                 });
               });
               await batch.commit();
-              // console.log('Courses added successfully');
               dispatch(addDailyStatus(todayStart));
+              setIsLoading(false)
+
             }
           }
         }
@@ -102,28 +104,30 @@ const Home: React.FC = () => {
         console.error('Error fetching data', error);
       }
     };
-  
+
     fetchAndAddCourses();
   }, [selctedDate, weekdays, date, currentUid, isFirst, dispatch]);
-  
+  // setIsLoading(false); 
+
   useEffect(() => {
     const fetchTodaysCourses = async () => {
       try {
         const startOfDay = new Date(selctedTimestamp.toDate().setHours(0, 0, 0, 0));
-        const endOfDay = new Date(selctedTimestamp.toDate().setHours(23, 59, 59, 999));  
+        const endOfDay = new Date(selctedTimestamp.toDate().setHours(23, 59, 59, 999));
         const snapshot = await firestore()
           .collection(`UserData/${currentUid}/dailyCourse`)
           .where('addedDate', '>=', firebase.firestore.Timestamp.fromDate(startOfDay))
           .where('addedDate', '<=', firebase.firestore.Timestamp.fromDate(endOfDay))
           .get();
-  
+
         const courses = snapshot.docs.map(doc => doc.data());
         setTodaysCourse(courses);
+
       } catch (error) {
         console.error('Error fetching tdata', error);
       }
     };
-  
+
     fetchTodaysCourses();
 
     const startOfDay = new Date(selctedTimestamp.toDate().setHours(0, 0, 0, 0));
@@ -136,17 +140,19 @@ const Home: React.FC = () => {
         const updatedCourses = snapshot.docs.map(doc => doc.data());
         setTodaysCourse(updatedCourses);
       });
-  
+
     return () => subscriber();
   }, [selctedTimestamp, currentUid]);
-  
+
+  // if (isLoading) return <Loader />; 
+
 
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
         <FlatList
           data={weekdays}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <DayItem
               day={item}
               isSelected={selctedDate === item ? true : false}
@@ -163,14 +169,14 @@ const Home: React.FC = () => {
         keyExtractor={item => Math.random().toString(36).substring(2)}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <View style={screenStyles.contentContainer}>
             <View style={screenStyles.headerTextContainer}>
-              <Text style={[textStyle.questionText, {textAlign: 'left'}]}>
+              <Text style={[textStyle.questionText, { textAlign: 'left' }]}>
                 {dayText}'s course
               </Text>
               <View style={screenStyles.dayContainer}>
-                <Text style={[textStyle.labelText, {textAlign: 'right'}]}>
+                <Text style={[textStyle.labelText, { textAlign: 'right' }]}>
                   Noom 10
                 </Text>
               </View>
@@ -178,19 +184,19 @@ const Home: React.FC = () => {
             <FlatList
               data={todaysCourse}
               keyExtractor={item => Math.random().toString(36).substring(2)}
-              renderItem={({item, index}) => {
-                return <CourseItem item={item}  />;
+              renderItem={({ item, index }) => {
+                return <CourseItem item={item} />;
               }}
-              ListEmptyComponent={<ActivityIndicator />}
+              ListEmptyComponent={<Loader />}
             />
 
-            <Text style={[textStyle.questionText, {textAlign: 'left'}]}>
+            <Text style={[textStyle.questionText, { textAlign: 'left' }]}>
               Todays Progress
             </Text>
             <FlatList
               data={Array(3)}
               keyExtractor={item => Math.random().toString(36).substring(2)}
-              renderItem={({item}) => <ProgressItem item={item} />}
+              renderItem={({ item }) => <ProgressItem item={item} />}
             />
           </View>
         )}

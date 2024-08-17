@@ -11,6 +11,7 @@ import SettingsScreen from '../../../screens/afterAuth/drawer screens/settings';
 import HelpScreen from '../../../screens/afterAuth/drawer screens/Help';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import HeaderTab from '../../../components/headerTab';
+import ChatScreen from '../../../screens/afterAuth/drawer screens/chatScreen';
 const Drawer = createDrawerNavigator();
 
 const DrawerStack = () => {
@@ -29,7 +30,7 @@ const DrawerStack = () => {
       />
       <Drawer.Screen
         name={screenNames.Message_Screen}
-        component={MessageScreen}
+        component={ChatScreen}
         options={{
           drawerIcon: () => (
             <AntDesign name="message1" color={'black'} size={20} />
