@@ -39,6 +39,7 @@ const PlayerModal: React.FC<Props> = ({ isModalVisible, setIsModalVisible, playA
   const [duration, setDuration] = useState(0)
   const [progress, setProgress] = useState(0)
   const currentUid = auth().currentUser?.uid
+  const [id, setID] = useState()
 
   const containerStyle = { backgroundColor: colorPalette.white };
   const screenContext = useScreenContext();
@@ -55,6 +56,7 @@ const PlayerModal: React.FC<Props> = ({ isModalVisible, setIsModalVisible, playA
     TrackPlayer.getProgress().then((progress) => {
       setDuration(progress.duration)
     })
+    TrackPlayer.getActiveTrack().then((item: any) => setID(item.id))
   }, [])
 
   useEffect(() => {
@@ -91,23 +93,26 @@ const PlayerModal: React.FC<Props> = ({ isModalVisible, setIsModalVisible, playA
     setEnd(false)
     setProgress(0)
   }
+  console.log(end)
 
+  // TrackPlayer.getActiveTrack().then(i=>console.log(i.id,'a'))
   const closePlayer = async () => {
     await pauseAudio();
     setIsModalVisible(false)
     setProgress(0)
 
-    if(end){
+    if (end) {
       firestore()
-            .collection(`UserData/${currentUid}/dailyCourse`)
-            .doc('id')
-            .update({
-              isCompleted: true,
-            })
-            .then(() => {
-            });
+        .collection(`UserData/${currentUid}/dailyCourse`)
+        .doc(item.id)
+        .update({
+          isCompleted: true,
+        })
+        .then(() => {
+        });
     }
   }
+  console.log(id,'D')
   return (
     <View style={screenStyles.centeredView}>
       <Modal
@@ -119,7 +124,7 @@ const PlayerModal: React.FC<Props> = ({ isModalVisible, setIsModalVisible, playA
         }}>
         <View style={screenStyles.centeredView}>
           <View style={screenStyles.modalView}>
-            <Text style={textStyle.labelText}>{item.title}</Text>
+            <Text style={textStyle.labelText}>{item.id}</Text>
 
             <View style={screenStyles.controlls}>
               <View style={screenStyles.slider}>
