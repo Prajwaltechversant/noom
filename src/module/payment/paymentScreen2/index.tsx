@@ -162,7 +162,6 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                     <Divider />
                   </View>
                 </View>
-                <PlanItem />
 
               </>
             )}
@@ -176,7 +175,7 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                       <Text style={{ textDecorationColor: 'blue', textDecorationStyle: 'double', textDecorationLine: "underline", color: 'blue', marginTop: 4 }}>Learn More</Text>
                     </View>
                     <View>
-                      <Text style={{ textAlign: 'right' }}>${item.amount}</Text>
+                      <Text style={{ textAlign: 'right',color:'black' }}>${item.amount}</Text>
                       <TouchableOpacity onPress={() => handleDelete(item.id)}>
                         <Feather style={{ textAlign: 'right' }} name='x' size={30} color={colorPalette.black} />
                       </TouchableOpacity>

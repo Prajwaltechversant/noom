@@ -1,24 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+// import { createSlice } from "@reduxjs/toolkit";
 
 
-let initialState:any = []
+// let initialState:any = []
 
 
-export const onBoardingSlice = createSlice({
-    name: 'onBoarding',
-    initialState,
+// export const onBoardingSlice = createSlice({
+//     name: 'onBoarding',
+//     initialState,
 
-    reducers: {
-        addData: (state, action) => {
-            const { qId,aId } = action.payload;
-            return ({
-                ...state,
-                [qId]:aId
-            });
-        }
-    }
+//     reducers: {
+//         addData: (state, action) => {
+//             const { qId,aId } = action.payload;
+//             return ({
+//                 ...state,
+//                 [qId]:aId
+//             });
+//         }
+//     }
 
-})
+// })
 
-export const { addData } = onBoardingSlice.actions;
-export default onBoardingSlice.reducer;
+// export const { addData } = onBoardingSlice.actions;
+// export default onBoardingSlice.reducer;

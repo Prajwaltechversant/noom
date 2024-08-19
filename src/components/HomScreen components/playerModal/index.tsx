@@ -63,14 +63,13 @@ const PlayerModal: React.FC<Props> = ({ isModalVisible, setIsModalVisible, playA
     const intervalId = setInterval(() => {
       TrackPlayer.getProgress().then((progress) => setProgress(progress.position))
     }, 1000)
-
     return () => clearInterval(intervalId);
   }, []);
   const handlePlay = async () => {
     await playAudio()
     setIsPlaying(!isPlaying)
   }
-  console.log(item.id)
+  // console.log(item.id)
   const handlePause = async () => {
     await pauseAudio()
     setIsPlaying(!isPlaying)
@@ -93,14 +92,12 @@ const PlayerModal: React.FC<Props> = ({ isModalVisible, setIsModalVisible, playA
     setEnd(false)
     setProgress(0)
   }
-  console.log(end)
 
   // TrackPlayer.getActiveTrack().then(i=>console.log(i.id,'a'))
   const closePlayer = async () => {
     await pauseAudio();
     setIsModalVisible(false)
     setProgress(0)
-
     if (end) {
       firestore()
         .collection(`UserData/${currentUid}/dailyCourse`)
@@ -112,7 +109,7 @@ const PlayerModal: React.FC<Props> = ({ isModalVisible, setIsModalVisible, playA
         });
     }
   }
-  console.log(id,'D')
+  // console.log(id,'D')
   return (
     <View style={screenStyles.centeredView}>
       <Modal
