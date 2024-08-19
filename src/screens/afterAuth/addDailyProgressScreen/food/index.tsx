@@ -7,6 +7,8 @@ import textStyle from '../../../../style/text/style';
 import CustomTextInputComponent from '../../../../components/textInput';
 import CustomComponentModal from '../../../../components/modal/customComponentModal';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import CustomButton from '../../../../components/button/customButton';
+import { colorPalette } from '../../../../assets/colorpalette/colorPalette';
 interface Props {
   item: any;
 }
@@ -37,7 +39,7 @@ const LogFoodScreen: React.FC<Props> = ({item}) => {
 
   const decrementCounter = () => {
    let newQuantiy = quantity-1;
-   if(quantity>=0){
+   if(newQuantiy>=0){
     setQuantity(newQuantiy);
    }
   };
@@ -93,10 +95,14 @@ const LogFoodScreen: React.FC<Props> = ({item}) => {
                 />
               </View>
             </View>
-            <Text style={{textAlign: 'justify'}}>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolor
-              harum soluta maiores ipsum ducimus modi alias sint.
-            </Text>
+          <CustomButton
+label='Save'
+btnColor={colorPalette.berry}
+btnHeight={60}
+btnWidth={90}
+
+
+/>
           </View>
         </CustomComponentModal>
       </View>
