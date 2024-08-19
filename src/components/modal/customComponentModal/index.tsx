@@ -1,27 +1,22 @@
-import {View} from 'react-native';
+import {Alert, Modal, ModalProps, Pressable, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {
-  Modal,
-  Portal,
-  Text,
-  Button,
-  PaperProvider,
-  ModalProps,
-} from 'react-native-paper';
+// import {
+//   ModalProps,
+// } from 'react-native-paper';
 import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
-
+import { Text } from 'react-native';
+import textStyle from '../../../style/text/style';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 type Props = {
   children: React.ReactNode;
+  setProgressModalVisible:(b:boolean)=>void,
+  modalHeight:number
 };
 
 type ModalProp = Props & ModalProps;
 
-const CustomComponentModal = ({children, visible, ...props}: ModalProp) => {
-  const [visibleModal, setVisibleModal] = React.useState(false);
-
-  const showModal = () => setVisibleModal(visible);
-  const hideModal = () => setVisibleModal(false);
+const CustomComponentModal = ({children, visible,setProgressModalVisible,modalHeight, ...props}: ModalProp) => {
   const containerStyle = {backgroundColor: 'red'};
   const screenContext = useScreenContext();
   const {width, height, isPortrait} = screenContext;
@@ -30,17 +25,34 @@ const CustomComponentModal = ({children, visible, ...props}: ModalProp) => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
+
   return (
-    <PaperProvider>
-      <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={hideModal}
-          contentContainerStyle={[containerStyle, {padding: 2}]}>
-          <View style={{height, width, zIndex: 1}}>{children}</View>
-        </Modal>
-      </Portal>
-    </PaperProvider>
+    <View style={screenStyles.centeredView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={visible}
+        onRequestClose={() => {
+          setProgressModalVisible(!visible);
+        }}
+        >
+        <View style={screenStyles.centeredView}>
+          <View style={[screenStyles.modalView,{height:modalHeight}]}>
+          < >
+            <TouchableOpacity style={screenStyles.closeIconContainer}
+            onPress={()=>{
+              setProgressModalVisible(!visible);
+            }}
+            >
+             <MaterialIcons name='arrow-drop-down' size={40} />
+            </TouchableOpacity>
+          </>
+           <View style={{marginVertical:30, justifyContent:'center',alignItems:'center'}}>{children}</View>
+          </View>
+        </View>
+      </Modal>
+
+    </View>
   );
 };
 

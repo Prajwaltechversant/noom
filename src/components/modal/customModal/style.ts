@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { ScreenContextType } from "../../../types/types";
+import { colorPalette } from "../../../assets/colorpalette/colorPalette";
 
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     centeredView: {
@@ -22,7 +23,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        elevation: 10,
         width: width * .9
         , height: height * 0.8
     },
@@ -46,6 +47,17 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         marginBottom: 15,
         textAlign: 'center',
     },
+
+    closeIconContainer: {
+        alignSelf: 'center',
+        position:'absolute',
+        backgroundColor:colorPalette.salmon,
+        borderBottomStartRadius:100,
+        width:70,
+        borderBottomEndRadius:100,
+        justifyContent:'center',
+        alignItems:'center'
+    }
 })
 
 export default styles

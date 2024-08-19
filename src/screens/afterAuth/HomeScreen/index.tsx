@@ -22,6 +22,7 @@ import PlayerModal from '../../../components/HomScreen components/playerModal';
 import Loader from '../../../components/Loader';
 import AddProgressModal from '../../../components/modal/customModal';
 import AddProgressItemComponent from '../../../components/HomScreen components/addProgressItem';
+import DailyProgressCard from '../../../components/HomScreen components/dailyProgressCard';
 
 const Home: React.FC = () => {
   const screenContext = useScreenContext();
@@ -187,7 +188,6 @@ const Home: React.FC = () => {
       console.log(error);
     }
   };
-  // console.log(dailyProgressData,'aSD');
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
@@ -237,7 +237,7 @@ const Home: React.FC = () => {
             <FlatList
               data={Array(3)}
               keyExtractor={item => Math.random().toString(36).substring(2)}
-              renderItem={({item}) => <ProgressItem item={item} />}
+              renderItem={({item}) => <DailyProgressCard />}
             />
           </View>
         )}
@@ -252,11 +252,11 @@ const Home: React.FC = () => {
         </Button>
       </View>
 
-      <AddProgressModal visible={progressModalVisible}>
+      <AddProgressModal visible={progressModalVisible} setProgressModalVisible={setProgressModalVisible} >
         <FlatList
           data={dailyProgressData}
           renderItem={({item}: any) => (
-            <AddProgressItemComponent key={item.id} item={item} />
+            <AddProgressItemComponent key={item.id} item={item} setProgressModalVisible={setProgressModalVisible}  />
           )}
         />
       </AddProgressModal>

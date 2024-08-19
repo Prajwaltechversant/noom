@@ -31,6 +31,8 @@ export const screenNames = {
     Recipies: 'recipiesScreen',
     Setting: 'settingsScreen',
     Weighgraph: 'WeighGraph',
+    Daily_ProgressScreen:'dailyProgressScreen',
+    courseCarouselPage:'courseCarouselPage',
 
 
     HomeScreen :'Home'

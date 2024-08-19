@@ -58,3 +58,6 @@ export type CourseType = {
     audio: string;
 
 }
+
+
+export type DailyProgressCategory = "food" | "exercise" | "weight" | "bp" | "bc"
