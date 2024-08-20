@@ -8,7 +8,11 @@ import CustomTextInputComponent from '../../../../components/textInput';
 import CustomComponentModal from '../../../../components/modal/customComponentModal';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomButton from '../../../../components/button/customButton';
-import { colorPalette } from '../../../../assets/colorpalette/colorPalette';
+import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
+import {Image} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
 interface Props {
   item: any;
 }
@@ -23,6 +27,7 @@ const LogFoodScreen: React.FC<Props> = ({item}) => {
   );
   const navigation: any = useNavigation();
   const data = item.data;
+  const currentUser = auth().currentUser?.uid;
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>();
@@ -32,17 +37,72 @@ const LogFoodScreen: React.FC<Props> = ({item}) => {
     setModalVisible(!modalVisible);
     setSelectedItem(item);
   };
-
   const incrementCount = () => {
     setQuantity(quantity + 1);
   };
-
   const decrementCounter = () => {
-   let newQuantiy = quantity-1;
-   if(newQuantiy>=0){
-    setQuantity(newQuantiy);
-   }
+    let newQuantiy = quantity - 1;
+    if (newQuantiy >= 0) {
+      setQuantity(newQuantiy);
+    }
   };
+  const addToDailyProgress = () => {
+    // firestore()
+    //   .collection(`UserData/${currentUser}/dailyProgress`)
+    //   .doc(item.id)
+    //   .set({
+    //     id: item.id,
+    //     title: item.title,
+    //     data: [{...selectedItem, count: quantity}],
+    //   })
+    //   .then(i => console.log('data added'));
+    let existing:any = [];
+    firestore()
+      .collection(`UserData/${currentUser}/dailyProgress`)
+      // .where('id', '==', item.id)
+      .get()
+      .then(i => i.forEach(item => console.log(item.data())));
+      // console.log(existing)
+
+    // if (existing.length <= 0) {
+    //   if (quantity > 0) {
+    //     firestore()
+    //       .collection(`UserData/${currentUser}/dailyProgress/${data.id}`)
+    //       .add({
+    //         id: item.id,
+    //         title: item.title,
+    //         data: [{...selectedItem, count: quantity}],
+    //       })
+    //       .then(i => console.log('data added'));
+    //   }
+    // } else {
+    //   if (quantity > 0) {
+    //     // firestore()
+    //     //   .collection(`UserData/${currentUser}/dailyProgress`)
+    //     //   .({
+    //     //     id: item.id,
+    //     //     title: item.title,
+    //     //     data: [{...selectedItem, count: quantity}],
+    //     //   })
+    //     //   .then(i => console.log('data added'));
+    //   }
+    // }
+    // try {
+    //   if (quantity > 0) {
+    //     firestore()
+    //       .collection(`UserData/${currentUser}/dailyProgress`)
+    //       .add({
+    //         id: item.id,
+    //         title: item.title,
+    //         data: [{...selectedItem, count: quantity}],
+    //       })
+    //       .then(i => console.log('data added'));
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
+
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.headingText}>Log Your Meals</Text>
@@ -61,7 +121,11 @@ const LogFoodScreen: React.FC<Props> = ({item}) => {
             <TouchableOpacity
               style={screenStyles.item}
               onPress={() => handleSelectedItem(item)}>
-              <Text>{item.title}</Text>
+              <Image
+                source={{uri: item?.image}}
+                style={screenStyles.itemImage}
+              />
+              <Text style={textStyle.labelText}>{item.title}</Text>
             </TouchableOpacity>
           )}
         />
@@ -95,14 +159,16 @@ const LogFoodScreen: React.FC<Props> = ({item}) => {
                 />
               </View>
             </View>
-          <CustomButton
-label='Save'
-btnColor={colorPalette.berry}
-btnHeight={60}
-btnWidth={90}
-
-
-/>
+            <View style={{alignSelf: 'center', marginVertical: 10}}>
+              <CustomButton
+                label="Save"
+                btnColor={colorPalette.berry}
+                btnHeight={40}
+                btnWidth={60}
+                borderRadius={20}
+                onPress={addToDailyProgress}
+              />
+            </View>
           </View>
         </CustomComponentModal>
       </View>

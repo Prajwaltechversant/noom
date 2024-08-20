@@ -30,9 +30,9 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     item: {
         height: height * .06,
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: colorPalette.btnPrimary,
+        backgroundColor: colorPalette.white,
         marginVertical: height * 0.01,
         borderRadius: 5,
         shadowColor: '#000',
@@ -43,6 +43,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+        flexDirection:'row',
+        paddingHorizontal:10
     },
     addQuantiyBox:{
         elevation:2,
@@ -58,6 +60,12 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     alignItems:'center',
     borderRadius:5
     },
+    itemImage:{
+        height:40,
+        width:40,
+        borderRadius:50,
+        resizeMode:'cover'
+    }
     
 })
 

@@ -7,6 +7,7 @@ import {DailyProgressCategory} from '../../../types/types';
 import ReciepiesScreen from '../drawer screens/reciepies';
 import LogFoodScreen from './food';
 import LogWeightScreen from './logWeightScreen';
+import auth from '@react-native-firebase/auth';
 
 const DailyProgressScreen: React.FC = ({route}: any) => {
   const screenContext = useScreenContext();
