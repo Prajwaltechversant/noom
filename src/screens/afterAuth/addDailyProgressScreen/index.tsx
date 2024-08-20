@@ -23,24 +23,11 @@ const DailyProgressScreen: React.FC = ({route}: any) => {
 
   switch (category) {
     case 'food':
-      return(
-        <LogFoodScreen item={item} />
-      );
     case 'exercise':
-        return(
-            <LogWeightScreen />
-        )
+      return <LogFoodScreen item={item} category={category} />;
     case 'weight':
-        return(
-            <LogWeightScreen  />
-        )
+      return <LogWeightScreen />;
   }
-
-//   return (
-//     <View>
-//       <Text>index</Text>
-//     </View>
-//   );
 };
 
 export default DailyProgressScreen;

@@ -23,6 +23,7 @@ import Loader from '../../../components/Loader';
 import AddProgressModal from '../../../components/modal/customModal';
 import AddProgressItemComponent from '../../../components/HomScreen components/addProgressItem';
 import DailyProgressCard from '../../../components/HomScreen components/dailyProgressCard';
+import TodaysProgress from '../../../components/HomScreen components/TodaysProgress';
 
 const Home: React.FC = () => {
   const screenContext = useScreenContext();
@@ -41,7 +42,6 @@ const Home: React.FC = () => {
   const [modalVisible, setmodalVisible] = useState(false);
   while (!weekdays[date.getDay()]) {
     weekdays[date.getDay()] = date.toLocaleString(locale, {weekday: 'long'});
-    // .slice(0, 3);
     date.setDate(date.getDate() + 1);
   }
   const [selctedDate, setSelctedDate] = useState(weekdays[new Date().getDay()]);
@@ -169,7 +169,6 @@ const Home: React.FC = () => {
     return () => subscriber();
   }, [selctedTimestamp, currentUid]);
 
-  // if (isLoading) return <Loader />;
 
   const handleDailyProgressModal = async () => {
     let arr: any = [];
@@ -231,14 +230,7 @@ const Home: React.FC = () => {
               ListEmptyComponent={<Loader />}
             />
 
-            <Text style={[textStyle.questionText, {textAlign: 'left'}]}>
-              Todays Progress
-            </Text>
-            <FlatList
-              data={Array(3)}
-              keyExtractor={item => Math.random().toString(36).substring(2)}
-              renderItem={({item}) => <DailyProgressCard />}
-            />
+            <TodaysProgress  />
           </View>
         )}
       />

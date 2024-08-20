@@ -43,30 +43,31 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        flexDirection:'row',
-        paddingHorizontal:10
+        flexDirection: 'row',
+        paddingHorizontal: 10
     },
-    addQuantiyBox:{
-        elevation:2,
-        justifyContent:'center',
-        alignItems:'center'
+    addQuantiyBox: {
+        elevation: 2,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    addContainer:{
-        flexDirection:'row',
-        justifyContent:'space-evenly',
-        width:'100%',
-    backgroundColor:colorPalette.mint,
-    height:60,
-    alignItems:'center',
-    borderRadius:5
+    addContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        backgroundColor: colorPalette.mint,
+        height: 60,
+        alignItems: 'center',
+        borderRadius: 5,
+        paddingHorizontal:60
     },
-    itemImage:{
-        height:40,
-        width:40,
-        borderRadius:50,
-        resizeMode:'cover'
+    itemImage: {
+        height: 40,
+        width: 40,
+        borderRadius: 50,
+        resizeMode: 'cover'
     }
-    
+
 })
 
 export default styles

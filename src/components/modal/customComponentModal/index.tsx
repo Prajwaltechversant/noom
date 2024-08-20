@@ -47,7 +47,13 @@ const CustomComponentModal = ({children, visible,setProgressModalVisible,modalHe
              <MaterialIcons name='arrow-drop-down' size={40} />
             </TouchableOpacity>
           </>
-           <View style={{marginVertical:30, justifyContent:'center',alignItems:'center'}}>{children}</View>
+           <View style={{
+            marginVertical:30, 
+            justifyContent:'center',
+            alignItems:'center',
+            alignSelf:'center',
+            height:'100%'
+            }}>{children}</View>
           </View>
         </View>
       </Modal>

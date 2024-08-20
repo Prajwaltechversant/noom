@@ -38,11 +38,19 @@ const DayItem: React.FC<Props> = ({
     <TouchableOpacity
       style={[
         screenStyles.container,
-        {backgroundColor: isSelected ? colorPalette.blossom : 'white'},
+        {backgroundColor: isSelected ? colorPalette.cinnamon : colorPalette.gold},
       ]}
       onPress={handleSelection}>
-      <View style={screenStyles.innerCircle}>
-        <Text style={screenStyles.text}>{day.slice(0, 1)}</Text>
+      <View
+        style={[
+          screenStyles.innerCircle,
+          {
+            backgroundColor: isSelected ? colorPalette.stream :colorPalette.white,
+          },
+        ]}>
+        <Text style={{color: isSelected ? 'white' : 'black'}}>
+          {day.slice(0, 1)}
+        </Text>
       </View>
     </TouchableOpacity>
   );
