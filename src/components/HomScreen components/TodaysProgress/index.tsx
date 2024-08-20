@@ -17,7 +17,7 @@ const TodaysProgress: React.FC = () => {
   );
   const navigation: any = useNavigation();
   const currentUid = auth().currentUser?.uid;
-  const [dailyProgressData, setDailyProgressData] = useState([]);
+  const [dailyProgressData, setDailyProgressData] = useState<any>([]);
 
   useEffect(() => {
     fetchdata();
@@ -26,15 +26,26 @@ const TodaysProgress: React.FC = () => {
   const fetchdata = async () => {
     try {
       const res = await firestore()
-        .collection(`UserData/${currentUid}/dailyProgress`).orderBy('id','asc').get()
-      const resData: any = await res.docs.map(i => i.data());
-      setDailyProgressData(resData);
+        .collection(`UserData/${currentUid}/dailyProgress`)
+        .orderBy('id', 'asc')
+        .get();
+      const resData: any[] = await res.docs.map(i => i.data());
+      const group = resData.reduce((acc, obj) => {
+        const value = obj.id;
+        if (!acc[value]) {
+          acc[value] = [];
+        }
+        acc[value].push(obj);
+        return acc;
+      }, {});
+
+      setDailyProgressData(group);
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(dailyProgressData[0])
+  console.log(dailyProgressData);
   return (
     <View>
       <Text style={[textStyle.questionText, {textAlign: 'left'}]}>
