@@ -6,12 +6,13 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
     container: {
         marginVertical: 15,
-        height: height * .04,
+        height: 'auto',
         justifyContent: 'center',
-        width: width * .2,
+        width: 'auto',
         borderRadius: 20,
         paddingHorizontal: 10,
-        elevation: 3
+        elevation: 1,
+        margin:1
 
     }
 
