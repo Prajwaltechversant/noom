@@ -58,6 +58,7 @@ const LogFoodScreen: React.FC<Props> = ({item, category}) => {
     }
   };
 
+
   const searchItem = (e: string) => {
     setLoading(true);
     setIssearching(true);
@@ -118,6 +119,7 @@ const LogFoodScreen: React.FC<Props> = ({item, category}) => {
                 title: item.title,
                 data: {...selectedItem, count: quantity + existingCount},
                 itemId: selectedItem.id,
+                image:item.image
               })
               .then(i => console.log('data added'));
           }
@@ -130,6 +132,8 @@ const LogFoodScreen: React.FC<Props> = ({item, category}) => {
                 title: item.title,
                 data: {...selectedItem, count: quantity},
                 itemId: selectedItem.id,
+                image:item.image
+
               })
               .then(i => console.log('data added'));
           }
@@ -138,7 +142,6 @@ const LogFoodScreen: React.FC<Props> = ({item, category}) => {
         setModalVisible(!modalVisible);
       });
   };
-
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.headingText}>Log Your {category}</Text>

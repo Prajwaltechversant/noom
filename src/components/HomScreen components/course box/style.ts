@@ -10,11 +10,12 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         flex: 1,
         marginVertical: screenContext.isPortrait ? height * 0.008 : height * 0.002,
         borderRadius: screenContext.isPortrait ? height * 0.01 : height * 0.002,
-        elevation: 5,
+        elevation: 1,
         shadowColor: colorPalette.black,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignSelf: "auto"
+        alignSelf: "auto",
+        margin:1
     },
     col1: {
         flexDirection: 'column',

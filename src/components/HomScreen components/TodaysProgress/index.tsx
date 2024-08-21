@@ -1,15 +1,18 @@
-import {View, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import textStyle from '../../../style/text/style';
-import {useScreenContext} from '../../../context/screenContext';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { FlatList } from 'react-native-gesture-handler';
+
+
 
 const TodaysProgress: React.FC = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait} = screenContext;
+  const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
@@ -29,7 +32,7 @@ const TodaysProgress: React.FC = () => {
         .collection(`UserData/${currentUid}/dailyProgress`)
         .orderBy('id', 'asc')
         .get();
-      const resData: any[] = await res.docs.map(i => i.data());
+      const resData = res.docs.map(i => i.data());
       const group = resData.reduce((acc, obj) => {
         const value = obj.id;
         if (!acc[value]) {
@@ -38,19 +41,38 @@ const TodaysProgress: React.FC = () => {
         acc[value].push(obj);
         return acc;
       }, {});
-
       setDailyProgressData(group);
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(dailyProgressData);
+  const groupedData = Object.keys(dailyProgressData).map(key => ({
+    id: key,
+    data: dailyProgressData[key],
+  }));
+
+
   return (
     <View>
-      <Text style={[textStyle.questionText, {textAlign: 'left'}]}>
+      <Text style={[textStyle.questionText, { textAlign: 'left' }]}>
         Todays Progress
       </Text>
+      <FlatList
+        data={groupedData}
+        renderItem={({ item }) => (
+          <View style={screenStyles.card}>
+            <View style={screenStyles.cardHeader}>
+              <Text style={screenStyles.cardTitle}>{item.data[0].title}</Text>
+              <Image source={{ uri: item.data[0].image }} style={screenStyles.image} />
+            </View>
+            <View style={screenStyles.cardFooter}>
+              <Text>{item.data.length} In Todays Progress</Text>
+            </View>
+          </View>
+        )}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 };

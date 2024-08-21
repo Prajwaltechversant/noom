@@ -1,18 +1,18 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import textStyle from '../../../style/text/style';
 import DayItem from '../../../components/HomScreen components/dayItemComponent';
-import {useScreenContext} from '../../../context/screenContext';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import CourseItem from '../../../components/HomScreen components/course box';
 import CustomButton from '../../../components/button/customButton';
-import {ActivityIndicator, Button} from 'react-native-paper';
-import firestore, {Filter} from '@react-native-firebase/firestore';
-import {firebase} from '@react-native-firebase/auth';
+import { ActivityIndicator, Button } from 'react-native-paper';
+import firestore, { Filter } from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth';
 import ProgressItem from '../../../components/HomScreen components/progressBox';
 import auth from '@react-native-firebase/auth';
-import {useAppDispatch, useAppSelector} from '../../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import DailyCourse, {
   addDailyStatus,
   dailCourseStatus,
@@ -27,7 +27,7 @@ import TodaysProgress from '../../../components/HomScreen components/TodaysProgr
 
 const Home: React.FC = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait} = screenContext;
+  const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
   const weekdays: any = [];
   const [modalVisible, setmodalVisible] = useState(false);
   while (!weekdays[date.getDay()]) {
-    weekdays[date.getDay()] = date.toLocaleString(locale, {weekday: 'long'});
+    weekdays[date.getDay()] = date.toLocaleString(locale, { weekday: 'long' });
     date.setDate(date.getDate() + 1);
   }
   const [selctedDate, setSelctedDate] = useState(weekdays[new Date().getDay()]);
@@ -116,7 +116,6 @@ const Home: React.FC = () => {
 
     fetchAndAddCourses();
   }, [selctedDate, weekdays, date, currentUid, isFirst, dispatch]);
-  // setIsLoading(false);
 
   useEffect(() => {
     const fetchTodaysCourses = async () => {
@@ -187,12 +186,14 @@ const Home: React.FC = () => {
       console.log(error);
     }
   };
+
+  console.log(selctedDate, weekdays[new Date().getDay()])
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
         <FlatList
           data={weekdays}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <DayItem
               day={item}
               isSelected={selctedDate === item ? true : false}
@@ -209,14 +210,14 @@ const Home: React.FC = () => {
         keyExtractor={item => Math.random().toString(36).substring(2)}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <View style={screenStyles.contentContainer}>
             <View style={screenStyles.headerTextContainer}>
-              <Text style={[textStyle.questionText, {textAlign: 'left'}]}>
+              <Text style={[textStyle.questionText, { textAlign: 'left' }]}>
                 {dayText}'s course
               </Text>
               <View style={screenStyles.dayContainer}>
-                <Text style={[textStyle.labelText, {textAlign: 'right'}]}>
+                <Text style={[textStyle.labelText, { textAlign: 'right' }]}>
                   Noom 10
                 </Text>
               </View>
@@ -224,13 +225,13 @@ const Home: React.FC = () => {
             <FlatList
               data={todaysCourse}
               keyExtractor={item => Math.random().toString(36).substring(2)}
-              renderItem={({item, index}) => {
+              renderItem={({ item, index }) => {
                 return <CourseItem item={item} />;
               }}
               ListEmptyComponent={<Loader />}
             />
 
-            <TodaysProgress  />
+            {weekdays[new Date().getDay()] === selctedDate && < TodaysProgress />}
           </View>
         )}
       />
@@ -247,8 +248,8 @@ const Home: React.FC = () => {
       <AddProgressModal visible={progressModalVisible} setProgressModalVisible={setProgressModalVisible} >
         <FlatList
           data={dailyProgressData}
-          renderItem={({item}: any) => (
-            <AddProgressItemComponent key={item.id} item={item} setProgressModalVisible={setProgressModalVisible}  />
+          renderItem={({ item }: any) => (
+            <AddProgressItemComponent key={item.id} item={item} setProgressModalVisible={setProgressModalVisible} />
           )}
         />
       </AddProgressModal>
