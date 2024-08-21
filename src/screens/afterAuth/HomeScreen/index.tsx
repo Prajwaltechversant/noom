@@ -187,7 +187,7 @@ const Home: React.FC = () => {
     }
   };
 
-  console.log(selctedDate, weekdays[new Date().getDay()])
+  // console.log(todaysCourse)
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>

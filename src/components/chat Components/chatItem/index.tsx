@@ -10,7 +10,6 @@ interface Props {
 }
 const ChatItem: React.FC<Props> = ({ item }) => {
     const screenContext = useScreenContext();
-
     const { width, fontScale, height, isPortrait, isTabletType, scale } =
         screenContext;
     const screenStyles = styles(
@@ -25,7 +24,7 @@ const ChatItem: React.FC<Props> = ({ item }) => {
             alignSelf: item.role === 'admin' ? 'flex-start' : 'flex-end',
 
         }]}>
-            <Text style={[textStyle.labelText, { textAlign: item.role === 'admin' ? 'left' : 'right', color: 'white' }]}>{item.msg}</Text>
+            <Text style={[textStyle.labelText, { textAlign: item.role === 'admin' ? 'left' : 'right', color: 'white' }]}>{item.message}</Text>
         </View>
     )
 }

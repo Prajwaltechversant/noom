@@ -1,12 +1,20 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import { TextInput } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import CustomTextInputComponent from '../../textInput';
-const ChatBox = () => {
+
+
+interface Props {
+  setMessage: Dispatch<SetStateAction<string>>,
+  sendMessage: () => void,
+  message:string
+}
+
+const ChatBox: React.FC<Props> = ({ setMessage, sendMessage,message }) => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
@@ -21,14 +29,17 @@ const ChatBox = () => {
         <CustomTextInputComponent
           mode='outlined'
           label={''}
+          value={message}
           textColor='red'
           style={screenStyles.textInput}
           theme={{
             roundness: 0
           }}
-
+          onChangeText={e => setMessage(e)}
         />
-        <TouchableOpacity style={screenStyles.sendBtn}>
+        <TouchableOpacity style={screenStyles.sendBtn}
+          onPress={sendMessage}
+        >
           <Ionicons name='send-sharp' size={30} color={colorPalette.black} style={{ textAlign: 'center', alignSelf: 'center' }} />
 
         </TouchableOpacity>

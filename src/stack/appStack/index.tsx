@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAppSelector } from '../../redux/hook';
 import Home from '../../screens/afterAuth/HomeScreen';
 import DrawerStack from './DrawerStack';
+import { admin_uid } from "@env"
 
 const Stack = createNativeStackNavigator();
 
@@ -34,88 +35,111 @@ const AppStack = () => {
   );
 
   const app = isProfileCompleted && onBaodringStatus;
+  const currentUid = auth().currentUser?.uid;
 
+  const [isAdmin, setIsAdmin] = useState(false)
+
+
+  useEffect(() => {
+    if (admin_uid === currentUid) {
+      setIsAdmin(true)
+    } else {
+      setIsAdmin(false)
+
+    }
+  }, [])
   return (
     <Stack.Navigator>
-      {!app ? (
-        <>
-          {!onBaodringStatus && (
-            <>
-              <Stack.Screen
-                name={screenNames.APP_ENTRY_SCREEN}
-                component={EntryScreen}
-                options={{
-                  headerShown: true,
-                  header: () => {
-                    return (
-                      <View
-                        style={{
-                          height: height * 0.1,
-                          backgroundColor: colorPalette.sand,
-                          justifyContent: 'center',
-                        }}>
+      {!isAdmin ? <>
+        {!app ? (
+          <>
+            {!onBaodringStatus && (
+              <>
+                <Stack.Screen
+                  name={screenNames.APP_ENTRY_SCREEN}
+                  component={EntryScreen}
+                  options={{
+                    headerShown: true,
+                    header: () => {
+                      return (
                         <View
                           style={{
+                            height: height * 0.1,
+                            backgroundColor: colorPalette.sand,
                             justifyContent: 'center',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 5,
                           }}>
-                          <Text
-                            style={textStyle.headingText}
-                            onPress={() => {
-                              auth().signOut();
-                              GoogleSignin.signOut();
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              gap: 5,
                             }}>
-                            NOOM
-                          </Text>
-                          <Text
-                            style={[
-                              {
-                                backgroundColor: 'black',
-                                color: 'white',
-                                borderRadius: 20,
-                                width: width * 0.2,
-                                textAlign: 'center',
-                              },
-                            ]}>
-                            WEIGHT
-                          </Text>
+                            <Text
+                              style={textStyle.headingText}
+                              onPress={() => {
+                                auth().signOut();
+                                GoogleSignin.signOut();
+                              }}>
+                              NOOM
+                            </Text>
+                            <Text
+                              style={[
+                                {
+                                  backgroundColor: 'black',
+                                  color: 'white',
+                                  borderRadius: 20,
+                                  width: width * 0.2,
+                                  textAlign: 'center',
+                                },
+                              ]}>
+                              WEIGHT
+                            </Text>
+                          </View>
                         </View>
-                      </View>
-                    );
-                  },
-                }}
-              />
+                      );
+                    },
+                  }}
+                />
+                <Stack.Screen
+                  name={screenNames.ONBAORDING}
+                  component={OnboardingStack}
+                  options={{
+                    title: 'Noom',
+                    headerRight: () => (
+                      <Text style={textStyle.labelText}>{displayName !== null ? displayName : currentUser}</Text>
+                    ),
+                  }}
+                />
+              </>
+            )}
+            {!isProfileCompleted && (
               <Stack.Screen
-                name={screenNames.ONBAORDING}
-                component={OnboardingStack}
+                name="profile"
+                component={ProfileScreen1}
                 options={{
-                  title: 'Noom',
-                  headerRight: () => (
-                    <Text style={textStyle.labelText}>{displayName !== null ? displayName : currentUser}</Text>
-                  ),
+                  title: 'Fill Out Your Profile',
                 }}
               />
-            </>
-          )}
-          {!isProfileCompleted && (
-            <Stack.Screen
-              name="profile"
-              component={ProfileScreen1}
-              options={{
-                title: 'Fill Out Your Profile',
-              }}
-            />
-          )}
+            )}
+          </>
+        ) : (
+          <Stack.Screen
+            name="Home"
+            component={DrawerStack}
+            options={{ headerShown: false }}
+          />
+        )}
+      </>
+        :
+        <>
+          <Stack.Screen
+            name="Home"
+            component={DrawerStack}
+            options={{ headerShown: false }}
+          />
         </>
-      ) : (
-        <Stack.Screen
-          name="Home"
-          component={DrawerStack}
-          options={{ headerShown: false }}
-        />
-      )}
+      }
     </Stack.Navigator>
   );
 };
