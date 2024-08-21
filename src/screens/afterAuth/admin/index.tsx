@@ -6,6 +6,10 @@ import { admin_uid } from "@env"
 import { firebase } from '@react-native-firebase/auth';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
+import CustomButton from '../../../components/button/customButton';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import { useNavigation } from '@react-navigation/native';
+import { screenNames } from '../../../preferences/staticVariable';
 const AdminScreens: React.FC = () => {
 
 
@@ -18,38 +22,64 @@ const AdminScreens: React.FC = () => {
         isPortrait ? height : width,
     );
     const [allRequests, setAllRequests] = useState([])
+    const currentUid = auth().currentUser?.uid;
+    const currentEmail = auth().currentUser?.email;
+    const navigation: any = useNavigation()
 
     useEffect(() => {
+        let arr: any = []
         const subscriber = firestore()
             .collection('Chats')
             .where('toId', '==', admin_uid)
-            .orderBy('sendTime', 'asc')
+            // .orderBy('sendTime', 'asc')
             .onSnapshot(documentSnapshot => {
                 const resData: any = documentSnapshot?.docs.map(i => i.data());
-                console.log(documentSnapshot)
-                setAllRequests(resData)
+
+
+                const unique = resData.filter((obj: any, index: any) => {
+                    return index === resData.findIndex((o: any) => obj.userID === o.userID);
+                });
+
+                setAllRequests(unique)
             });
 
         return () => subscriber();
     }, []);
 
-    console.log(allRequests, 'sfdg')
+
+
+    const handleNavigation = (uid: any) => {
+        try {
+            navigation.navigate('Home', {
+                screen: screenNames.Message_Screen, params: {
+                    userId: uid
+                }
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     return (
         <View style={screenStyles.container}>
+            <Text >All requests</Text>
 
             <FlatList
                 data={allRequests}
 
-                renderItem={({ item, index }) => (
-                    <View>
-                        <Text>{index}</Text>
+                renderItem={({ item, index }: any) => (
+                    <View style={screenStyles.msgContainer}>
+                        <CustomButton
+                            label={item.email}
+                            onPress={() => handleNavigation(item.userID)}
+                            btnColor={colorPalette.salmon}
+                            btnHeight={width * 0.1}
+                            btnWidth={width * 0.8}
+                        />
                     </View>
                 )}
-
-
             />
-
         </View>
     )
 }

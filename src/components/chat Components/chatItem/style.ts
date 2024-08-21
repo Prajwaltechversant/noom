@@ -8,10 +8,10 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         marginVertical: 15,
         height: height * .04,
         justifyContent: 'center',
-        width: width * .3,
+        width: width * .2,
         borderRadius: 20,
         paddingHorizontal: 10,
-        elevation:3
+        elevation: 3
 
     }
 

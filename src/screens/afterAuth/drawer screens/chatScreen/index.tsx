@@ -1,5 +1,5 @@
 import { View, Text, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
 import ChatItem from '../../../../components/chat Components/chatItem';
@@ -12,7 +12,7 @@ import { firebase } from '@react-native-firebase/auth';
 
 
 
-const ChatScreen: React.FC = () => {
+const ChatScreen: React.FC = ({ route }: any) => {
     const screenContext = useScreenContext();
     const { width, fontScale, height, isPortrait, isTabletType, scale } =
         screenContext;
@@ -22,81 +22,20 @@ const ChatScreen: React.FC = () => {
         isPortrait ? height : width,
     );
     const currentUid = auth().currentUser?.uid;
+    const currentEmail = auth().currentUser?.email;
+    const userID = route.params?.userId
+
     const isAdmin = admin_uid === currentUid
 
     const [allMessages, SetAllMessages] = useState([])
 
-
-    console.log(admin_uid, 'asd')
-
-
-    // const arr = [
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'user', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     }, {
-    //         'role': 'user', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'user', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     }, {
-    //         'role': 'user', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'user', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     }, {
-    //         'role': 'user', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'user', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     }, {
-    //         'role': 'user', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'user', msg: 'dDDDD'
-    //     },
-    //     {
-    //         'role': 'admin', msg: 'dDDDD'
-    //     }, {
-    //         'role': 'user', msg: 'dDDDD'
-    //     }
-    // ]
-
     const chatRef = firestore().collection(`Chats`)
-
     const [message, setMessage] = useState<string>('')
+    const listRef = useRef<FlatList>(null)
 
     const sendMessage = async () => {
         try {
-
             if (message && message.length > 0) {
-
                 if (!isAdmin) {
                     await chatRef.add({
                         message: message,
@@ -104,20 +43,21 @@ const ChatScreen: React.FC = () => {
                         fromId: currentUid,
                         toId: admin_uid,
                         role: 'user',
-                        userID: currentUid
+                        userID: currentUid,
+                        email: currentEmail
                     })
                 } else {
                     await chatRef.add({
                         message: message,
                         sendTime: firebase.firestore.Timestamp.now(),
                         fromId: currentUid,
-                        toId: admin_uid,
-                        role: 'admin'
+                        toId: userID,
+                        role: 'admin',
                     })
                 }
-                console.log('message send')
+                // console.log('message send')
                 setMessage('')
-
+                listRef.current?.scrollToEnd()
             }
         } catch (error) {
             console.log(error)
@@ -131,29 +71,26 @@ const ChatScreen: React.FC = () => {
             .where(Filter.or(
                 Filter('fromId', '==', currentUid),
                 Filter('toId', '==', currentUid)
-
             ))
-            // .orderBy('sendTime', 'asc')
             .onSnapshot(documentSnapshot => {
-                // console.log(documentSnapshot,'asd')
                 const resData: any = documentSnapshot.docs.map(i => i.data());
-                SetAllMessages(resData)
+                const filtered = resData.sort((a: any, b: any) => a.sendTime - b.sendTime)
+                SetAllMessages(filtered)
             });
+
 
         return () => subscriber();
     }, []);
 
-    console.log(allMessages)
     return (
         <View style={screenStyles.container}>
             <View style={screenStyles.messageContainer}>
                 <FlatList
                     data={allMessages}
+                    ref={listRef}
                     renderItem={({ item }) => (
-                        <ChatItem item={item} />
+                        <ChatItem item={item} currentUid={currentUid} />
                     )}
-
-                    ListEmptyComponent={<Text>...</Text>}
                 />
             </View>
             <ChatBox setMessage={setMessage} sendMessage={sendMessage} message={message} />

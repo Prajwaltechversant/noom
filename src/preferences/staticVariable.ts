@@ -33,6 +33,7 @@ export const screenNames = {
     Weighgraph: 'WeighGraph',
     Daily_ProgressScreen:'dailyProgressScreen',
     courseCarouselPage:'courseCarouselPage',
+    ChatScreen:'ChatScreen',
 
 
     HomeScreen :'Home'

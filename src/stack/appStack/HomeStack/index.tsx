@@ -28,7 +28,6 @@ const HomeNativeStack = () => {
 
 const HomeTabStack = () => {
   const currentUid = auth().currentUser?.uid;
-
   const [isAdmin, setIsAdmin] = useState(false)
 
 
@@ -46,10 +45,9 @@ const HomeTabStack = () => {
         <>
           <Tab.Screen name="HomeScreen" component={HomeNativeStack} />
           <Tab.Screen name="HomeScreen2" component={Home} />
-          <Tab.Screen name="HomeScreen3" component={Home} />
         </>
         :
-        <Tab.Screen name='AdminScreens' component={AdminScreens} />
+        <Tab.Screen name={screenNames.ChatScreen} component={AdminScreens} />
       }
     </Tab.Navigator >
   );

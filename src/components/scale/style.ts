@@ -16,8 +16,11 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     innerWrapper: {
         width: 50,
-        height: '100%',
-        backgroundColor: colorPalette.btnPrimary
+        height: '50%',
+        backgroundColor: colorPalette.btnPrimary,
+        borderRightWidth: 1,
+        justifyContent: 'center', alignContent: 'center', flexDirection: 'column'
+
     },
     pointer: {
         height: 10,
@@ -34,11 +37,11 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     scaleItem: {
         width: 100,
         height: 50,
-        // borderWidth:1
         borderRightWidth: 1,
         borderLeftWidth: 1,
-        // alignItems: 'center',
-        // justifyContent: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column'
     }
 
 })

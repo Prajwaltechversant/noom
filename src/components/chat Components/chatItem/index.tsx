@@ -6,9 +6,12 @@ import textStyle from '../../../style/text/style';
 
 
 interface Props {
-    item: any
+    item: any,
+    currentUid: string | undefined
+
+
 }
-const ChatItem: React.FC<Props> = ({ item }) => {
+const ChatItem: React.FC<Props> = ({ item, currentUid }) => {
     const screenContext = useScreenContext();
     const { width, fontScale, height, isPortrait, isTabletType, scale } =
         screenContext;
@@ -20,8 +23,8 @@ const ChatItem: React.FC<Props> = ({ item }) => {
     return (
 
         <View style={[screenStyles.container, {
-            backgroundColor: item.role === 'admin' ? '#128C7E' : '#075E54',
-            alignSelf: item.role === 'admin' ? 'flex-start' : 'flex-end',
+            backgroundColor: item.fromId === currentUid ? '#128C7E' : '#075E54',
+            alignSelf: item.fromId === currentUid ? 'flex-end' : 'flex-start',
 
         }]}>
             <Text style={[textStyle.labelText, { textAlign: item.role === 'admin' ? 'left' : 'right', color: 'white' }]}>{item.message}</Text>
