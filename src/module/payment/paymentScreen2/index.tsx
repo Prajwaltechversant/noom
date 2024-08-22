@@ -16,7 +16,7 @@ import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { updateOnBoardingStatus } from '../../../redux/slices/authStatus';
-import PlanItem from '../../../components/onBoarding/planItem';
+// import PlanItem from '../../../components/onBoarding/planItem';
 import { useSelector } from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather'
 import { removePlan } from '../../../redux/slices/planSlice';
@@ -175,7 +175,7 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                       <Text style={{ textDecorationColor: 'blue', textDecorationStyle: 'double', textDecorationLine: "underline", color: 'blue', marginTop: 4 }}>Learn More</Text>
                     </View>
                     <View>
-                      <Text style={{ textAlign: 'right',color:'black' }}>${item.amount}</Text>
+                      <Text style={{ textAlign: 'right', color: 'black' }}>${item.amount}</Text>
                       <TouchableOpacity onPress={() => handleDelete(item.id)}>
                         <Feather style={{ textAlign: 'right' }} name='x' size={30} color={colorPalette.black} />
                       </TouchableOpacity>

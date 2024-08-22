@@ -8,6 +8,7 @@ import firestore, { Filter } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { admin_uid } from "@env"
 import { firebase } from '@react-native-firebase/auth';
+import { push } from '../../HomeScreen/dataset';
 
 
 
@@ -24,16 +25,15 @@ const ChatScreen: React.FC = ({ route }: any) => {
     const currentUid = auth().currentUser?.uid;
     const currentEmail = auth().currentUser?.email;
     const userID = route.params?.userId
-
     const isAdmin = admin_uid === currentUid
-
     const [allMessages, SetAllMessages] = useState([])
-
     const chatRef = firestore().collection(`Chats`)
     const [message, setMessage] = useState<string>('')
     const listRef = useRef<FlatList>(null)
 
+
     const sendMessage = async () => {
+        push()
         try {
             if (message && message.length > 0) {
                 if (!isAdmin) {
@@ -55,7 +55,6 @@ const ChatScreen: React.FC = ({ route }: any) => {
                         role: 'admin',
                     })
                 }
-                // console.log('message send')
                 setMessage('')
                 listRef.current?.scrollToEnd()
             }
@@ -77,8 +76,6 @@ const ChatScreen: React.FC = ({ route }: any) => {
                 const filtered = resData.sort((a: any, b: any) => a.sendTime - b.sendTime)
                 SetAllMessages(filtered)
             });
-
-
         return () => subscriber();
     }, []);
 

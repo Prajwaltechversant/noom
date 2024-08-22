@@ -4,45 +4,64 @@ import { colorPalette } from "../../assets/colorpalette/colorPalette";
 
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
+        // padding: wid,
+        // borderWidth: 1,
+        backgroundColor: 'white',
+        height: height * 0.15,
+        width: 'auto',
         alignItems: 'center',
-        justifyContent: 'center',
-        height
+        // justifyContent: 'center',
+
     },
-    scaleWrapper: {
-        borderWidth: 1,
-        width: width * 0.8,
-        height: height * 0.1,
-        alignItems: 'center'
-    },
-    innerWrapper: {
-        width: 50,
-        height: '50%',
-        backgroundColor: colorPalette.btnPrimary,
-        borderRightWidth: 1,
-        justifyContent: 'center', alignContent: 'center', flexDirection: 'column'
+
+    pointerContainer: {
+        position: 'absolute',
+        left: width * 0.5,
+        zIndex: 1,
+
+
 
     },
     pointer: {
-        height: 10,
-        width: '100%',
-        backgroundColor: 'red',
-        position: 'absolute',
-        top: 0,
-        zIndex: 1000
+        width: 10,
+        height: 30,
+        backgroundColor: colorPalette.white,
+        borderBottomRightRadius: 6,
+        borderBottomLeftRadius: 6,
+        borderCurve: 'circular',
+        borderStyle: 'solid',
+        borderWidth: 1
+
+
     },
-    scrollView: {
-        borderWidth: 1,
-        width: '100%'
+    scaleContainer: {
+        // paddingVertical: 10,
+        paddingHorizontal: width / 2 - width / 10,
+        backgroundColor: colorPalette.btnPrimary,
+
+
     },
-    scaleItem: {
-        width: 100,
-        height: 50,
-        borderRightWidth: 1,
-        borderLeftWidth: 1,
+    markerContainer: {
+        width: width / 5,
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column'
-    }
+        height: height * 0.1,
+        borderRightWidth: 2,
+        borderColor: colorPalette.white
+
+    },
+    markerText: {
+        color: colorPalette.white,
+        fontSize: 16,
+        borderWidth: 1
+
+    },
+    selectedValueText: {
+        marginTop: 20,
+        fontSize: 18,
+        borderWidth: 1
+
+    },
 
 })
 

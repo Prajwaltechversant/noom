@@ -5,7 +5,7 @@ import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import { FlatList } from 'react-native-gesture-handler';
 
 
@@ -26,22 +26,45 @@ const TodaysProgress: React.FC = () => {
     fetchdata();
   }, []);
 
+
+
+
   const fetchdata = async () => {
+    const startOfDay = new Date(
+      new Date().setHours(0, 0, 0, 0),
+    );
+    const endOfDay = new Date(
+      new Date().setHours(23, 59, 59, 999),
+    );
     try {
       const res = await firestore()
         .collection(`UserData/${currentUid}/dailyProgress`)
-        .orderBy('id', 'asc')
-        .get();
-      const resData = res.docs.map(i => i.data());
-      const group = resData.reduce((acc, obj) => {
-        const value = obj.id;
-        if (!acc[value]) {
-          acc[value] = [];
-        }
-        acc[value].push(obj);
-        return acc;
-      }, {});
-      setDailyProgressData(group);
+        .where(
+          'addedDate',
+          '>=',
+          firebase.firestore.Timestamp.fromDate(startOfDay),
+        )
+        .where(
+          'addedDate',
+          '<=',
+          firebase.firestore.Timestamp.fromDate(endOfDay),
+        )
+        .onSnapshot(snapshot => {
+          const resData: any = snapshot.docs.map(i => i.data());
+          const group = resData.reduce((acc:any, obj:any) => {
+            const value = obj.id;
+            if (!acc[value]) {
+              acc[value] = [];
+            }
+            acc[value].push(obj);
+            return acc;
+          }, {});
+          setDailyProgressData(group);
+
+        })
+      // .get();
+      // const resData = res.docs.map(i => i.data());
+
     } catch (error) {
       console.log(error);
     }
@@ -51,7 +74,7 @@ const TodaysProgress: React.FC = () => {
     id: key,
     data: dailyProgressData[key],
   }));
-
+console.log(groupedData[0])
 
   return (
     <View>
@@ -67,7 +90,7 @@ const TodaysProgress: React.FC = () => {
               <Image source={{ uri: item.data[0].image }} style={screenStyles.image} />
             </View>
             <View style={screenStyles.cardFooter}>
-              <Text>{item.data.length} In Todays Progress</Text>
+             {/* { <Text>{item.data.length} In Todays Progress</Text>} */}
             </View>
           </View>
         )}

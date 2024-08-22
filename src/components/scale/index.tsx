@@ -1,80 +1,98 @@
-import { View, Text, FlatList, ScrollView, NativeScrollEvent, TouchableOpacity, Alert } from 'react-native';
-import React, { useRef, useState } from 'react';
+
+import React, { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useScreenContext } from '../../context/screenContext';
-import { useNavigation } from '@react-navigation/native';
 import styles from './style';
 import textStyle from '../../style/text/style';
-import { NativeSyntheticEvent } from 'react-native';
-import { colorPalette } from '../../assets/colorpalette/colorPalette';
-import Animated, { useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
 
 
-const Scale: React.FC = () => {
+interface Props {
+  minValue: number,
+  maxValue: number,
+  step: number,
+  setSelectedScaleValue: Dispatch<SetStateAction<number>>
+  selectedScaleValue: number
+}
+
+const CustomScale: React.FC<Props> = ({ minValue, maxValue, step = 1, setSelectedScaleValue, selectedScaleValue }) => {
+
   const screenContext = useScreenContext();
-  const { width, fontScale, height, isPortrait } = screenContext;
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
+    screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
+  const [selectedValue, setSelectedValue] = useState(minValue);
+  const scrollViewRef = useRef<ScrollView>(null);
 
-  const wrapperRef = useRef(null)
-  const navigation: any = useNavigation();
-  const scaleRef = useRef<FlatList>(null)
+  const generateScale = () => {
+    const scale = [];
+    for (let i = minValue; i <= maxValue; i++) {
+      scale.push(i);
+    }
+    return scale;
+  };
+  const scaleItems = generateScale();
+  console.log(scaleItems)
 
+  const handleScroll = (e: any) => {
+    const xOffset = e.nativeEvent.contentOffset.x;
+    // console.log(xOffset)
+    const itemWidth = width / 5;
+    const index = Math.round(xOffset / itemWidth);
+    const newValue = scaleItems[index];
+    // console.log(index, 'saf')
+    if (newValue !== selectedScaleValue) {
+      setSelectedScaleValue(newValue);
+    }
+  };
 
-  const aref = useAnimatedRef<Animated.ScrollView>();
-  const scrollHandler = useScrollViewOffset(aref);
-  const [pointerPosition, setPointerPosition] = useState(0)
-  // console.log(wrapperRef.current)
+  const scrollToValue = (value: any) => {
+    const itemWidth = width / 5;
+    const index = scaleItems.indexOf(value);
+    if (index !== -1 && scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ x: index * itemWidth, animated: true });
+    }
+  };
+  console.log(minValue, 'efjf')
+  useEffect(() => {
+    scrollToValue(minValue);
+  }, []);
 
-  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    console.log(e.nativeEvent.layoutMeasurement.height)
-  }
-  useAnimatedStyle(() => {
-    console.log(scrollHandler.value / 10);
-    // console.log(aref.caller)
-    return {};
-  });
   return (
-    <View style={screenStyles.container}>
-      <View style={screenStyles.scaleWrapper}
-        ref={wrapperRef}
-      >
-        <FlatList
-          data={Array(100)}
+    <>
+      <Text style={textStyle.labelText}>Scroll the Scale to log Value</Text>
+      <View style={screenStyles.container}>
+        <View style={screenStyles.pointerContainer}>
+          <View style={screenStyles.pointer}></View>
+        </View>
+        <ScrollView
+
+
+          ref={scrollViewRef}
           horizontal
-          ref={scaleRef}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={screenStyles.scaleContainer}
           onScroll={handleScroll}
-          contentContainerStyle={{ backgroundColor: colorPalette.btnPrimary }}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity style={screenStyles.innerWrapper}
-              key={index}
-              onPress={() => Alert.alert(index.toString())}
+          scrollEventThrottle={16}
+          snapToInterval={width / 5}
+          decelerationRate="fast"
+          onLayout={(e) => console.log(e.nativeEvent.layout.width, 'waryhgsd')}
+        >
+          {scaleItems.map((value, index) => (
+            <View key={index} style={screenStyles.markerContainer}
+
             >
-              <Text>{index}</Text>
-            </TouchableOpacity>
-          )}
-          centerContent
-          accessible
-
-        />
-        {/* <Animated.ScrollView
-
-          horizontal
-          ref={aref}
-          style={screenStyles.scrollView}>
-          {[...Array(100)].map((_, i) => (
-          <View style={{width:60,height:60,borderWidth:1}}>
-              <Text key={i} style={textStyle.errorText}>
-                {i}
-              </Text>
-          </View>
+              <Text style={textStyle.labelText}>{value}</Text>
+            </View>
           ))}
-        </Animated.ScrollView> */}
+        </ScrollView>
       </View>
-    </View>
+    </>
   );
 };
 
-export default Scale;
+
+export default CustomScale;

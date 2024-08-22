@@ -25,10 +25,7 @@ const App = () => {
         <SafeAreaView style={{ flex: 1 }}>
           <ScreenContextProvider>
             <RootStack />
-            {/* <ChatScreen /> */}
-            {/* <Loader/> */}
-            {/* <Coursecarousel /> */}
-            {/* <CustomComponentModal children={<Text>heelo</Text>} visible={true} /> */}
+            
           </ScreenContextProvider>
         </SafeAreaView>
       </PersistGate>

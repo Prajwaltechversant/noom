@@ -6,27 +6,28 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
-import {useScreenContext} from '../../../../context/screenContext';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import textStyle from '../../../../style/text/style';
 import CustomTextInputComponent from '../../../../components/textInput';
 import CustomComponentModal from '../../../../components/modal/customComponentModal';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomButton from '../../../../components/button/customButton';
-import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
-import {Image} from 'react-native';
-import auth from '@react-native-firebase/auth';
-import firestore, {doc, Filter} from '@react-native-firebase/firestore';
-import {TextInput} from 'react-native-paper';
+import { colorPalette } from '../../../../assets/colorpalette/colorPalette';
+import { Image } from 'react-native';
+import auth, { firebase } from '@react-native-firebase/auth';
+import firestore, { doc, Filter } from '@react-native-firebase/firestore';
+import { TextInput } from 'react-native-paper';
+import {  addToDailyProgress1 } from '../../../../services/dailyprogress';
 interface Props {
   item: any;
   category: string;
 }
-const LogFoodScreen: React.FC<Props> = ({item, category}) => {
+const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait} = screenContext;
+  const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
@@ -92,56 +93,74 @@ const LogFoodScreen: React.FC<Props> = ({item, category}) => {
     searchQuery.length < 1 && setSeachResult([]);
   }, [searchQuery]);
 
-  const addToDailyProgress = () => {
-    let isExisting = false;
-    let existingCount = 0;
-    let docId: string;
-    firestore()
-      .collection(`UserData/${currentUser}/dailyProgress`)
-      .where('id', '==', item.id)
-      .where('data.id', '==', selectedItem.id)
-      .get()
-      .then(i => {
-        i.size > 0 ? (isExisting = true) : (isExisting = false);
-        i.forEach(item => {
-          existingCount += item.data().data.count;
-          docId = item.id;
-        });
-      })
-      .finally(() => {
-        if (isExisting) {
-          if (quantity > 0) {
-            firestore()
-              .collection(`UserData/${currentUser}/dailyProgress`)
-              .doc(docId)
-              .update({
-                id: item.id,
-                title: item.title,
-                data: {...selectedItem, count: quantity + existingCount},
-                itemId: selectedItem.id,
-                image:item.image
-              })
-              .then(i => console.log('data added'));
-          }
-        } else {
-          if (quantity >= 0) {
-            firestore()
-              .collection(`UserData/${currentUser}/dailyProgress`)
-              .add({
-                id: item.id,
-                title: item.title,
-                data: {...selectedItem, count: quantity},
-                itemId: selectedItem.id,
-                image:item.image
+  // const addToDailyProgress = () => {
+  //   let isExisting = false;
+  //   let existingCount = 0;
+  //   let docId: string;
+  //   firestore()
+  //     .collection(`UserData/${currentUser}/dailyProgress`)
+  //     .where('id', '==', item.id)
+  //     .where('data.id', '==', selectedItem.id)
+  //     .get()
+  //     .then(i => {
+  //       i.size > 0 ? (isExisting = true) : (isExisting = false);
+  //       i.forEach(item => {
+  //         existingCount += item.data().data.count;
+  //         docId = item.id;
+  //       });
+  //     })
+  //     .finally(() => {
+  //       if (isExisting) {
+  //         if (quantity > 0) {
+  //           firestore()
+  //             .collection(`UserData/${currentUser}/dailyProgress`)
+  //             .doc(docId)
+  //             .update({
+  //               id: item.id,
+  //               title: item.title,
+  //               data: {...selectedItem, count: quantity + existingCount},
+  //               itemId: selectedItem.id,
+  //               image:item.image
+  //             })
+  //             .then(i => console.log('data added'));
+  //         }
+  //       } else {
+  //         if (quantity >= 0) {
+  //           firestore()
+  //             .collection(`UserData/${currentUser}/dailyProgress`)
+  //             .add({
+  //               id: item.id,
+  //               title: item.title,
+  //               data: {...selectedItem, count: quantity},
+  //               itemId: selectedItem.id,
+  //               image:item.image
 
-              })
-              .then(i => console.log('data added'));
-          }
-        }
-        setQuantity(0);
-        setModalVisible(!modalVisible);
-      });
-  };
+  //             })
+  //             .then(i => console.log('data added'));
+  //         }
+  //       }
+  //       setQuantity(0);
+  //       setModalVisible(!modalVisible);
+  //     });
+  // };
+
+  const handleSave = () => {
+    addToDailyProgress1(item, selectedItem, quantity)
+    setQuantity(0);
+    setModalVisible(!modalVisible);
+  }
+
+  const startOfDay = new Date(
+    new Date().setHours(0, 0, 0, 0),
+);
+const endOfDay = new Date(
+    new Date().setHours(23, 59, 59, 999),
+);
+
+
+console.log(firebase.firestore.Timestamp.fromDate(startOfDay))
+console.log(firebase.firestore.Timestamp.fromDate(endOfDay))
+
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.headingText}>Log Your {category}</Text>
@@ -162,12 +181,12 @@ const LogFoodScreen: React.FC<Props> = ({item, category}) => {
         ) : (
           <FlatList
             data={searchResult.length > 0 ? searchResult : data}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <TouchableOpacity
                 style={screenStyles.item}
                 onPress={() => handleSelectedItem(item)}>
                 <Image
-                  source={{uri: item?.image}}
+                  source={{ uri: item?.image }}
                   style={screenStyles.itemImage}
                 />
                 <Text style={textStyle.labelText}>{item.title}</Text>
@@ -180,12 +199,12 @@ const LogFoodScreen: React.FC<Props> = ({item, category}) => {
           modalHeight={height * 0.4}
           visible={modalVisible}
           setProgressModalVisible={setModalVisible}>
-          <View style={{alignItems: 'center'}}>
+          <View style={{ alignItems: 'center' }}>
             <Image
-              source={{uri: selectedItem?.image}}
+              source={{ uri: selectedItem?.image }}
               width={120}
               height={120}
-              style={{marginBottom: 60, borderRadius: 100}}
+              style={{ marginBottom: 60, borderRadius: 100 }}
             />
 
             <View>
@@ -214,14 +233,14 @@ const LogFoodScreen: React.FC<Props> = ({item, category}) => {
                 />
               </View>
             </View>
-            <View style={{alignSelf: 'center', marginVertical: 10}}>
+            <View style={{ alignSelf: 'center', marginVertical: 10 }}>
               <CustomButton
                 label="Save"
                 btnColor={colorPalette.berry}
                 btnHeight={40}
                 btnWidth={60}
                 borderRadius={20}
-                onPress={addToDailyProgress}
+                onPress={handleSave}
                 labelColor="white"
               />
             </View>

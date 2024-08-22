@@ -34,8 +34,8 @@ export const screenNames = {
     Daily_ProgressScreen:'dailyProgressScreen',
     courseCarouselPage:'courseCarouselPage',
     ChatScreen:'ChatScreen',
-
-
+    HomeNativeStack:'HomeScreen',
+    WeighGraphScreen:'WeighGraphScreen',
     HomeScreen :'Home'
 
 

@@ -9,6 +9,8 @@ import DailyProgressScreen from '../../../screens/afterAuth/addDailyProgressScre
 import { admin_uid } from "@env"
 import auth from '@react-native-firebase/auth';
 import AdminScreens from '../../../screens/afterAuth/admin';
+import WeighGraphScreen from '../../../screens/afterAuth/WeighGraphScreen';
+import Entypo from 'react-native-vector-icons/Entypo'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -27,24 +29,36 @@ const HomeNativeStack = () => {
 };
 
 const HomeTabStack = () => {
+
   const currentUid = auth().currentUser?.uid;
   const [isAdmin, setIsAdmin] = useState(false)
-
 
   useEffect(() => {
     if (admin_uid === currentUid) {
       setIsAdmin(true)
     } else {
       setIsAdmin(false)
-
     }
   }, [])
+
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       {!isAdmin ?
         <>
-          <Tab.Screen name="HomeScreen" component={HomeNativeStack} />
-          <Tab.Screen name="HomeScreen2" component={Home} />
+          <Tab.Screen name={screenNames.HomeNativeStack} component={HomeNativeStack}
+            options={{
+              tabBarIcon: () => (
+                <Entypo name='home' size={20} color={'black'} />
+              )
+            }}
+          />
+          <Tab.Screen name={screenNames.WeighGraphScreen} component={WeighGraphScreen} 
+           options={{
+            tabBarIcon: () => (
+              <Entypo name='line-graph' size={20} color={'black'} />
+            )
+          }}   
+          />
         </>
         :
         <Tab.Screen name={screenNames.ChatScreen} component={AdminScreens} />
