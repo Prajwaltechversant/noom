@@ -16,6 +16,8 @@ import { useAppSelector } from '../../redux/hook';
 import Home from '../../screens/afterAuth/HomeScreen';
 import DrawerStack from './DrawerStack';
 import { admin_uid } from "@env"
+import HomeTabStack from './HomeStack';
+import ChatScreen from '../../screens/afterAuth/drawer screens/chatScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,17 +28,14 @@ const AppStack = () => {
   const [surveyStatus, setSurveyStatus] = useState(false);
   const currentUser = auth().currentUser?.email;
   const displayName = auth().currentUser?.displayName;
-
   const onBaodringStatus = useAppSelector(
     state => state.authStatus.isOnBoardingCompleted,
   );
   const isProfileCompleted = useAppSelector(
     state => state.authStatus.isProfileCompletd,
   );
-
   const app = isProfileCompleted && onBaodringStatus;
   const currentUid = auth().currentUser?.uid;
-
   const [isAdmin, setIsAdmin] = useState(false)
 
 
@@ -125,8 +124,9 @@ const AppStack = () => {
           </>
         ) : (
           <Stack.Screen
-            name="Home"
-            component={DrawerStack}
+            name="drawer"
+            component={HomeTabStack}
+
             options={{ headerShown: false }}
           />
         )}
@@ -134,9 +134,18 @@ const AppStack = () => {
         :
         <>
           <Stack.Screen
-            name="Home"
-            component={DrawerStack}
+            name="drawer"
+            component={HomeTabStack}
             options={{ headerShown: false }}
+          />
+           <Stack.Screen
+            name={screenNames.Message_Screen}
+            component={ChatScreen}
+            // options={{
+            //   : () => (
+            //     <AntDesign name="message1" color={'black'} size={20} />
+            //   ),
+            // }}
           />
         </>
       }

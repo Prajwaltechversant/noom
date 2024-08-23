@@ -9,40 +9,51 @@ import DailyProgressScreen from '../../../screens/afterAuth/addDailyProgressScre
 import { admin_uid } from "@env"
 import auth from '@react-native-firebase/auth';
 import AdminScreens from '../../../screens/afterAuth/admin';
-import WeighGraphScreen from '../../../screens/afterAuth/WeighGraphScreen';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TouchableOpacityBase } from 'react-native';
 import textStyle from '../../../style/text/style';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import DrawerStack from '../DrawerStack';
+import WeighScreen from '../../../screens/afterAuth/WeighGraphScreen';
+// import WeighGraphScreen from '../../../screens/afterAuth/WeighGraphScreen/s';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 
 
-const HomeNativeStack = () => {
-
+export const HomeNativeStack = () => {
   const navigation = useNavigation();
-
-
-
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator>
       <Stack.Screen name={screenNames.HomeScreen} component={Home}
+
+        options={{
+          headerShown: false
+        }}
       />
-      <Stack.Screen name={screenNames.courseCarouselPage} component={Coursecarousel} />
-      <Stack.Screen name={screenNames.Daily_ProgressScreen} component={DailyProgressScreen} />
+      <Stack.Screen name={screenNames.courseCarouselPage} component={Coursecarousel}
+        options={{
+          headerShown: true,
+          title: ''
+        }}
+      />
+      <Stack.Screen name={screenNames.Daily_ProgressScreen} component={DailyProgressScreen}
+
+        options={{
+          headerShown: true,
+          title: ''
+        }}
+      />
     </Stack.Navigator>
   );
 };
 
 const HomeTabStack = ({ route }: any) => {
-
   const currentUid = auth().currentUser?.uid;
   const [isAdmin, setIsAdmin] = useState(false)
-
   useEffect(() => {
     if (admin_uid === currentUid) {
       setIsAdmin(true)
@@ -50,31 +61,32 @@ const HomeTabStack = ({ route }: any) => {
       setIsAdmin(false)
     }
   }, [])
-  console.log(route)
   return (
-    <Tab.Navigator screenOptions={{ headerShown: true }}
+    <Tab.Navigator
     >
       {!isAdmin ?
         <>
-          <Tab.Screen name={screenNames.HomeNativeStack} component={HomeNativeStack}
+          <Tab.Screen name={'Home'} component={DrawerStack}
             options={{
               tabBarIcon: () => (
                 <Entypo name='home' size={20} color={'black'} />
               ),
-
-              title: 'Home'
+              title: 'Home',
+              headerShown: false
             }}
 
 
           />
-          <Tab.Screen name={screenNames.WeighGraphScreen} component={WeighGraphScreen}
+          <Tab.Screen name={screenNames.WeighGraphScreen} component={WeighScreen}
             options={{
               tabBarIcon: () => (
                 <Entypo name='line-graph' size={20} color={'black'} />
               ),
-              title:'kssksk'
+              title: 'Graph',
+              headerShown: true
+
             }}
-          />  
+          />
         </>
         :
         <Tab.Screen name={screenNames.ChatScreen} component={AdminScreens} />

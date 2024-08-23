@@ -1,7 +1,7 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import HomeTabStack from '../HomeStack';
+import HomeTabStack, { HomeNativeStack } from '../HomeStack';
 import {screenNames} from '../../../preferences/staticVariable';
 import MessageScreen from '../../../screens/afterAuth/drawer screens/messages';
 import WeightGraphScreen from '../../../screens/afterAuth/drawer screens/weight graph';
@@ -14,9 +14,9 @@ import HeaderTab from '../../../components/headerTab';
 import ChatScreen from '../../../screens/afterAuth/drawer screens/chatScreen';
 const Drawer = createDrawerNavigator();
 
-const DrawerStack = ({route}:any) => {
 
-  // console.log(route)
+
+const DrawerStack = ({route}:any) => {
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -25,11 +25,11 @@ const DrawerStack = ({route}:any) => {
       
       >
       <Drawer.Screen
-        name="drawer"
-        component={HomeTabStack}
+        name={screenNames.HomeNativeStack}
+        component={HomeNativeStack}
         options={{
           title: 'Home',
-          drawerIcon: () => <AntDesign name="home" color={'black'} size={20} />,
+          drawerIcon: () => <AntDesign name={'home'} color={'black'} size={20} />,
         }}
       />
       <Drawer.Screen
@@ -42,37 +42,8 @@ const DrawerStack = ({route}:any) => {
         }}
       />
       <Drawer.Screen
-        name={screenNames.Weighgraph}
-        component={WeightGraphScreen}
-        options={{
-          drawerIcon: () => <AntDesign name="home" color={'black'} size={20} />,
-        }}
-      />
-
-      <Drawer.Screen
-        name={screenNames.Recipies}
-        component={ReciepiesScreen}
-        options={{
-          drawerIcon: () => <AntDesign name="home" color={'black'} size={20} />,
-        }}
-      />
-      <Drawer.Screen
         name={screenNames.My_Articles}
         component={MyArticleScreen}
-        options={{
-          drawerIcon: () => <AntDesign name="home" color={'black'} size={20} />,
-        }}
-      />
-      <Drawer.Screen
-        name={screenNames.Setting}
-        component={SettingsScreen}
-        options={{
-          drawerIcon: () => <AntDesign name="home" color={'black'} size={20} />,
-        }}
-      />
-      <Drawer.Screen
-        name={screenNames.Help_Screen}
-        component={HelpScreen}
         options={{
           drawerIcon: () => <AntDesign name="home" color={'black'} size={20} />,
         }}

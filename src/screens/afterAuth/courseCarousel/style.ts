@@ -10,13 +10,18 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems: 'center',
     },
     eachItem: {
-        height:height*0.8, width,
+        height: height * 0.8, width,
         alignItems: 'center'
     },
-    image:{
+    image: {
         width,
-        height:height*0.3
-    }
+        height: height * 0.3
+    },
+    paragraph: {
+        lineHeight: 30,
+        textAlign: 'justify',
+        textAlignVertical: 'center',
+    },
 })
 
 export default styles

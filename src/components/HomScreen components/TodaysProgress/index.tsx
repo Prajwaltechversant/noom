@@ -21,7 +21,6 @@ const TodaysProgress: React.FC = () => {
   const navigation: any = useNavigation();
   const currentUid = auth().currentUser?.uid;
   const [dailyProgressData, setDailyProgressData] = useState<any>([]);
-
   useEffect(() => {
     fetchdata();
   }, []);
@@ -62,8 +61,6 @@ const TodaysProgress: React.FC = () => {
           setDailyProgressData(group);
 
         })
-      // .get();
-      // const resData = res.docs.map(i => i.data());
 
     } catch (error) {
       console.log(error);

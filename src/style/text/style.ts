@@ -12,13 +12,14 @@ const textStyle = StyleSheet.create({
         fontWeight: '700',
         color: colorPalette.berry,
         textAlign: 'center',
-        
-
+        fontFamily:'PlayfairDisplaySC-BoldItalic'
     },
     labelText: {
         color: colorPalette.black,
         fontSize: 15,
         fontWeight: '400',
+        fontFamily:'PlayfairDisplay'
+
     },
     errorText: {
         color: 'red'
@@ -27,7 +28,9 @@ const textStyle = StyleSheet.create({
         fontWeight: '700',
         fontSize: 25,
         color: 'black',
-        textAlign:'center'
+        textAlign:'center',
+        fontFamily:'PlayfairDisplaySC-Black'
+
     },
     
 

@@ -1,0 +1,33 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/OFL.txt",
+      "sha1": "ffe9e102073ddef1fdf12a3774e90d4746ca57c5"
+    },
+    {
+      "path": "src/assets/fonts/PlayfairDisplaySC-Black.ttf",
+      "sha1": "e344133e7024c00fd8b47db294e88415f8592842"
+    },
+    {
+      "path": "src/assets/fonts/PlayfairDisplaySC-BlackItalic.ttf",
+      "sha1": "0c6a350ecb507132adf32c4a0eed88a9474ebf14"
+    },
+    {
+      "path": "src/assets/fonts/PlayfairDisplaySC-Bold.ttf",
+      "sha1": "f81495e8e8d76b7d45e81230f46f7a7cefeb419a"
+    },
+    {
+      "path": "src/assets/fonts/PlayfairDisplaySC-BoldItalic.ttf",
+      "sha1": "d251b9b2b9a6ef72f973aba3cfa6134ab7624cdf"
+    },
+    {
+      "path": "src/assets/fonts/PlayfairDisplaySC-Italic.ttf",
+      "sha1": "dc3336a686ced8a783682ca7f82997ccbed3b549"
+    },
+    {
+      "path": "src/assets/fonts/PlayfairDisplaySC-Regular.ttf",
+      "sha1": "ebc9f6727f30d5084a7f53e1b5f082ebac8a8c9f"
+    }
+  ]
+}

@@ -14,6 +14,13 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-noom-noomTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-noom-noomTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		E9EEDAC216D546258AEBF339 /* PlayfairDisplaySC-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28D54425987944F98A2CC085 /* PlayfairDisplaySC-Black.ttf */; };
+		D25D2697811F426397E967A2 /* PlayfairDisplaySC-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7EA63A3BBE5E4F30ACF2E9D8 /* PlayfairDisplaySC-BlackItalic.ttf */; };
+		A36D87010D6A4A528E021A96 /* PlayfairDisplaySC-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 671C65FAD00D45CEA034C19F /* PlayfairDisplaySC-Bold.ttf */; };
+		B9E76C6650E14360BFB9D8AC /* PlayfairDisplaySC-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BCDA35B78AB64C15B66F85D8 /* PlayfairDisplaySC-BoldItalic.ttf */; };
+		992EA6083128475295A875E2 /* PlayfairDisplaySC-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A76A2BEE4C4544FE8785264B /* PlayfairDisplaySC-Italic.ttf */; };
+		2B749DC0FFB14A2280E0BC8C /* PlayfairDisplaySC-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EAD61BB05BF4604BC1E1703 /* PlayfairDisplaySC-Regular.ttf */; };
+		D4B5104A991D41A29242C8A0 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 68D2F4862A0F4AC6B60E38FF /* OFL.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +43,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = noom/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = noom/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = noom/main.m; sourceTree = "<group>"; };
-	    13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = noom/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = noom/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-noom-noomTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-noom-noomTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-noom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-noom.debug.xcconfig"; path = "Target Support Files/Pods-noom/Pods-noom.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-noom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-noom.release.xcconfig"; path = "Target Support Files/Pods-noom/Pods-noom.release.xcconfig"; sourceTree = "<group>"; };
@@ -45,6 +52,13 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = noom/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-noom-noomTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-noom-noomTests.release.xcconfig"; path = "Target Support Files/Pods-noom-noomTests/Pods-noom-noomTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		28D54425987944F98A2CC085 /* PlayfairDisplaySC-Black.ttf */ = {isa = PBXFileReference; name = "PlayfairDisplaySC-Black.ttf"; path = "../src/assets/fonts/PlayfairDisplaySC-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7EA63A3BBE5E4F30ACF2E9D8 /* PlayfairDisplaySC-BlackItalic.ttf */ = {isa = PBXFileReference; name = "PlayfairDisplaySC-BlackItalic.ttf"; path = "../src/assets/fonts/PlayfairDisplaySC-BlackItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		671C65FAD00D45CEA034C19F /* PlayfairDisplaySC-Bold.ttf */ = {isa = PBXFileReference; name = "PlayfairDisplaySC-Bold.ttf"; path = "../src/assets/fonts/PlayfairDisplaySC-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BCDA35B78AB64C15B66F85D8 /* PlayfairDisplaySC-BoldItalic.ttf */ = {isa = PBXFileReference; name = "PlayfairDisplaySC-BoldItalic.ttf"; path = "../src/assets/fonts/PlayfairDisplaySC-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A76A2BEE4C4544FE8785264B /* PlayfairDisplaySC-Italic.ttf */ = {isa = PBXFileReference; name = "PlayfairDisplaySC-Italic.ttf"; path = "../src/assets/fonts/PlayfairDisplaySC-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5EAD61BB05BF4604BC1E1703 /* PlayfairDisplaySC-Regular.ttf */ = {isa = PBXFileReference; name = "PlayfairDisplaySC-Regular.ttf"; path = "../src/assets/fonts/PlayfairDisplaySC-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		68D2F4862A0F4AC6B60E38FF /* OFL.txt */ = {isa = PBXFileReference; name = "OFL.txt"; path = "../src/assets/fonts/OFL.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +138,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				A55C7EA2BF7943408ED3BF2A /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -149,6 +164,21 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		A55C7EA2BF7943408ED3BF2A /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				28D54425987944F98A2CC085 /* PlayfairDisplaySC-Black.ttf */,
+				7EA63A3BBE5E4F30ACF2E9D8 /* PlayfairDisplaySC-BlackItalic.ttf */,
+				671C65FAD00D45CEA034C19F /* PlayfairDisplaySC-Bold.ttf */,
+				BCDA35B78AB64C15B66F85D8 /* PlayfairDisplaySC-BoldItalic.ttf */,
+				A76A2BEE4C4544FE8785264B /* PlayfairDisplaySC-Italic.ttf */,
+				5EAD61BB05BF4604BC1E1703 /* PlayfairDisplaySC-Regular.ttf */,
+				68D2F4862A0F4AC6B60E38FF /* OFL.txt */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -245,6 +275,13 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				E9EEDAC216D546258AEBF339 /* PlayfairDisplaySC-Black.ttf in Resources */,
+				D25D2697811F426397E967A2 /* PlayfairDisplaySC-BlackItalic.ttf in Resources */,
+				A36D87010D6A4A528E021A96 /* PlayfairDisplaySC-Bold.ttf in Resources */,
+				B9E76C6650E14360BFB9D8AC /* PlayfairDisplaySC-BoldItalic.ttf in Resources */,
+				992EA6083128475295A875E2 /* PlayfairDisplaySC-Italic.ttf in Resources */,
+				2B749DC0FFB14A2280E0BC8C /* PlayfairDisplaySC-Regular.ttf in Resources */,
+				D4B5104A991D41A29242C8A0 /* OFL.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

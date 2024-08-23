@@ -191,7 +191,6 @@ const Home: React.FC = () => {
     }
   };
 
-  // console.log(todaysCourse)
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>

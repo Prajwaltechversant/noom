@@ -34,27 +34,25 @@ const AdminScreens: React.FC = () => {
             // .orderBy('sendTime', 'asc')
             .onSnapshot(documentSnapshot => {
                 const resData: any = documentSnapshot?.docs.map(i => i.data());
-
-
                 const unique = resData.filter((obj: any, index: any) => {
                     return index === resData.findIndex((o: any) => obj.userID === o.userID);
                 });
-
                 setAllRequests(unique)
             });
 
         return () => subscriber();
     }, []);
 
-
-
     const handleNavigation = (uid: any) => {
         try {
-            navigation.navigate('Home', {
-                screen: screenNames.Message_Screen, params: {
-                    userId: uid
-                }
-            });
+            navigation.navigate(screenNames.Message_Screen, { userId: uid }
+
+                // {
+                //     screen: screenNames.Message_Screen, params: {
+                //         userId: uid
+                //     }
+                // }
+            );
         } catch (error) {
             console.log(error)
         }

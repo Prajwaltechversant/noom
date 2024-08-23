@@ -1,23 +1,27 @@
-import {View, Text, FlatList, Image} from 'react-native';
-import React, {useRef, useState} from 'react';
-import {useScreenContext} from '../../../context/screenContext';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
 import CustomButton from '../../../components/button/customButton';
-import {colorPalette} from '../../../assets/colorpalette/colorPalette';
-import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import {screenNames} from '../../../preferences/staticVariable';
+import { screenNames } from '../../../preferences/staticVariable';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const Coursecarousel = ({route}: any) => {
+
+
+
+const Coursecarousel = ({ route }: any) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
-    isPortrait ? width : height,
+    isPortrait ? width : height,   
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
@@ -25,15 +29,16 @@ const Coursecarousel = ({route}: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [buttonLabel, setButtonLabel] = useState('Read');
   const currentUid = auth().currentUser?.uid;
-
   const data = route.params.data;
   const id = route.params.id;
   const isCompleted = route.params.isCompleted;
+  const [color, setColor] = useState(colorPalette.black)
+  const [addedToArticle, setAddedtoArticle] = useState(false)
   const handleScroll = () => {
     let nextIndex = currentIndex + 1;
     if (nextIndex < data.length) {
       setCurrentIndex(nextIndex);
-      ref.current?.scrollToIndex({index: nextIndex});
+      ref.current?.scrollToIndex({ index: nextIndex });
     }
     if (nextIndex === data.length - 1) {
       setButtonLabel('Save and Go Back');
@@ -57,12 +62,53 @@ const Coursecarousel = ({route}: any) => {
       }
     }
   };
+  const saveToArticle = async () => {
+    try {
+      if (!addedToArticle) {
+        await firestore().collection(`UserData/${currentUid}/savedArticles`).add(
+          { data: [...data], id: id }
+        )
+        setAddedtoArticle(true)
+        setColor(colorPalette.moss)
+        setAddedtoArticle(true)
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <TouchableOpacity onPress={saveToArticle}>
+            <MaterialCommunityIcons name='bookmark' color={color} size={30} />
+          </TouchableOpacity>
+        );
+      },
+    });
+  }, []);
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection(`UserData/${currentUid}/savedArticles`)
+      .where('id', '==', id)
+      .onSnapshot(documentSnapshot => {
+        const res = documentSnapshot.docs.map(i => i.data())
+        if (res.length === 1) {
+          setAddedtoArticle(true) 
+          setColor(colorPalette.moss)
+        }
+      });
+
+    return () => subscriber();
+  }, []);
+
   return (
     <View style={screenStyles.container}>
       <FlatList
         ref={ref}
         data={data}
-        renderItem={({item, index}) => (
+        renderItem={({ item, index }) => (
           <View style={screenStyles.eachItem}>
             <Image
               source={{
@@ -75,11 +121,7 @@ const Coursecarousel = ({route}: any) => {
               numberOfLines={10}
               style={[
                 textStyle.labelText,
-                {
-                  lineHeight: 30,
-                  textAlign: 'center',
-                  textAlignVertical: 'center',
-                },
+                screenStyles.paragraph
               ]}>
               {item.todo}
             </Text>
@@ -96,7 +138,7 @@ const Coursecarousel = ({route}: any) => {
         btnHeight={50}
         btnColor={colorPalette.berry}
         onPress={handleScroll}
-        labelColor="white"
+        labelColor="white"   
       />
     </View>
   );
