@@ -95,6 +95,9 @@ console.log(groupedData[0])
           </View>
         )}
         keyExtractor={item => item.id}
+
+
+        ListEmptyComponent={<Text>You haven't logged</Text>}
       />
     </View>
   );

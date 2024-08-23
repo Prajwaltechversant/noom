@@ -14,12 +14,16 @@ import HeaderTab from '../../../components/headerTab';
 import ChatScreen from '../../../screens/afterAuth/drawer screens/chatScreen';
 const Drawer = createDrawerNavigator();
 
-const DrawerStack = () => {
+const DrawerStack = ({route}:any) => {
+
+  // console.log(route)
   return (
     <Drawer.Navigator
       screenOptions={{
         headerRight: () => <HeaderTab />,
-      }}>
+      }}
+      
+      >
       <Drawer.Screen
         name="drawer"
         component={HomeTabStack}

@@ -85,7 +85,7 @@ const CourseItem: React.FC<Props> = ({ item }) => {
       
 
     } catch (error) {
-      console.error('Error seeking:', error);
+      console.error('Error', error);
 
     }
   }

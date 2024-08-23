@@ -33,7 +33,7 @@ const ChatScreen: React.FC = ({ route }: any) => {
 
 
     const sendMessage = async () => {
-        push()
+        // push()
         try {
             if (message && message.length > 0) {
                 if (!isAdmin) {

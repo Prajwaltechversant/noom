@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { colorPalette } from '../../assets/colorpalette/colorPalette';
 import { useNavigation } from '@react-navigation/native';
 import { screenNames } from '../../preferences/staticVariable';
-const HeaderTab: React.FC = () => {
+const HeaderTab: React.FC = ({route}:any) => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(

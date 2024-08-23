@@ -9,7 +9,7 @@ import styles from './style';
 import { useScreenContext } from '../../../context/screenContext';
 import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
-
+import { ECharts } from 'echarts';
 
 echarts.use([SVGRenderer, LineChart, GridComponent]);
 
@@ -26,7 +26,7 @@ export default function WeighScreen() {
     const currentUid = auth().currentUser?.uid;
     const [allData, setAllData] = useState<any[]>([])
     const [alldate, setAllDate] = useState<any[]>([])
-    useEffect(() => {
+    useEffect(() => {  
         const subscriber = firestore()
             .collection(`UserData/${currentUid}/dailyProgress`)
             .where('id', '==', 'logweight')
@@ -67,8 +67,8 @@ export default function WeighScreen() {
         if (skiaRef.current) {
             chart = echarts.init(skiaRef.current, 'light', {
                 renderer: 'svg',
-                width: 400,
-                height: 400,
+                width,
+                height,
             });
             chart.setOption(option);
         }
@@ -77,7 +77,7 @@ export default function WeighScreen() {
 
     return (
         <View style={screenStyles.container}>
-            <SkiaChart ref={skiaRef} height={height} width={width}  />
+            <SkiaChart ref={skiaRef}  />
         </View>
        
     );

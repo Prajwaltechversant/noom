@@ -45,15 +45,15 @@ const Home: React.FC = () => {
     date.setDate(date.getDate() + 1);
   }
   const [selctedDate, setSelctedDate] = useState(weekdays[new Date().getDay()]);
-  const [todaysCourse, writeTodaysCourse] = useState<any[]>([]);
-  const [selctedTimestamp, writeSelectedTimestamp] = useState(
+  const [todaysCourse, setTodaysCourse] = useState<any[]>([]);
+  const [selctedTimestamp, setSelctedTimeStamp] = useState(
     firebase.firestore.Timestamp.fromDate(new Date()),
   );
-  const [dayText, writeDayText] = useState<undefined | string>('Today');
-  const [isSelected, setIsSelected] = useState(false);
-  const [isPrev, writeIsPrev] = useState(false);
+  const [dayText, setDayText] = useState<undefined | string>('Today');
+  const [isSelected, setIsSelcted] = useState(false);
+  const [isPrev, setIsPrev] = useState(false);
   const isFirst = useAppSelector(state => state.dailyStatus.isFirstTime);
-  const [isLoading, writeIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [progressModalVisible, setProgressModalVisible] = useState(false);
   const [dailyProgressData, setDailyProgressData] = useState([]);
   const handleSelectedTimeStamp = () => {
@@ -61,18 +61,18 @@ const Home: React.FC = () => {
       let todayIndex = weekdays.indexOf(weekdays[new Date().getDay()]);
       let selctedDateIndex = weekdays.indexOf(selctedDate);
       if (selctedDateIndex <= todayIndex) {
-        writeIsPrev(true);
+        setIsPrev(true);
         const newDate = new Date();
         newDate.setDate(
           newDate.getDate() - Math.abs(todayIndex - selctedDateIndex),
         );
-        writeSelectedTimestamp(firebase.firestore.Timestamp.fromDate(newDate));
+        setSelctedTimeStamp(firebase.firestore.Timestamp.fromDate(newDate));
         if (selctedDate === weekdays[date.getDay()]) {
-          writeDayText('Today');
+          setDayText('Today');
         } else {
-          writeDayText(selctedDate);
+          setDayText(selctedDate);
         }
-        setIsSelected(!isSelected);
+        setIsSelcted(!isSelected);
       }
     } catch (error) {
       console.log(error);
@@ -81,13 +81,17 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const fetchAndAddCourses = async () => {
-      writeIsLoading(true);
+      const existingCourses = await firestore()
+        .collection(`UserData/${currentUid}/dailyCourse`)
+        .get();
+      const existingCoursesArray: any = existingCourses.docs.map(doc => doc.data().id);
+      setIsLoading(true);
       try {
         const coursesSnapshot = await firestore()
           .collection('courses')
-          .limit(3)
           .get();
-        const courses = coursesSnapshot.docs.map(doc => doc.data());
+        const courses = coursesSnapshot.docs.map(doc => doc.data())
+        var result = courses.filter(i => !existingCoursesArray.includes(i.id));
         if (selctedDate === weekdays[date.getDay()]) {
           if (courses.length > 0) {
             const todayStart = new Date().setHours(0, 0, 0, 0);
@@ -98,14 +102,14 @@ const Home: React.FC = () => {
                   .collection(`UserData/${currentUid}/dailyCourse`)
                   .doc(course.id);
                 batch.set(docRef, {
-                  ...course,
+                  ...result,
                   isCompleted: false,
                   addedDate: firebase.firestore.Timestamp.now(),
                 });
               });
               await batch.commit();
               dispatch(addDailyStatus(todayStart));
-              writeIsLoading(false);
+              setIsLoading(false);
             }
           }
         }
@@ -140,7 +144,7 @@ const Home: React.FC = () => {
           )
           .get();
         const courses = snapshot.docs.map(doc => doc.data());
-        writeTodaysCourse(courses);
+        setTodaysCourse(courses);
       } catch (error) {
         console.error('Error fetching tdata', error);
       }
@@ -162,7 +166,7 @@ const Home: React.FC = () => {
       .where('addedDate', '<=', firebase.firestore.Timestamp.fromDate(endOfDay))
       .onSnapshot(snapshot => {
         const updatedCourses = snapshot.docs.map(doc => doc.data());
-        writeTodaysCourse(updatedCourses);
+        setTodaysCourse(updatedCourses);
       });
 
     return () => subscriber();
@@ -187,7 +191,7 @@ const Home: React.FC = () => {
     }
   };
 
-
+  // console.log(todaysCourse)
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>

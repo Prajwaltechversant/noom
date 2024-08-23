@@ -1,18 +1,18 @@
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import {useScreenContext} from '../../../context/screenContext';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {colorPalette} from '../../../assets/colorpalette/colorPalette';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import CustomButton from '../../../components/button/customButton';
 import PaperButton from '../../../components/button/paperButton';
 import textStyle from '../../../style/text/style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { screenNames } from '../../../preferences/staticVariable';
 
 const EntryScreen = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
 
   const screenStyles = styles(
@@ -40,7 +40,7 @@ const EntryScreen = () => {
           </Text>
         </View>
         <View style={screenStyles.buttonContainer}>
-          <PaperButton
+          <CustomButton
             btnColor={colorPalette.tarocco}
             btnHeight={isPortrait ? width * 0.12 : width * 0.1}
             btnWidth={isPortrait ? width * 0.8 : width * 0.8}
@@ -53,7 +53,7 @@ const EntryScreen = () => {
           />
 
           <TouchableOpacity>
-            <Text style={[textStyle.labelText, {textAlign: 'center'}]}>
+            <Text style={[textStyle.labelText, { textAlign: 'center' }]}>
               Enter Your enique program Id
             </Text>
           </TouchableOpacity>

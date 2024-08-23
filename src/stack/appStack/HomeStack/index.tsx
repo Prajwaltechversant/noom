@@ -11,6 +11,11 @@ import auth from '@react-native-firebase/auth';
 import AdminScreens from '../../../screens/afterAuth/admin';
 import WeighGraphScreen from '../../../screens/afterAuth/WeighGraphScreen';
 import Entypo from 'react-native-vector-icons/Entypo'
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacityBase } from 'react-native';
+import textStyle from '../../../style/text/style';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -18,6 +23,11 @@ const Stack = createNativeStackNavigator();
 
 
 const HomeNativeStack = () => {
+
+  const navigation = useNavigation();
+
+
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name={screenNames.HomeScreen} component={Home}
@@ -28,7 +38,7 @@ const HomeNativeStack = () => {
   );
 };
 
-const HomeTabStack = () => {
+const HomeTabStack = ({ route }: any) => {
 
   const currentUid = auth().currentUser?.uid;
   const [isAdmin, setIsAdmin] = useState(false)
@@ -40,25 +50,31 @@ const HomeTabStack = () => {
       setIsAdmin(false)
     }
   }, [])
-
+  console.log(route)
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator screenOptions={{ headerShown: true }}
+    >
       {!isAdmin ?
         <>
           <Tab.Screen name={screenNames.HomeNativeStack} component={HomeNativeStack}
             options={{
               tabBarIcon: () => (
                 <Entypo name='home' size={20} color={'black'} />
-              )
+              ),
+
+              title: 'Home'
             }}
+
+
           />
-          <Tab.Screen name={screenNames.WeighGraphScreen} component={WeighGraphScreen} 
-           options={{
-            tabBarIcon: () => (
-              <Entypo name='line-graph' size={20} color={'black'} />
-            )
-          }}   
-          />
+          <Tab.Screen name={screenNames.WeighGraphScreen} component={WeighGraphScreen}
+            options={{
+              tabBarIcon: () => (
+                <Entypo name='line-graph' size={20} color={'black'} />
+              ),
+              title:'kssksk'
+            }}
+          />  
         </>
         :
         <Tab.Screen name={screenNames.ChatScreen} component={AdminScreens} />
