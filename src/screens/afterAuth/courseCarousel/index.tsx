@@ -21,7 +21,7 @@ const Coursecarousel = ({ route }: any) => {
     screenContext;
   const screenStyles = styles(
     screenContext,
-    isPortrait ? width : height,   
+    isPortrait ? width : height,
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
@@ -88,21 +88,31 @@ const Coursecarousel = ({ route }: any) => {
       },
     });
   }, []);
+
   useEffect(() => {
+
     const subscriber = firestore()
       .collection(`UserData/${currentUid}/savedArticles`)
       .where('id', '==', id)
       .onSnapshot(documentSnapshot => {
         const res = documentSnapshot.docs.map(i => i.data())
         if (res.length === 1) {
-          setAddedtoArticle(true) 
-          setColor(colorPalette.moss)
+          console.log('====================================');
+          console.log(res.length);
+          console.log('====================================');
+          setAddedtoArticle(true)
+          setColor('red')
         }
       });
-
+console.log('====================================');
+console.log(color,'uyf');
+console.log('====================================');
     return () => subscriber();
   }, []);
 
+  console.log('====================================');  
+  console.log(color);
+  console.log('====================================');
   return (
     <View style={screenStyles.container}>
       <FlatList
@@ -138,7 +148,7 @@ const Coursecarousel = ({ route }: any) => {
         btnHeight={50}
         btnColor={colorPalette.berry}
         onPress={handleScroll}
-        labelColor="white"   
+        labelColor="white"
       />
     </View>
   );
