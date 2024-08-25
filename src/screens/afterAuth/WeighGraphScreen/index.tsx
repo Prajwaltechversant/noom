@@ -18,6 +18,7 @@ import { Text } from 'react-native-paper';
 import styles from './style';
 import { useScreenContext } from '../../../context/screenContext';
 import textStyle from '../../../style/text/style';
+import { useNavigation } from '@react-navigation/native';
 
 echarts.use([
     TitleComponent,
@@ -68,6 +69,7 @@ export default function WeighScreen() {
     const [alldate, setAllDate] = useState<string[]>([]);
     const [weight, setWeight] = useState<number>(0);
     const [weightGoal, setWeightGoal] = useState<number>(0);
+    const navigation = useNavigation()
 
     useEffect(() => {
         const subscriber = firestore()
@@ -81,7 +83,7 @@ export default function WeighScreen() {
 
                 if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
                     setAllData([weight, ...weightSet]);
-                    setAllDate([new Date().toDateString(), ...dateSet]); 
+                    setAllDate(['first', ...dateSet]); 
                 } else {
                     setAllData(weightSet);
                     setAllDate(dateSet);
@@ -93,6 +95,9 @@ export default function WeighScreen() {
 
     useEffect(() => {
         fetchWeightDetails();
+        navigation.setOptions({
+            
+        })
     }, []);
 
     const fetchWeightDetails = async () => {

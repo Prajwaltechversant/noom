@@ -3,6 +3,7 @@ import React from 'react';
 import { useScreenContext } from '../../context/screenContext';
 import styles from './style';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colorPalette } from '../../assets/colorpalette/colorPalette';
 import { useNavigation } from '@react-navigation/native';
 import { screenNames } from '../../preferences/staticVariable';
@@ -18,8 +19,13 @@ const HeaderTab: React.FC = ({route}:any) => {
   const navigation: any = useNavigation()
   return (
     <View style={screenStyles.container}>
-      <TouchableOpacity>
-        <AntDesign name="flag" color={colorPalette.black} size={25} />
+      <TouchableOpacity  onPress={() => {
+          navigation.navigate('Home', {
+            screen: screenNames.My_Articles
+            ,
+          })
+        }}>
+        <Ionicons name="bookmarks" color={colorPalette.black} size={25} />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
