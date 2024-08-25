@@ -1,124 +1,140 @@
-import { View, Modal, Text, Alert, Pressable, TouchableOpacity } from 'react-native';
-import React, { Dispatch, useEffect, useState } from 'react';
-// import {
-//   Modal,
-//   Portal,
-//   Text,
-//   Button,
-//   PaperProvider,
-//   ModalProps,
-// } from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { View, Modal, Text, Pressable, TouchableOpacity } from 'react-native';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import textStyle from '../../../style/text/style';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-import { ModalProps } from 'react-native-paper';
-import { StatusBar } from 'react-native';
 import Slider from '@react-native-community/slider';
-import TrackPlayer, { Event, State, useTrackPlayerEvents } from 'react-native-track-player';
-type Props = {
-  // children: React.ReactNode;
-  isModalVisible: boolean,
-  setIsModalVisible: (v: boolean) => void,
-  playAudio: () => void,
-  pauseAudio: () => void,
-  replayTrack: () => void,
-  item: any,
-  seekToPosition: (a: number) => void
-};
-import firestore from '@react-native-firebase/firestore';
+import TrackPlayer, { Event, State, PlaybackErrorEvent } from 'react-native-track-player';
 import auth from '@react-native-firebase/auth';
-type ModalProp = Props & ModalProps;
+import firestore from '@react-native-firebase/firestore';
 
-const PlayerModal: React.FC<Props> = ({ isModalVisible, setIsModalVisible, playAudio, pauseAudio, replayTrack, item, seekToPosition }) => {
-  const [modalVisible, setModalVisible] = useState(isModalVisible);
-  const [duration, setDuration] = useState(0)
-  const [progress, setProgress] = useState(0)
-  const currentUid = auth().currentUser?.uid
-  const [id, setID] = useState()
+type Props = {
+  isModalVisible: boolean;
+  setIsModalVisible: (v: boolean) => void;
+  playAudio: () => Promise<void>;
+  pauseAudio: () => Promise<void>;
+  replayTrack: () => Promise<void>;
+  item: any;
+  seekToPosition: (position: number) => void;
+};
 
-  const containerStyle = { backgroundColor: colorPalette.white };
+const PlayerModal: React.FC<Props> = ({
+  isModalVisible,
+  setIsModalVisible,
+  playAudio,
+  pauseAudio,
+  replayTrack,
+  item,
+  seekToPosition
+}) => {
+  const [duration, setDuration] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [end, setEnd] = useState(false);
+  const currentUid = auth().currentUser?.uid;
+
   const screenContext = useScreenContext();
-  const [isPlaying, setIsPlaying] = useState(false)
   const { width, height, isPortrait } = screenContext;
-  const [end, setEnd] = useState(false)
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
-    isPortrait ? height : width,
+    isPortrait ? height : width
   );
 
   useEffect(() => {
-    TrackPlayer.getProgress().then((progress) => {
-      setDuration(progress.duration)
-    })
-    TrackPlayer.getActiveTrack().then((item: any) => setID(item.id))
-  }, [])
+    const handlePlaybackStateChange = (event: { state: State }) => {
+      if (event.state === State.Ended) {
+        setEnd(true);
+        setIsPlaying(false);
+      } else {
+        setEnd(false);
+      }
+    };
+
+    const handlePlaybackError = (event: PlaybackErrorEvent) => {
+      console.error('Playback error:', event.message);
+    };
+
+    TrackPlayer.addEventListener(Event.PlaybackState, handlePlaybackStateChange);
+    TrackPlayer.addEventListener(Event.PlaybackError, handlePlaybackError);
+
+  }, []);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      TrackPlayer.getProgress().then((progress) => setProgress(progress.position))
-    }, 1000)
-    return () => clearInterval(intervalId);
-  }, []);
-  const handlePlay = async () => {
-    await playAudio()
-    setIsPlaying(!isPlaying)
-  }
-  // console.log(item.id)
-  const handlePause = async () => {
-    await pauseAudio()
-    setIsPlaying(!isPlaying)
-  }
-
-  useTrackPlayerEvents([Event.PlaybackState,], async (event) => {
-    if (event.type === Event.PlaybackState) {
-      if (event.state === State.Ended) {
-        console.log('Track has ended');
-        setEnd(true)
-        setIsPlaying(!isPlaying)
-      } else {
-        setEnd(false)
+    const updateProgress = setInterval(async () => {
+      try {
+        const progress = await TrackPlayer.getProgress();
+        setProgress(progress.position);
+        setDuration(progress.duration);
+      } catch (error) {
+        console.error('Error getting progress:', error);
       }
-    }
-  });
-  const handleRestart = async () => {
-    await replayTrack()
-    setIsPlaying(!isPlaying)
-    setEnd(false)
-    setProgress(0)
-  }
+    }, 1000);
 
-  // TrackPlayer.getActiveTrack().then(i=>console.log(i.id,'a'))
-  const closePlayer = async () => {
-    await pauseAudio();
-    setIsModalVisible(false)
-    setProgress(0)
-    if (end) {
-      firestore()
-        .collection(`UserData/${currentUid}/dailyCourse`)
-        .doc(item.id)
-        .update({
-          isCompleted: true,
-        })
-        .then(() => {
-        });
+    return () => clearInterval(updateProgress);
+  }, []);
+
+  const handlePlay = async () => {
+    try {
+      await playAudio();
+      setIsPlaying(true);
+    } catch (error) {
+      console.error('Error playing audio:', error);
     }
-  }
-  // console.log(id,'D')
+  };
+
+  const handlePause = async () => {
+    try {
+      await pauseAudio();
+      setIsPlaying(false);
+    } catch (error) {
+      console.error('Error pausing audio:', error);
+    }
+  };
+
+  const handleRestart = async () => {
+    try {
+      await replayTrack();
+      setIsPlaying(true);
+      setEnd(false);
+      setProgress(0);
+    } catch (error) {
+      console.error('Error restarting track:', error);
+    }
+  };
+
+  const handleSeek = (value: number) => {
+    seekToPosition(value);
+    TrackPlayer.seekTo(value).catch(error => console.error('Error seeking to position:', error));
+  };
+
+  const closePlayer = async () => {
+    try {
+      await pauseAudio();
+      setIsModalVisible(false);
+      setProgress(0);
+      if (end && currentUid) {
+        await firestore()
+          .collection(`UserData/${currentUid}/dailyCourse`)
+          .doc(item.id)
+          .update({ isCompleted: true });
+      }
+    } catch (error) {
+      console.error('Error closing player:', error);
+    }
+  };
+
   return (
     <View style={screenStyles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}
         visible={isModalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}>
+        onRequestClose={() => setIsModalVisible(false)}
+      >
         <View style={screenStyles.centeredView}>
           <View style={screenStyles.modalView}>
             <Text style={textStyle.labelText}>{item.id}</Text>
@@ -132,35 +148,36 @@ const PlayerModal: React.FC<Props> = ({ isModalVisible, setIsModalVisible, playA
                   maximumValue={duration}
                   minimumTrackTintColor={colorPalette.btnPrimary}
                   maximumTrackTintColor={colorPalette.cherry}
-                  onValueChange={(e) => seekToPosition(e)}
+                  onValueChange={handleSeek}
                   value={progress}
                 />
                 <Text style={textStyle.labelText}>{progress.toFixed(0)}</Text>
-
               </View>
-              {!end ? (isPlaying ?
-                (< TouchableOpacity onPress={handlePause}>
-                  <AntDesign name='pausecircle' color={colorPalette.black} size={30} />
-                </TouchableOpacity>)
-                :
-                (< TouchableOpacity onPress={handlePlay}>
-                  <AntDesign name='play' color={colorPalette.black} size={30} />
-                </TouchableOpacity>))
-                :
-                (< TouchableOpacity onPress={handleRestart}>
-                  <MaterialIcons name='restart-alt' color={colorPalette.black} size={30} />
-                </TouchableOpacity>)
-              }
+
+              {!end ? (
+                isPlaying ? (
+                  <TouchableOpacity onPress={handlePause}>
+                    <AntDesign name="pausecircle" color={colorPalette.black} size={30} />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={handlePlay}>
+                    <AntDesign name="play" color={colorPalette.black} size={30} />
+                  </TouchableOpacity>
+                )
+              ) : (
+                <TouchableOpacity onPress={handleRestart}>
+                  <MaterialIcons name="restart-alt" color={colorPalette.black} size={30} />
+                </TouchableOpacity>
+              )}
             </View>
-            <Pressable
-              style={[screenStyles.button, screenStyles.buttonClose]}
-              onPress={closePlayer}>
-              <MaterialIcons name='close' color={colorPalette.white} size={20} />
+
+            <Pressable style={[screenStyles.button, screenStyles.buttonClose]} onPress={closePlayer}>
+              <MaterialIcons name="close" color={colorPalette.white} size={20} />
             </Pressable>
           </View>
         </View>
-      </Modal >
-    </View >
+      </Modal>
+    </View>
   );
 };
 

@@ -1,11 +1,9 @@
-
 import firestore from '@react-native-firebase/firestore';
-import auth, { firebase } from '@react-native-firebase/auth'
+import auth from '@react-native-firebase/auth';
 import { SvgChart, SVGRenderer } from '@wuba/react-native-echarts';
 import * as echarts from 'echarts/core';
 import { useRef, useEffect, useState } from 'react';
 import {
-    BarChart,
     LineChart
 } from 'echarts/charts';
 import {
@@ -15,11 +13,10 @@ import {
     TooltipComponent,
     DataZoomComponent,
 } from 'echarts/components';
-import { useNavigation } from '@react-navigation/native';
-import styles from './style';
-import { useScreenContext } from '../../../context/screenContext';
 import { ScrollView, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import styles from './style';
+import { useScreenContext } from '../../../context/screenContext';
 import textStyle from '../../../style/text/style';
 
 echarts.use([
@@ -30,71 +27,84 @@ echarts.use([
     LineChart,
     LegendComponent,
     DataZoomComponent,
+]);
 
-
-
-])
-
-
-function ChartComponent({ option }: any) {
+function ChartComponent({ option }: { option: any }) {
     const screenContext = useScreenContext();
-
-    const { width, fontScale, height, isPortrait, isTabletType, scale } =
-        screenContext;
+    const { width, height, isPortrait } = screenContext;
     const screenStyles = styles(
         screenContext,
         isPortrait ? width : height,
         isPortrait ? height : width,
     );
-    const chartRef = useRef<any>(null);
+    const chartRef = useRef<HTMLDivElement | null>(null);
+
     useEffect(() => {
-        let chart: any;
+        let chart: echarts.ECharts | null = null;
         if (chartRef.current) {
             chart = echarts.init(chartRef.current, 'light', {
                 renderer: 'svg',
                 width: width,
-                height: height * .8,
-
+                height: height * 0.8,
             });
             chart.setOption(option);
         }
         return () => chart?.dispose();
-    }, [option]);
+    }, [option, width, height]);
+
     return <ScrollView horizontal><SvgChart ref={chartRef} /></ScrollView>;
 }
 
 export default function WeighScreen() {
     const screenContext = useScreenContext();
-    const { width, fontScale, height, isPortrait, isTabletType, scale } =
-        screenContext;
+    const { width, height, isPortrait } = screenContext;
     const screenStyles = styles(
         screenContext,
         isPortrait ? width : height,
         isPortrait ? height : width,
     );
     const currentUid = auth().currentUser?.uid;
-    const [allData, setAllData] = useState<any[]>([])
-    const [alldate, setAllDate] = useState<any[]>([])
+    const [allData, setAllData] = useState<number[]>([]);
+    const [alldate, setAllDate] = useState<string[]>([]);
+    const [weight, setWeight] = useState<number>(0);
+    const [weightGoal, setWeightGoal] = useState<number>(0);
+
     useEffect(() => {
         const subscriber = firestore()
             .collection(`UserData/${currentUid}/dailyProgress`)
             .where('id', '==', 'logweight')
-            .onSnapshot(documentSnapshot => {
-                const weigh: any[] = documentSnapshot.docs.map(i => i.data())
-                console.log(weigh)
-                const sorted = weigh.sort((a, b) => a.addedDate - b.addedDate)
-                const dateSet = sorted.map((i: any) => i.addedDate.toDate().toDateString())
-                const weightSet = sorted.map((i: any) => i.data.count)
-                setAllData(weightSet)
-                setAllDate(dateSet)
-            });
-        return () => subscriber();
-    }, []);
-    const navigation = useNavigation();
-    const skiaRef = useRef<any>(null);
+            .onSnapshot(snapshot => {
+                const weigh = snapshot.docs.map(doc => doc.data());
+                const sorted = weigh.sort((a, b) => a.addedDate.toDate().getTime() - b.addedDate.toDate().getTime());
+                const dateSet = sorted.map((item: any) => item.addedDate.toDate().toDateString());
+                const weightSet = sorted.map((item: any) => item.data.count);
 
-    const [weight, setWeight] = useState(0)
-    const [weightGoal, setWeightGoal] = useState(0)
+                if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
+                    setAllData([weight, ...weightSet]);
+                    setAllDate([new Date().toDateString(), ...dateSet]); 
+                } else {
+                    setAllData(weightSet);
+                    setAllDate(dateSet);
+                }
+            });
+
+        return () => subscriber();
+    }, [currentUid, weight]);
+
+    useEffect(() => {
+        fetchWeightDetails();
+    }, []);
+
+    const fetchWeightDetails = async () => {
+        try {
+            const snapshot = await firestore().collection(`UserData/${currentUid}/survey`).get();
+            const data = snapshot.docs.map(doc => doc.data());
+            setWeight(data[0]?.weight || 0);
+            setWeightGoal(data[0]?.weightGoal || 0);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const option = {
         title: {
@@ -105,13 +115,8 @@ export default function WeighScreen() {
             axisPointer: {
                 type: 'cross',
                 label: {
-                    backgroundColor: 'red',
+                    backgroundColor: '#6a7985',
                 },
-            },
-        },
-        toolbox: {
-            feature: {
-                //   saveAsImage: {}
             },
         },
         grid: {
@@ -120,71 +125,46 @@ export default function WeighScreen() {
             bottom: '3%',
             containLabel: true,
         },
-        xAxis: [
-            {
-                type: 'category',
-                boundaryGap: true,
-                data: [...alldate],
-
-            },
-        ],
-        yAxis: [
-            {
-                type: 'value',
-
-            },
-        ],
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: alldate,
+        },
+        yAxis: {
+            type: 'value',
+        },
         dataZoom: [
             {
                 type: 'inside',
                 start: 0,
-                end: 100
+                end: 100,
             },
             {
                 start: 0,
-                end: 100
-            }
+                end: 100,
+            },
         ],
         series: [
             {
+                name: 'Weight',
                 type: 'line',
                 smooth: true,
-                data: [...allData],
-
-
-
+                data: allData,
             },
-
         ],
     };
 
-    useEffect(() => { fetchWeightDetails() }, [])
-    const fetchWeightDetails = () => {
-        try {
-            firestore().collection(`UserData/${currentUid}/survey`).get().then(i => {
-                const data = i.docs.map(item => item.data())
-                setWeight(data[0].weight)
-                setWeightGoal(data[0].weightGoal)
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
     return (
         <View style={screenStyles.container}>
             <View style={screenStyles.tittleContainer}>
                 <View style={screenStyles.textContainer}>
-                    <Text style={textStyle.labelText}>
-                        Your Weight
-                    </Text>
+                    <Text style={textStyle.labelText}>Your Weight</Text>
                     <View style={screenStyles.weightCircle}>
                         <Text style={screenStyles.weightText}>{weight}</Text>
                     </View>
                 </View>
                 <View style={screenStyles.textContainer}>
-                    <Text style={textStyle.labelText}>
-                        Your Goal
-                    </Text>
+                    <Text style={textStyle.labelText}>Your Goal</Text>
                     <View style={screenStyles.weightCircle}>
                         <Text style={screenStyles.weightText}>{weightGoal}</Text>
                     </View>
@@ -192,5 +172,5 @@ export default function WeighScreen() {
             </View>
             <ChartComponent option={option} />
         </View>
-    )
+    );
 }

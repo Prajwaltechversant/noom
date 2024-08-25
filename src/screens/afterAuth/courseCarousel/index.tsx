@@ -6,19 +6,15 @@ import { useNavigation } from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
 import CustomButton from '../../../components/button/customButton';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
-import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { screenNames } from '../../../preferences/staticVariable';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-
-
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { log } from 'echarts/types/src/util/log.js';
 
 const Coursecarousel = ({ route }: any) => {
   const screenContext = useScreenContext();
-  const { width, fontScale, height, isPortrait, isTabletType, scale } =
-    screenContext;
+  const { width, height, isPortrait } = screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
@@ -27,112 +23,91 @@ const Coursecarousel = ({ route }: any) => {
   const navigation: any = useNavigation();
   const ref = useRef<FlatList>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [buttonLabel, setButtonLabel] = useState('Read');
+  const [buttonLabel, setButtonLabel] = useState('Continue');
   const currentUid = auth().currentUser?.uid;
   const data = route.params.data;
   const id = route.params.id;
   const isCompleted = route.params.isCompleted;
-  const [color, setColor] = useState(colorPalette.black)
-  const [addedToArticle, setAddedtoArticle] = useState(false)
+  const [color, setColor] = useState(colorPalette.black);
+  const [addedToArticle, setAddedToArticle] = useState(false);
+  const artiCle = route.params
+  
+
   const handleScroll = () => {
     let nextIndex = currentIndex + 1;
     if (nextIndex < data.length) {
       setCurrentIndex(nextIndex);
       ref.current?.scrollToIndex({ index: nextIndex });
+    } else {
+      if (!isCompleted) {
+        firestore()
+          .collection(`UserData/${currentUid}/dailyCourse`)
+          .doc(id)
+          .update({ isCompleted: true })
+          .then(() => navigation.navigate(screenNames.HomeScreen))
+          .catch(error => console.error('Error updating course:', error));
+      } else {
+        navigation.navigate(screenNames.HomeScreen);
+      }
     }
     if (nextIndex === data.length - 1) {
       setButtonLabel('Save and Go Back');
-    } else if (nextIndex === data.length) {
-      try {
-        if (!isCompleted) {
-          firestore()
-            .collection(`UserData/${currentUid}/dailyCourse`)
-            .doc(id)
-            .update({
-              isCompleted: true,
-            })
-            .then(() => {
-              navigation.navigate(screenNames.HomeScreen);
-            });
-        } else {
-          navigation.navigate(screenNames.HomeScreen);
-        }
-      } catch (error) {
-        console.log(error);
-      }
     }
   };
+
   const saveToArticle = async () => {
     try {
       if (!addedToArticle) {
-        await firestore().collection(`UserData/${currentUid}/savedArticles`).add(
-          { data: [...data], id: id }
-        )
-        setAddedtoArticle(true)
-        setColor(colorPalette.moss)
-        setAddedtoArticle(true)
+        await firestore().collection(`UserData/${currentUid}/savedArticles`).add({...artiCle});
+        setAddedToArticle(true);
+        setColor(colorPalette.moss);
       }
-
     } catch (error) {
-      console.log(error)
+      console.error('Error saving to article:', error);
     }
-  }
+  };
+
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        return (
-          <TouchableOpacity onPress={saveToArticle}>
-            <MaterialCommunityIcons name='bookmark' color={color} size={30} />
-          </TouchableOpacity>
-        );
-      },
+      headerRight: () => (
+        <TouchableOpacity onPress={saveToArticle}>
+          <MaterialCommunityIcons name='bookmark' color={color} size={30} />
+        </TouchableOpacity>
+      ),
     });
-  }, []);
+  }, [color, navigation]);
 
   useEffect(() => {
-
     const subscriber = firestore()
       .collection(`UserData/${currentUid}/savedArticles`)
       .where('id', '==', id)
       .onSnapshot(documentSnapshot => {
-        const res = documentSnapshot.docs.map(i => i.data())
-        if (res.length === 1) {
-          console.log('====================================');
-          console.log(res.length);
-          console.log('====================================');
-          setAddedtoArticle(true)
-          setColor('red')
+        const res = documentSnapshot.docs.map(i => i.data());
+        if (res.length > 0) {
+          setAddedToArticle(true);
+          setColor(colorPalette.moss); 
         }
-      });
-console.log('====================================');
-console.log(color,'uyf');
-console.log('====================================');
-    return () => subscriber();
-  }, []);
+      }, error => console.error('Error...', error));
 
-  console.log('====================================');  
-  console.log(color);
-  console.log('====================================');
+    return () => subscriber();
+  }, [currentUid, id]);
+
   return (
     <View style={screenStyles.container}>
       <FlatList
         ref={ref}
         data={data}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <View style={screenStyles.eachItem}>
             <Image
-              source={{
-                uri: item.images[0],
-              }}
+              source={{ uri: item.images[0] }}
               style={screenStyles.image}
             />
             <Text style={textStyle.headingText}>{item.title}</Text>
             <Text
               numberOfLines={10}
-              style={[
-                textStyle.labelText,
-                screenStyles.paragraph
-              ]}>
+              style={[textStyle.labelText, screenStyles.paragraph]}
+            >
               {item.todo}
             </Text>
           </View>

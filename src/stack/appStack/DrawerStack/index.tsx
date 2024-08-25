@@ -5,13 +5,12 @@ import HomeTabStack, { HomeNativeStack } from '../HomeStack';
 import {screenNames} from '../../../preferences/staticVariable';
 import MessageScreen from '../../../screens/afterAuth/drawer screens/messages';
 import WeightGraphScreen from '../../../screens/afterAuth/drawer screens/weight graph';
-import ReciepiesScreen from '../../../screens/afterAuth/drawer screens/reciepies';
 import MyArticleScreen from '../../../screens/afterAuth/drawer screens/my articles';
 import SettingsScreen from '../../../screens/afterAuth/drawer screens/settings';
-import HelpScreen from '../../../screens/afterAuth/drawer screens/Help';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import HeaderTab from '../../../components/headerTab';
 import ChatScreen from '../../../screens/afterAuth/drawer screens/chatScreen';
+import FlowChart from '../../../screens/afterAuth/drawer screens/Progress';
 const Drawer = createDrawerNavigator();
 
 
@@ -44,6 +43,13 @@ const DrawerStack = ({route}:any) => {
       <Drawer.Screen
         name={screenNames.My_Articles}
         component={MyArticleScreen}
+        options={{
+          drawerIcon: () => <AntDesign name="home" color={'black'} size={20} />,
+        }}
+      />
+            <Drawer.Screen
+        name={'progress'}
+        component={FlowChart}
         options={{
           drawerIcon: () => <AntDesign name="home" color={'black'} size={20} />,
         }}

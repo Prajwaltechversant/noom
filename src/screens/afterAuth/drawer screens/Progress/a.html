@@ -1,0 +1,39 @@
+<!-- echart.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ECharts</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    #chart { height: 100%; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script>
+    var chart = echarts.init(document.getElementById('chart'));
+    var option = {
+      // Your ECharts configuration here
+      title: {
+        text: 'Sample Flowchart',
+      },
+      series: [{
+        type: 'graph',
+        layout: 'circular',
+        data: [
+          { name: 'Node1', symbolSize: 50 },
+          { name: 'Node2', symbolSize: 50 },
+          // More nodes
+        ],
+        edges: [
+          { source: 'Node1', target: 'Node2' },
+          // More edges
+        ],
+      }],
+    };
+    chart.setOption(option);
+  </script>
+</body>
+</html>

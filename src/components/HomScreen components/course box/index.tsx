@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TouchableOpacityBase } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from './style';
 import { useNavigation } from '@react-navigation/native';
@@ -13,9 +13,11 @@ import TrackPlayer from 'react-native-track-player';
 
 interface Props {
   item: CourseType;
+  isArticle: boolean;
+  handleDelete?:()=>void
 }
 
-const CourseItem: React.FC<Props> = ({ item }) => {
+const CourseItem: React.FC<Props> = ({ item, isArticle ,handleDelete}) => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
@@ -82,13 +84,16 @@ const CourseItem: React.FC<Props> = ({ item }) => {
   const seekToPosition = async (pos: number) => {
     try {
       await TrackPlayer.seekTo(pos);
-      
+
 
     } catch (error) {
       console.error('Error', error);
 
     }
   }
+
+ 
+  console.log(item)
   return (
     <>
       <View style={screenStyles.container}>
@@ -125,7 +130,7 @@ const CourseItem: React.FC<Props> = ({ item }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={screenStyles.col2}>
+        {!isArticle ? <View style={screenStyles.col2}>
           {item.isCompleted ? (
             <Image
               source={{
@@ -140,6 +145,15 @@ const CourseItem: React.FC<Props> = ({ item }) => {
             />
           )}
         </View>
+          :
+          <View style={screenStyles.col2}>
+            <TouchableOpacity onPress={handleDelete}>
+              <Feather name='trash' size={30} color={'red'} />
+            </TouchableOpacity>
+          </View>
+        }
+
+
 
       </View>
       <PlayerModal
