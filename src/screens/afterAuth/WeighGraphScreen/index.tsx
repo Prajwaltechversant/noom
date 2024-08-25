@@ -99,8 +99,8 @@ export default function WeighScreen() {
         try {
             const snapshot = await firestore().collection(`UserData/${currentUid}/survey`).get();
             const data = snapshot.docs.map(doc => doc.data());
-            setWeight(data[0]?.weight || 0);
-            setWeightGoal(data[0]?.weightGoal || 0);
+            setWeight(data[0]?.userWeight || 0);
+            setWeightGoal(data[0]?.idealWeight || 0);
         } catch (error) {
             console.error(error);
         }

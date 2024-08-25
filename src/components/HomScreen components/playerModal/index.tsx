@@ -70,7 +70,7 @@ const PlayerModal: React.FC<Props> = ({
         setProgress(progress.position);
         setDuration(progress.duration);
       } catch (error) {
-        console.error('Error getting progress:', error);
+        console.error('Error  progress..', error);
       }
     }, 1000);
 
@@ -82,7 +82,7 @@ const PlayerModal: React.FC<Props> = ({
       await playAudio();
       setIsPlaying(true);
     } catch (error) {
-      console.error('Error playing audio:', error);
+      console.error('Error playing ', error);
     }
   };
 
@@ -91,7 +91,7 @@ const PlayerModal: React.FC<Props> = ({
       await pauseAudio();
       setIsPlaying(false);
     } catch (error) {
-      console.error('Error pausing audio:', error);
+      console.error('Error pausing ..', error);
     }
   };
 
@@ -102,13 +102,13 @@ const PlayerModal: React.FC<Props> = ({
       setEnd(false);
       setProgress(0);
     } catch (error) {
-      console.error('Error restarting track:', error);
+      console.error('Error restarting .', error);
     }
   };
 
   const handleSeek = (value: number) => {
     seekToPosition(value);
-    TrackPlayer.seekTo(value).catch(error => console.error('Error seeking to position:', error));
+    TrackPlayer.seekTo(value).catch(error => console.error('Error...', error));
   };
 
   const closePlayer = async () => {
@@ -123,14 +123,14 @@ const PlayerModal: React.FC<Props> = ({
           .update({ isCompleted: true });
       }
     } catch (error) {
-      console.error('Error closing player:', error);
+      console.error('Error..', error);
     }
   };
 
   return (
     <View style={screenStyles.centeredView}>
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={isModalVisible}
         onRequestClose={() => setIsModalVisible(false)}

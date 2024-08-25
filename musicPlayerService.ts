@@ -1,8 +1,7 @@
 import TrackPlayer, { Event, State } from 'react-native-track-player';
+import { getPlaybackState } from 'react-native-track-player/lib/src/trackPlayer';
 
-// Define the playback service function
 export async function playBackService() {
-  // Handle remote play events
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
     try {
       await TrackPlayer.play();
@@ -11,7 +10,6 @@ export async function playBackService() {
     }
   });
 
-  // Handle remote pause events
   TrackPlayer.addEventListener(Event.RemotePause, async () => {
     try {
       await TrackPlayer.pause();
@@ -20,7 +18,6 @@ export async function playBackService() {
     }
   });
 
-  // Handle remote next track events
   TrackPlayer.addEventListener(Event.RemoteNext, async () => {
     try {
       await TrackPlayer.skipToNext();
@@ -29,7 +26,6 @@ export async function playBackService() {
     }
   });
 
-  // Handle remote previous track events
   TrackPlayer.addEventListener(Event.RemotePrevious, async () => {
     try {
       await TrackPlayer.skipToPrevious();
@@ -43,8 +39,8 @@ export async function setupPlayer(): Promise<boolean> {
   let isSetup = false;
 
   try {
-    const status = await TrackPlayer.getState();
-    if (status === State.Ready || status === State.Playing) {
+    const status = await getPlaybackState();
+    if (status.state === State.Ready || status.state === State.Playing) {
       isSetup = true;
     }
   } catch (error) {

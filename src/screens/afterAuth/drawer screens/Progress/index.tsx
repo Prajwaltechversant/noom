@@ -1,57 +1,84 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
-
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
+import { useScreenContext } from '../../../../context/screenContext';
+import styles from './style';
+import textStyle from '../../../../style/text/style';
 const FlowChart = () => {
-  // Dummy array of 30 courses
-  const courses = Array.from({ length: 30 }, (v, i) => ({
-    title: `Course ${i + 1}`,
-    level: `Level ${Math.ceil((i + 1) / 10)}`,
-    order: i + 1,
-  }));
+  const screenContext = useScreenContext();
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
+    screenContext;
+
+  const screenStyles = styles(
+    screenContext,
+    isPortrait ? width : height,
+    isPortrait ? height : width,
+  );
+  const currentUid = auth().currentUser?.uid;
+  const [allData,setAllData] = useState([])
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection(`UserData/${currentUid}/dailyCourse`)
+      .where('isCompleted','==',true)
+      .onSnapshot(documentSnapshot => {
+        const resData: any = documentSnapshot.docs.map(i => i.data().title);
+        // console.log(resData[0].title,'qds')
+        setAllData(resData)
+      });
+    return () => subscriber();
+  }, []);
+
+  console.log(width,'da')
 
   return (
-    <ScrollView contentContainerStyle={{ alignItems: 'center', padding: 20 }}>
-      <Svg height={courses.length * 150} width="300">
-        {courses.map((course, index) => {
+    <ScrollView contentContainerStyle={{ alignItems: 'center',}} style={screenStyles.container}>
+      <Svg height={allData.length * 100} width="300">
+        {allData.map((item, index) => {
           const isEven = index % 2 === 0;
-          const startX = isEven ? 50 : 250;
-          const endX = isEven ? 250 : 50;
-          const controlX1 = isEven ? 0 : 150;
-          const controlX2 = isEven ? 199 : 150;
-          const startY = index * 100;
-          const endY = startY + 100;
+          const startX = isEven ? width*.13 : width*.64;  //50-250
+          const endX = isEven ? width*.64 : width*.13;
+          const controlX1 = isEven ? 0 : width*.39;
+          const controlX2 = isEven ? width*.64: width*.39;
+          const startY = index * width*.26;
+          const endY = startY + width*.26;//100..
 
           return (
-            <React.Fragment key={index}>
+            <View key={index}>
               <Path
-                d={`M${startX} ${startY} C${controlX1} ${startY + 160}, ${controlX2} ${endY - 100}, ${endX} ${endY}`}
+                d={`M${startX} ${startY} C${controlX1} ${startY + width*.51}, ${controlX2} ${endY - width*.26}, ${endX} ${endY}`}
+                stroke="lightblue"
+                strokeWidth="9"
+                fill="none"
+              />
+              <Path
                 stroke="lightblue"
                 strokeWidth="4"
                 fill="none"
               />
-              {/* Circle at the start of the curve */}
-              <Circle cx={startX} cy={startY} r="10" fill="lightblue" />
-            </React.Fragment>
+              <Circle cx={startX} cy={startY} r="20" fill="lightblue" stroke={'green'} />
+            </View>
           );
         })}
       </Svg>
 
-      {courses.map((course, index) => {
+      {allData.map((item, index) => {
         const isEven = index % 2 === 0;
         return (
           <View
             key={index}
             style={{
               position: 'absolute',
-              top: index * 150 + 10,
-              left: isEven ? 100 : 0,
-              right: isEven ? 0 : 100,
+              top: index * width*.26 + 10,
+              left: isEven ? width*.26 : 0,
+              right: isEven ? 0 : width*.26,
               alignItems: isEven ? 'flex-start' : 'flex-end',
             }}
           >
-            <Text>{course.level}</Text>
-            <Text>{course.title}</Text>
+            <Text style={textStyle.labelText}>{item}</Text>
           </View>
         );
       })}
