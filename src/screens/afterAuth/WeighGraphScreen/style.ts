@@ -46,6 +46,16 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         textAlignVertical: 'center',
         textDecorationColor: 'red',
         color:colorPalette.white
+    },
+    headerBtn:{
+        marginRight:width*.1,
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-evenly',
+        backgroundColor:colorPalette.Lagoon,
+        padding:2,
+        borderRadius:10,
+        width:width*.2
     }
 })
 

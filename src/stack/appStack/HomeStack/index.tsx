@@ -17,6 +17,7 @@ import textStyle from '../../../style/text/style';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import DrawerStack from '../DrawerStack';
 import WeighScreen from '../../../screens/afterAuth/WeighGraphScreen';
+import UserProfile from '../../../screens/afterAuth/UserProfile';
 // import WeighGraphScreen from '../../../screens/afterAuth/WeighGraphScreen/s';
 
 const Tab = createBottomTabNavigator();
@@ -87,6 +88,17 @@ const HomeTabStack = ({ route }: any) => {
 
             }}
           />
+          <Tab.Screen name={screenNames.UserProfile} component={UserProfile}
+            options={{
+              tabBarIcon: () => (
+                <Entypo name='user' size={20} color={'black'} />
+              ),
+              title: 'Profile',
+              headerShown: true
+
+            }}
+          />
+          {/* UserProfile */}
         </>
         :
         <Tab.Screen name={screenNames.ChatScreen} component={AdminScreens} />

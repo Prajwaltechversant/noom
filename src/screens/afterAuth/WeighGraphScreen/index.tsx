@@ -13,13 +13,21 @@ import {
     TooltipComponent,
     DataZoomComponent,
 } from 'echarts/components';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import styles from './style';
 import { useScreenContext } from '../../../context/screenContext';
 import textStyle from '../../../style/text/style';
 import { useNavigation } from '@react-navigation/native';
-
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import LogWeightScreen from '../addDailyProgressScreen/ProgressScreen2';
+import CustomModal from '../../../components/modal/customModal';
+import CustomComponentModal from '../../../components/modal/customComponentModal';
+import Scale from 'echarts/types/src/scale/Scale.js';
+import CustomScale from '../../../components/scale';
+import CustomButton from '../../../components/button/customButton';
+import { addToDailyProgress2 } from '../../../services/dailyprogress';
 echarts.use([
     TitleComponent,
     TooltipComponent,
@@ -70,6 +78,8 @@ export default function WeighScreen() {
     const [weight, setWeight] = useState<number>(0);
     const [weightGoal, setWeightGoal] = useState<number>(0);
     const navigation = useNavigation()
+    const [visible, setVisble] = useState(false)
+    const [selectedValue, setSelctedvalue] = useState(0)
 
     useEffect(() => {
         const subscriber = firestore()
@@ -83,7 +93,7 @@ export default function WeighScreen() {
 
                 if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
                     setAllData([weight, ...weightSet]);
-                    setAllDate(['first', ...dateSet]); 
+                    setAllDate(['first', ...dateSet]);
                 } else {
                     setAllData(weightSet);
                     setAllDate(dateSet);
@@ -93,10 +103,38 @@ export default function WeighScreen() {
         return () => subscriber();
     }, [currentUid, weight]);
 
+
+
+    const addWeight = async () => {
+        try {
+
+            const ref = await firestore().collection('dailyProgress')
+                .where('id', '==', 'logweight')
+                .get()
+            const docs = ref.docs.map(i => i.data())
+            setVisble(!visible)
+            await addToDailyProgress2(docs[0], selectedValue)
+            setVisble(!visible)
+            setSelctedvalue(0)
+
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
     useEffect(() => {
         fetchWeightDetails();
         navigation.setOptions({
-            
+            headerRight: () => {
+                return (
+                    <TouchableOpacity style={screenStyles.headerBtn} onPress={addWeight}>
+                        <Text style={[textStyle.labelText, { color: colorPalette.white }]}>
+                            Add
+                        </Text>
+                        <AntDesign name='plus' color={'white'} size={20} />
+                    </TouchableOpacity>
+                );
+            },
         })
     }, []);
 
@@ -176,6 +214,19 @@ export default function WeighScreen() {
                 </View>
             </View>
             <ChartComponent option={option} />
+
+            <CustomComponentModal visible={visible} modalHeight={height * .4} setProgressModalVisible={setVisble}>
+                <CustomScale maxValue={250} minValue={0} selectedScaleValue={selectedValue} setSelectedScaleValue={setSelctedvalue} step={1} />
+                <CustomButton
+                    label='Save'
+                    btnColor={colorPalette.mint}
+                    btnWidth={width * 0.5}
+                    btnHeight={height * 0.05}
+                    borderRadius={20}
+                  onPress={addWeight}
+
+                />
+            </CustomComponentModal>
         </View>
     );
 }

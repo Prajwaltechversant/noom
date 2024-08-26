@@ -1,19 +1,19 @@
-import {View, Text, KeyboardAvoidingView, Alert, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useScreenContext} from '../../../context/screenContext';
+import { View, Text, KeyboardAvoidingView, Alert, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import textStyle from '../../../style/text/style';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {colorPalette} from '../../../assets/colorpalette/colorPalette';
-import {TouchableOpacity} from 'react-native';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import { TouchableOpacity } from 'react-native';
 import CustomTextInputComponent from '../../../components/textInput';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch} from '../../../redux/hook';
-import {updateProfileStatus} from '../../../redux/slices/authStatus';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch } from '../../../redux/hook';
+import { updateProfileStatus } from '../../../redux/slices/authStatus';
 
 type Form = {
   lname: string | undefined;
@@ -23,7 +23,7 @@ type Form = {
 
 const ProfileScreen1 = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
@@ -41,7 +41,7 @@ const ProfileScreen1 = () => {
   const dispatch = useAppDispatch();
   const handleImagePicker = async () => {
     try {
-      const result: any = await launchImageLibrary({mediaType: 'photo'});
+      const result: any = await launchImageLibrary({ mediaType: 'photo' });
       setImage(result.assets[0].uri);
     } catch (error) {
       console.log(error);
@@ -49,7 +49,7 @@ const ProfileScreen1 = () => {
   };
 
   const handleSubmit = async () => {
-    const {fname, lname} = formData;
+    const { fname, lname } = formData;
     try {
       if (!fname || !lname || !image) {
         Alert.alert('Please Add the details');
@@ -76,7 +76,7 @@ const ProfileScreen1 = () => {
       headerRight: () => {
         return (
           <TouchableOpacity onPress={handleSubmit}>
-            <Text style={[textStyle.labelText, {color: colorPalette.stream}]}>
+            <Text style={[textStyle.labelText, { color: colorPalette.stream }]}>
               NEXT
             </Text>
           </TouchableOpacity>
@@ -98,33 +98,38 @@ const ProfileScreen1 = () => {
           <TouchableOpacity
             style={screenStyles.profileIcon}
             onPress={handleImagePicker}>
-            <Image source={{uri: image}} style={screenStyles.profileImage} />
+            <Image source={{ uri: image }} style={screenStyles.profileImage} />
           </TouchableOpacity>
         )}
       </View>
       <View>
         <CustomTextInputComponent
+          textColor='black'
+
           mode="outlined"
           label={'First Name'}
-          onChangeText={e => setFormData({...formData, fname: e})}
+          onChangeText={e => setFormData({ ...formData, fname: e })}
           value={formData.fname}
         />
         <CustomTextInputComponent
+          textColor='black'
           mode="outlined"
           label={'Last Name'}
-          onChangeText={e => setFormData({...formData, lname: e})}
+          onChangeText={e => setFormData({ ...formData, lname: e })}
           value={formData.lname}
         />
         <CustomTextInputComponent
+          textColor='black'
+
           mode="outlined"
           label={'Bio'}
           multiline
-          contentStyle={{height: 100}}
-          onChangeText={e => setFormData({...formData, bio: e})}
+          contentStyle={{ height: 100 }}
+          onChangeText={e => setFormData({ ...formData, bio: e })}
         />
       </View>
 
-      <Text style={[textStyle.labelText, {textAlign: 'center'}]}>
+      <Text style={[textStyle.labelText, { textAlign: 'center' }]}>
         Your group will be able to read this , Lorem ipsum dolor, sit amet
         consectetur adipisicing elit. Repudiandae, facere molestiae adipisci
       </Text>

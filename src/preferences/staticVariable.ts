@@ -36,7 +36,8 @@ export const screenNames = {
     ChatScreen:'ChatScreen',
     HomeNativeStack:'HomeScreen',
     WeighGraphScreen:'WeighGraphScreen',
-    HomeScreen :'Home'
+    HomeScreen :'Home',
+    UserProfile:'UserProfileTab'
 
 
 }

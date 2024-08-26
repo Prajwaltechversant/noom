@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import textStyle from '../../../style/text/style';
 import { useScreenContext } from '../../../context/screenContext';
@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import auth, { firebase } from '@react-native-firebase/auth';
 import { FlatList } from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper';
 
 
 
@@ -95,6 +96,7 @@ console.log(groupedData[0])
 
 
         ListEmptyComponent={<Text>You haven't logged</Text>}
+        
       />
     </View>
   );

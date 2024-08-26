@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import textStyle from '../../../style/text/style';
 import DayItem from '../../../components/HomScreen components/dayItemComponent';
@@ -73,11 +73,11 @@ const Home: React.FC = () => {
       console.log(error);
     }
   };
-  const getRandomItems = (array:any, n:number) => {
+  const getRandomItems = (array: any, n: number) => {
     if (array.length <= n) {
       return array.slice();
     }
-    
+
     const shuffled = [...array].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, n);
   };
@@ -89,30 +89,30 @@ const Home: React.FC = () => {
           .collection(`UserData/${currentUid}/dailyCourse`)
           .get();
         const existingCoursesArray = existingCoursesSnapshot.docs.map(doc => doc.data().id);
-        
+
         const coursesSnapshot = await firestore().collection('courses').get();
         const courses = coursesSnapshot.docs.map(doc => doc.data());
         const availableCourses = courses.filter(course => !existingCoursesArray.includes(course.id));
-  
+
         if (selctedDate === weekdays[new Date().getDay()] && availableCourses.length > 0) {
           const todayStart = new Date().setHours(0, 0, 0, 0);
-  
+
           if (Number(isFirst) < Number(todayStart)) {
             const randomCourses = getRandomItems(availableCourses, 3);
             const batch = firestore().batch();
-  
-            randomCourses.forEach((course:any) => {
+
+            randomCourses.forEach((course: any) => {
               const docRef = firestore()
                 .collection(`UserData/${currentUid}/dailyCourse`)
                 .doc(course.id);
-  
+
               batch.set(docRef, {
                 ...course,
                 isCompleted: false,
                 addedDate: firebase.firestore.Timestamp.now(),
               });
             });
-  
+
             await batch.commit();
             dispatch(addDailyStatus(todayStart));
           }
@@ -123,7 +123,7 @@ const Home: React.FC = () => {
         setIsLoading(false);
       }
     };
-  
+
     fetchAndAddCourses();
   }, [selctedDate, weekdays, currentUid, isFirst, dispatch]);
 
@@ -188,37 +188,47 @@ const Home: React.FC = () => {
           horizontal
         />
       </View>
-      <View style={screenStyles.contentContainer}>
-        <View style={screenStyles.headerTextContainer}>
-          <Text style={[textStyle.questionText, { textAlign: 'left' }]}>
-            {dayText}'s course
-          </Text>
-          <View style={screenStyles.dayContainer}>
-            <Text style={[textStyle.labelText, { textAlign: 'right' }]}>
-              Noom 10
-            </Text>
+      <FlatList
+
+        data={Array(1)}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ i }: any) => (<>
+          <View style={screenStyles.contentContainer}>
+            <View style={screenStyles.headerTextContainer}>
+              <Text style={[textStyle.questionText, { textAlign: 'left' }]}>
+                {dayText}'s course
+              </Text>
+              <View style={screenStyles.dayContainer}>
+                <Text style={[textStyle.labelText, { textAlign: 'right' }]}>
+                  Noom 10
+                </Text>
+              </View>
+            </View>
+            <FlatList
+              data={todaysCourse}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => <CourseItem item={item} isArticle={false} />}
+              ListEmptyComponent={<Loader />}
+            />
+
+            {weekdays[new Date().getDay()] === selctedDate && <TodaysProgress />}
           </View>
-        </View>
-        <FlatList
-          data={todaysCourse}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <CourseItem item={item} isArticle={false} />}
-          ListEmptyComponent={<Loader />}
-        />
 
-        {weekdays[new Date().getDay()] === selctedDate && <TodaysProgress />}
-      </View>
 
-      <View style={screenStyles.footerBtn}>
+
+        </>)}
+
+      />
+      <TouchableOpacity style={screenStyles.footerBtn}
+        onPress={handleDailyProgressModal}
+      >
         <Button
           icon="plus"
           style={screenStyles.btn}
-          onPress={handleDailyProgressModal}
         >
           Track More Progress
         </Button>
-      </View>
-
+      </TouchableOpacity>
       <AddProgressModal visible={progressModalVisible} setProgressModalVisible={setProgressModalVisible}>
         <FlatList
           data={dailyProgressData}

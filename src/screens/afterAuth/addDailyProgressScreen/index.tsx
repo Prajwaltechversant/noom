@@ -4,7 +4,6 @@ import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import { useNavigation } from '@react-navigation/native';
 import { DailyProgressCategory } from '../../../types/types';
-import ReciepiesScreen from '../drawer screens/reciepies';
 import LogFoodScreen from './ProgressScreen1';
 import LogWeightScreen from './ProgressScreen2';
 import auth from '@react-native-firebase/auth';

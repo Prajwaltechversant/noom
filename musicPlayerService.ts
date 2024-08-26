@@ -6,7 +6,7 @@ export async function playBackService() {
     try {
       await TrackPlayer.play();
     } catch (error) {
-      console.error('Error playing track:', error);
+      console.error('Error playing ..', error);
     }
   });
 
@@ -14,7 +14,7 @@ export async function playBackService() {
     try {
       await TrackPlayer.pause();
     } catch (error) {
-      console.error('Error pausing track:', error);
+      console.error('Error pausing ...', error);
     }
   });
 
@@ -22,7 +22,7 @@ export async function playBackService() {
     try {
       await TrackPlayer.skipToNext();
     } catch (error) {
-      console.error('Error skipping to next track:', error);
+      console.error('Error ', error);
     }
   });
 
@@ -30,7 +30,7 @@ export async function playBackService() {
     try {
       await TrackPlayer.skipToPrevious();
     } catch (error) {
-      console.error('Error skipping to previous track:', error);
+      console.error('skipping err', error);
     }
   });
 }
@@ -47,8 +47,8 @@ export async function setupPlayer(): Promise<boolean> {
     try {
       await TrackPlayer.setupPlayer();
       isSetup = true;
-    } catch (setupError) {
-      console.error('Error setting up player:', setupError);
+    } catch (err) {
+      console.error('setuperror:', err);
     }
   }
 

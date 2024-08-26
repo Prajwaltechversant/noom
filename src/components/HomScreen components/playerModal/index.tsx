@@ -10,6 +10,7 @@ import Slider from '@react-native-community/slider';
 import TrackPlayer, { Event, State, PlaybackErrorEvent } from 'react-native-track-player';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { setupPlayer } from '../../../../musicPlayerService';
 
 type Props = {
   isModalVisible: boolean;
@@ -44,6 +45,7 @@ const PlayerModal: React.FC<Props> = ({
     isPortrait ? height : width
   );
 
+  
   useEffect(() => {
     const handlePlaybackStateChange = (event: { state: State }) => {
       if (event.state === State.Ended) {
@@ -137,7 +139,7 @@ const PlayerModal: React.FC<Props> = ({
       >
         <View style={screenStyles.centeredView}>
           <View style={screenStyles.modalView}>
-            <Text style={textStyle.labelText}>{item.id}</Text>
+            <Text style={[textStyle.questionText,{textTransform:'uppercase'}]}>{item.title}</Text>
 
             <View style={screenStyles.controlls}>
               <View style={screenStyles.slider}>
@@ -151,7 +153,7 @@ const PlayerModal: React.FC<Props> = ({
                   onValueChange={handleSeek}
                   value={progress}
                 />
-                <Text style={textStyle.labelText}>{progress.toFixed(0)}</Text>
+                <Text style={[textStyle.labelText,]}>{progress.toFixed(0)}</Text>
               </View>
 
               {!end ? (

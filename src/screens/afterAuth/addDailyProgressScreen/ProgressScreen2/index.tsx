@@ -27,7 +27,7 @@ const LogWeightScreen: React.FC<Props> = ({ category, item }) => {
     addToDailyProgress2(item, selectedScaleValue)
   }
 
-  console.log(item)
+  console.log(item,'hgd')
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
