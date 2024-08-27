@@ -16,6 +16,7 @@ import Loader from '../../../components/Loader';
 import AddProgressModal from '../../../components/modal/customModal';
 import AddProgressItemComponent from '../../../components/HomScreen components/addProgressItem';
 import TodaysProgress from '../../../components/HomScreen components/TodaysProgress';
+import NoDataComponent from '../../../components/noDataComponent';
 
 const Home: React.FC = () => {
   const screenContext = useScreenContext();
@@ -77,7 +78,6 @@ const Home: React.FC = () => {
     if (array.length <= n) {
       return array.slice();
     }
-
     const shuffled = [...array].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, n);
   };
@@ -105,14 +105,12 @@ const Home: React.FC = () => {
               const docRef = firestore()
                 .collection(`UserData/${currentUid}/dailyCourse`)
                 .doc(course.id);
-
               batch.set(docRef, {
                 ...course,
                 isCompleted: false,
                 addedDate: firebase.firestore.Timestamp.now(),
               });
             });
-
             await batch.commit();
             dispatch(addDailyStatus(todayStart));
           }
@@ -123,7 +121,6 @@ const Home: React.FC = () => {
         setIsLoading(false);
       }
     };
-
     fetchAndAddCourses();
   }, [selctedDate, weekdays, currentUid, isFirst, dispatch]);
 
@@ -145,7 +142,6 @@ const Home: React.FC = () => {
     };
 
     fetchTodaysCourses();
-
     const startOfDay = new Date(selctedTimestamp.toDate().setHours(0, 0, 0, 0));
     const endOfDay = new Date(selctedTimestamp.toDate().setHours(23, 59, 59, 999));
     const subscriber = firestore()
@@ -171,6 +167,7 @@ const Home: React.FC = () => {
     }
   };
 
+
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
@@ -188,56 +185,59 @@ const Home: React.FC = () => {
           horizontal
         />
       </View>
-      <FlatList
-
-        data={Array(1)}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ i }: any) => (<>
-          <View style={screenStyles.contentContainer}>
-            <View style={screenStyles.headerTextContainer}>
-              <Text style={[textStyle.questionText, { textAlign: 'left' }]}>
-                {dayText}'s course
-              </Text>
-              <View style={screenStyles.dayContainer}>
-                <Text style={[textStyle.labelText, { textAlign: 'right' }]}>
-                  Noom 10
-                </Text>
-              </View>
-            </View>
+      {
+        todaysCourse.length > 0 ?
+          <>
             <FlatList
-              data={todaysCourse}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => <CourseItem item={item} isArticle={false} />}
-              ListEmptyComponent={<Loader />}
+
+              data={Array(1)}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ i }: any) => (<>
+                <View style={screenStyles.contentContainer}>
+                  <View style={screenStyles.headerTextContainer}>
+                    <Text style={[textStyle.questionText, { textAlign: 'left' }]}>
+                      {dayText}'s course
+                    </Text>
+                    <View style={screenStyles.dayContainer}>
+                      <Text style={[textStyle.labelText, { textAlign: 'right' }]}>
+                        Noom 10
+                      </Text>
+                    </View>
+                  </View>
+                  <FlatList
+                    data={todaysCourse}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => <CourseItem item={item} isArticle={false} />}
+                    ListEmptyComponent={<Loader />}
+                  />
+
+                  {weekdays[new Date().getDay()] === selctedDate && <TodaysProgress />}
+                </View>
+              </>
+              )}
             />
-
-            {weekdays[new Date().getDay()] === selctedDate && <TodaysProgress />}
-          </View>
-
-
-
-        </>)}
-
-      />
-      <TouchableOpacity style={screenStyles.footerBtn}
-        onPress={handleDailyProgressModal}
-      >
-        <Button
-          icon="plus"
-          style={screenStyles.btn}
-        >
-          Track More Progress
-        </Button>
-      </TouchableOpacity>
-      <AddProgressModal visible={progressModalVisible} setProgressModalVisible={setProgressModalVisible}>
-        <FlatList
-          data={dailyProgressData}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <AddProgressItemComponent key={item.id} item={item} setProgressModalVisible={setProgressModalVisible} />
-          )}
-        />
-      </AddProgressModal>
+            <TouchableOpacity style={screenStyles.footerBtn}
+              onPress={handleDailyProgressModal}
+            >
+              <Button
+                icon="plus"
+                style={screenStyles.btn}
+              >
+                Track More Progress
+              </Button>
+            </TouchableOpacity>
+            <AddProgressModal visible={progressModalVisible} setProgressModalVisible={setProgressModalVisible}>
+              <FlatList
+                data={dailyProgressData}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <AddProgressItemComponent key={item.id} item={item} setProgressModalVisible={setProgressModalVisible} />
+                )}
+              />
+            </AddProgressModal>
+          </>
+          : <NoDataComponent />
+      }
     </View>
   );
 };

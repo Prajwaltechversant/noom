@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
@@ -11,6 +11,7 @@ import auth from '@react-native-firebase/auth';
 import { screenNames } from '../../../preferences/staticVariable';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { log } from 'echarts/types/src/util/log.js';
+import ImageSkeltonComponent from '../../../components/skeltons/imageSkelton';
 
 const Coursecarousel = ({ route }: any) => {
   const screenContext = useScreenContext();
@@ -30,8 +31,9 @@ const Coursecarousel = ({ route }: any) => {
   const isCompleted = route.params.isCompleted;
   const [color, setColor] = useState(colorPalette.black);
   const [addedToArticle, setAddedToArticle] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(false)
   const artiCle = route.params
-  
+
 
   const handleScroll = () => {
     let nextIndex = currentIndex + 1;
@@ -58,7 +60,7 @@ const Coursecarousel = ({ route }: any) => {
   const saveToArticle = async () => {
     try {
       if (!addedToArticle) {
-        await firestore().collection(`UserData/${currentUid}/savedArticles`).add({...artiCle});
+        await firestore().collection(`UserData/${currentUid}/savedArticles`).add({ ...artiCle });
         setAddedToArticle(true);
         setColor(colorPalette.moss);
       }
@@ -85,7 +87,7 @@ const Coursecarousel = ({ route }: any) => {
         const res = documentSnapshot.docs.map(i => i.data());
         if (res.length > 0) {
           setAddedToArticle(true);
-          setColor(colorPalette.moss); 
+          setColor(colorPalette.moss);
         }
       }, error => console.error('Error...', error));
 
@@ -99,17 +101,20 @@ const Coursecarousel = ({ route }: any) => {
         data={data}
         renderItem={({ item }) => (
           <View style={screenStyles.eachItem}>
-            <Image
+            {!isImageLoading ? <Image
               source={{ uri: item.images[0] }}
               style={screenStyles.image}
-            />
+              onLoadEnd={() => setIsImageLoading(true)}
+            /> :
+              <ImageSkeltonComponent height={height * 0.3} width={width} />}
             <Text style={textStyle.headingText}>{item.title}</Text>
-            <Text
-              numberOfLines={10}
-              style={[textStyle.labelText, screenStyles.paragraph]}
-            >
-              {item.todo}
-            </Text>
+            <ScrollView>
+              <Text
+                style={[textStyle.labelText, screenStyles.paragraph]}
+              >
+                {item.todo}
+              </Text>
+            </ScrollView>
           </View>
         )}
         scrollEnabled={false}

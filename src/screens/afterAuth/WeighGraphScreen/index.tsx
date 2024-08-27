@@ -13,8 +13,8 @@ import {
     TooltipComponent,
     DataZoomComponent,
 } from 'echarts/components';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native-paper';
 import styles from './style';
 import { useScreenContext } from '../../../context/screenContext';
 import textStyle from '../../../style/text/style';
@@ -80,6 +80,7 @@ export default function WeighScreen() {
     const navigation = useNavigation()
     const [visible, setVisble] = useState(false)
     const [selectedValue, setSelctedvalue] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const subscriber = firestore()
@@ -94,9 +95,11 @@ export default function WeighScreen() {
                 if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
                     setAllData([weight, ...weightSet]);
                     setAllDate(['first', ...dateSet]);
+
                 } else {
                     setAllData(weightSet);
                     setAllDate(dateSet);
+
                 }
             });
 
@@ -116,8 +119,6 @@ export default function WeighScreen() {
             await addToDailyProgress2(docs[0], selectedValue)
             setVisble(!visible)
             setSelctedvalue(0)
-
-
         } catch (error) {
             console.log(error)
         }
@@ -199,6 +200,8 @@ export default function WeighScreen() {
 
     return (
         <View style={screenStyles.container}>
+            {/* {isLoading && <ActivityIndicator style={StyleSheet.absoluteFill} color='red' />} */}
+
             <View style={screenStyles.tittleContainer}>
                 <View style={screenStyles.textContainer}>
                     <Text style={textStyle.labelText}>Your Weight</Text>
@@ -216,14 +219,15 @@ export default function WeighScreen() {
             <ChartComponent option={option} />
 
             <CustomComponentModal visible={visible} modalHeight={height * .4} setProgressModalVisible={setVisble}>
-                <CustomScale maxValue={250} minValue={0} selectedScaleValue={selectedValue} setSelectedScaleValue={setSelctedvalue} step={1} />
+                <CustomScale maxValue={250} minValue={0} selectedScaleValue={selectedValue} setSelectedScaleValue={setSelctedvalue}  />
                 <CustomButton
                     label='Save'
                     btnColor={colorPalette.mint}
-                    btnWidth={width * 0.5}
+                    btnWidth={width * 0.4}
                     btnHeight={height * 0.05}
                     borderRadius={20}
-                  onPress={addWeight}
+                    onPress={addWeight}
+                    labelColor={colorPalette.black}
 
                 />
             </CustomComponentModal>

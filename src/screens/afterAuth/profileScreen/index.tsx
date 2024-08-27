@@ -19,6 +19,8 @@ type Form = {
   lname: string | undefined;
   fname: string | undefined;
   bio?: string | undefined;
+  image: string | undefined;
+
 };
 
 const ProfileScreen1 = () => {
@@ -35,6 +37,7 @@ const ProfileScreen1 = () => {
     fname: undefined,
     lname: undefined,
     bio: undefined,
+    image: undefined
   });
   const currentUid = auth().currentUser?.uid;
   const navigation: any = useNavigation();
@@ -43,11 +46,23 @@ const ProfileScreen1 = () => {
     try {
       const result: any = await launchImageLibrary({ mediaType: 'photo' });
       setImage(result.assets[0].uri);
+      setFormData({ ...formData, image: result.assets[0].uri });
+
     } catch (error) {
       console.log(error);
     }
   };
+  const updateAuthStatus = async () => {
+    try {
+      await firestore().collection(`UserData/${currentUid}/profileCompletionStatus`).doc(currentUid).set({
+        isOnBoardingCompleted: true,
+        isProfileCompleted: true
+      })
 
+    } catch (error) {
+      console.error("Error ", error);
+    }
+  }
   const handleSubmit = async () => {
     const { fname, lname } = formData;
     try {
@@ -62,6 +77,7 @@ const ProfileScreen1 = () => {
           })
           .then(() => {
             console.log('profile added');
+            updateAuthStatus()
           });
         dispatch(updateProfileStatus(true));
         navigation.replace('Home');

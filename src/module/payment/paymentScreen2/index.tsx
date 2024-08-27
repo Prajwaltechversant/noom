@@ -74,6 +74,19 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
   }, [addOnPlans]);
 
 
+  const updateAuthStatus = async () => {
+    try {
+      await firestore().collection(`UserData/${currentUId}/profileCompletionStatus`).doc(currentUId).set({
+        isOnBoardingCompleted: true,
+        isProfileCompleted: false
+      })
+
+    } catch (error) {
+      console.error("Error ", error);
+
+    }
+  }
+
   const handlepayment = () => {
     try {
       firestore()
@@ -82,9 +95,9 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
           ...survey,
         })
         .then(() => {
-          console.log('surveyadded');
           AsyncStorage.setItem('surveyStatus', 'true');
           dispatch(updateOnBoardingStatus(true));
+          updateAuthStatus()
           navigation.replace('profile');
         });
     } catch (error) {

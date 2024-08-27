@@ -25,7 +25,6 @@ const App = () => {
         <SafeAreaView style={{ flex: 1 }}>
           <ScreenContextProvider>
             <RootStack />
-            
           </ScreenContextProvider>
         </SafeAreaView>
       </PersistGate>

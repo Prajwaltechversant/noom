@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import CourseItem from '../../../../components/HomScreen components/course box';
-import LottieView from 'lottie-react-native';
+import NoDataComponent from '../../../../components/noDataComponent';
 
 const MyArticleScreen = () => {
   const screenContext = useScreenContext();
@@ -59,11 +59,7 @@ const MyArticleScreen = () => {
 
 
         ListEmptyComponent={
-
-          <View style={screenStyles.animationView}
-          >
-            <LottieView source={require('../../../../assets/animation/Animation - 1724570297274.json')}
-              autoPlay loop style={{ width: width * .4, height: height * .8 }} /></View>
+          <NoDataComponent  />
 
         }
       />

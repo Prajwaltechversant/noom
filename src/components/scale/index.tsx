@@ -9,12 +9,11 @@ import textStyle from '../../style/text/style';
 interface Props {
   minValue: number,
   maxValue: number,
-  step: number,
   setSelectedScaleValue: Dispatch<SetStateAction<number>>
   selectedScaleValue: number
 }
 
-const CustomScale: React.FC<Props> = ({ minValue, maxValue, step = 1, setSelectedScaleValue, selectedScaleValue }) => {
+const CustomScale: React.FC<Props> = ({ minValue, maxValue,  setSelectedScaleValue, selectedScaleValue }) => {
 
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
@@ -35,7 +34,7 @@ const CustomScale: React.FC<Props> = ({ minValue, maxValue, step = 1, setSelecte
     return scale;
   };
   const scaleItems = generateScale();
-  console.log(scaleItems)
+  // console.log(scaleItems)
 
   const handleScroll = (e: any) => {
     const xOffset = e.nativeEvent.contentOffset.x;
@@ -56,7 +55,6 @@ const CustomScale: React.FC<Props> = ({ minValue, maxValue, step = 1, setSelecte
       scrollViewRef.current.scrollTo({ x: index * itemWidth, animated: true });
     }
   };
-  console.log(minValue, 'efjf')
   useEffect(() => {
     scrollToValue(minValue);
   }, []);
@@ -79,7 +77,7 @@ const CustomScale: React.FC<Props> = ({ minValue, maxValue, step = 1, setSelecte
           scrollEventThrottle={16}
           snapToInterval={width / 5}
           decelerationRate="fast"
-          onLayout={(e) => console.log(e.nativeEvent.layout.width, 'waryhgsd')}
+          // onLayout={(e) => console.log(e.nativeEvent.layout.width, 'waryhgsd')}
         >
           {scaleItems.map((value, index) => (
             <View key={index} style={screenStyles.markerContainer}

@@ -65,7 +65,6 @@ const OnboardingScreen = () => {
       setLoading(false);
     }
   };
-  console.log(currentSectionIndex, currentScreenIndex);
   useEffect(() => {
     if (surveyData.length <= 0) {
       getData();
@@ -74,7 +73,6 @@ const OnboardingScreen = () => {
       setLoading(false);
     }
   }, []);
-  // console.log(section);
   useMemo(() => {
     let totalLength = 0;
     surveyData.forEach((item: any) => {
@@ -124,7 +122,6 @@ const OnboardingScreen = () => {
     const currentProgress = (updatedScreenIndex / total) * 100;
     setScreenIndex(updatedScreenIndex);
     setProgress(currentProgress);
-
     dispatch(
       updateSurveyProgress({
         currentScreen:

@@ -16,10 +16,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
     pointerContainer: {
         position: 'absolute',
-        left: width * 0.5,
+        left: width * 0.49,
         zIndex: 1,
-
-
 
     },
     pointer: {

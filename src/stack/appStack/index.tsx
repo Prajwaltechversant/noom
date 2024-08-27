@@ -18,8 +18,15 @@ import DrawerStack from './DrawerStack';
 import { admin_uid } from "@env"
 import HomeTabStack from './HomeStack';
 import ChatScreen from '../../screens/afterAuth/drawer screens/chatScreen';
+import firestore from '@react-native-firebase/firestore';
 
 const Stack = createNativeStackNavigator();
+
+
+type ProfileStatus = {
+  isOnBoardingCompleted: boolean,
+  isProfileCompleted: boolean
+}
 
 const AppStack = () => {
   const screenContext = useScreenContext();
@@ -28,15 +35,30 @@ const AppStack = () => {
   const [surveyStatus, setSurveyStatus] = useState(false);
   const currentUser = auth().currentUser?.email;
   const displayName = auth().currentUser?.displayName;
+  const [userProfileStatus, setIsProfileStatus] = useState<ProfileStatus>({
+    isOnBoardingCompleted: false,
+    isProfileCompleted: false
+  })
   const onBaodringStatus = useAppSelector(
     state => state.authStatus.isOnBoardingCompleted,
   );
   const isProfileCompleted = useAppSelector(
     state => state.authStatus.isProfileCompletd,
   );
-  const app = isProfileCompleted && onBaodringStatus;
+  const app = userProfileStatus.isOnBoardingCompleted && userProfileStatus.isProfileCompleted;
   const currentUid = auth().currentUser?.uid;
   const [isAdmin, setIsAdmin] = useState(false)
+
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection(`UserData/${currentUid}/profileCompletionStatus`)
+      .doc(currentUid)
+      .onSnapshot((documentSnapshot: any) => {
+        setIsProfileStatus(documentSnapshot.data())
+      });
+    return () => subscriber();
+  }, []);
 
 
   useEffect(() => {
@@ -138,14 +160,14 @@ const AppStack = () => {
             component={HomeTabStack}
             options={{ headerShown: false }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={screenNames.Message_Screen}
             component={ChatScreen}
-            // options={{
-            //   : () => (
-            //     <AntDesign name="message1" color={'black'} size={20} />
-            //   ),
-            // }}
+          // options={{
+          //   : () => (
+          //     <AntDesign name="message1" color={'black'} size={20} />
+          //   ),
+          // }}
           />
         </>
       }
