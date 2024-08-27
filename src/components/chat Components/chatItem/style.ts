@@ -10,9 +10,9 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         justifyContent: 'center',
         width: 'auto',
         borderRadius: 20,
-        paddingHorizontal: 10,
+        paddingHorizontal: screenContext.isPortrait ? width * 0.08 : width * 0.07,
         elevation: 1,
-        margin:1
+        margin: 1
 
     }
 

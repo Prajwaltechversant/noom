@@ -36,6 +36,7 @@ const ChatBox: React.FC<Props> = ({ setMessage, sendMessage,message }) => {
             roundness: 0
           }}
           onChangeText={e => setMessage(e)}
+          enterKeyHint={'send'}
         />
         <TouchableOpacity style={screenStyles.sendBtn}
           onPress={sendMessage}

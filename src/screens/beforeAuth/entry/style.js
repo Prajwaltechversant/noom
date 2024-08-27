@@ -9,7 +9,7 @@ const styles = (screenContext, width, height,) => StyleSheet.create({
 
 
     },
-    bannerContainer:{justifyContent:'center', alignItems:'center'},
+    bannerContainer: { justifyContent: 'center', alignItems: 'center' },
     headingText: {
         textAlign: 'center',
         fontWeight: '900',
@@ -17,9 +17,9 @@ const styles = (screenContext, width, height,) => StyleSheet.create({
         fontSize: 25
     },
     bannerImg: {
-        width: screenContext.isPortrait ? width :width,
+        width: screenContext.isPortrait ? width : height,
         height: screenContext.isPortrait ? width * 1.2 : width * 0.6,
-        resizeMode: 'cover'
+        resizeMode: 'stretch',
     },
     subHeading: {
         color: colorPalette.black,
@@ -29,30 +29,30 @@ const styles = (screenContext, width, height,) => StyleSheet.create({
     },
     actionContainer: {
         padding: screenContext.isPortrait ? width * 0.06 : width * 0.06,
-        justifyContent:'center',
-        alignItems:'center'
+        justifyContent: 'center',
+        alignItems: 'center'
 
     },
     authBtn: {
         backgroundColor: colorPalette.tarocco,
         width: screenContext.isPortrait ? width * 0.8 : width * 0.8,
-        height: screenContext.isPortrait ? width * 0.12 :width * 0.12,
+        height: screenContext.isPortrait ? width * 0.12 : width * 0.12,
         justifyContent: 'center',
         alignItems: 'center',
-        margin:10,
-        borderRadius:15
+        margin: 10,
+        borderRadius: 15
     },
-    loginBtn :{
+    loginBtn: {
         // backgroundColor: colorPalette.tarocco,
         width: screenContext.isPortrait ? width * 0.8 : width * 0.8,
-        height: screenContext.isPortrait ? width * 0.12 :width * 0.12,
+        height: screenContext.isPortrait ? width * 0.12 : width * 0.12,
         justifyContent: 'center',
         alignItems: 'center',
-        margin:10,
-        borderRadius:15
+        margin: 10,
+        borderRadius: 15
     },
-    authBtnText:{
-        color:colorPalette.white
+    authBtnText: {
+        color: colorPalette.white
     }
 });
 

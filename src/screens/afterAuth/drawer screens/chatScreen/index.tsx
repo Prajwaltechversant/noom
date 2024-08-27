@@ -26,6 +26,7 @@ const ChatScreen: React.FC = ({ route }: any) => {
     const currentEmail = auth().currentUser?.email;
     const userID = route.params?.userId
     const isAdmin = admin_uid === currentUid
+    // console.log(isAdmin,'asd')
     const [allMessages, SetAllMessages] = useState([])
     const chatRef = firestore().collection(`Chats`)
     const [message, setMessage] = useState<string>('')

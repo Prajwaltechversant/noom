@@ -1,15 +1,16 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useScreenContext} from '../../../context/screenContext';
-import {useNavigation} from '@react-navigation/native';
+import { View, Text, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useScreenContext } from '../../../context/screenContext';
+import { useNavigation } from '@react-navigation/native';
 import styles from './style';
 import CustomButton from '../../../components/button/customButton';
 import textStyle from '../../../style/text/style';
-import {colorPalette} from '../../../assets/colorpalette/colorPalette';
-import {Button} from 'react-native-paper';
-import {Checkbox} from 'react-native-paper';
-import {addData} from '../../../redux/slices/onBoardingAnswers';
-import {useAppDispatch} from '../../../redux/hook';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import { Button } from 'react-native-paper';
+import { Checkbox } from 'react-native-paper';
+import { addData } from '../../../redux/slices/onBoardingAnswers';
+import { useAppDispatch } from '../../../redux/hook';
+import { color } from 'echarts';
 
 export interface OnBoardProps {
   section: {
@@ -26,14 +27,14 @@ export interface OnBoardProps {
     extraContent?: string;
     optional?: boolean;
     id: string;
-    value:string
+    value: string
   };
   handleNext: () => void;
 }
 
-const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
+const ButtonGroupScreen: React.FC<OnBoardProps> = ({ section, handleNext }) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
@@ -52,7 +53,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
     let arr: any = [];
     if (section.type === 'checkbox') {
       section.options.forEach(i =>
-        arr.push({label: i.label, checked: false, id: i.id}),
+        arr.push({ label: i.label, checked: false, id: i.id }),
       );
       setCheckedItem(arr);
     }
@@ -72,7 +73,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
         checkedId.push(item.id);
       }
     });
-    dispatch(addData({qId: qid, aId: checkedId}));
+    dispatch(addData({ qId: qid, aId: checkedId }));
   };
   return (
     <View style={screenStyles.container}>
@@ -81,7 +82,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
         <Text
           style={[
             textStyle.labelText,
-            {textAlign: 'center', marginVertical: 10},
+            screenStyles.contentText
           ]}>
           {section.content}
         </Text>
@@ -91,7 +92,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
           data={section.options}
           key={section.key}
           keyExtractor={item => Math.random().toString(36).substring(2)}
-          renderItem={({item, index}) =>
+          renderItem={({ item, index }) =>
             section.type != 'checkbox' ? (
               <CustomButton
                 btnWidth={width * 0.8}
@@ -106,7 +107,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
                   setIsPressed(item.label);
                   setAnswer(item.id);
                   if (section.type !== 'radio') {
-                    dispatch(addData({qId: qid, aId: item.id}));
+                    dispatch(addData({ qId: qid, aId: item.id }));
                     handleNext();
                   }
                 }}
@@ -115,6 +116,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
                     ? colorPalette.white
                     : colorPalette.black
                 }
+                borderRadius={isPortrait ? width * 0.04 : height * 0.04}
                 leftIcon={section.type === 'radio' ? true : false}
               />
             ) : (
@@ -160,7 +162,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
       </View>
       {section.type !== 'button' && (
         <CustomButton
-          btnWidth={width * 0.8}
+          btnWidth={width * 0.4}
           btnHeight={isPortrait ? width * 0.2 : width * 0.08}
           label={'Next'}
           btnColor={colorPalette.berry}
@@ -168,12 +170,14 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
             if (section.type !== 'checkbox') {
               if (answer) {
                 handleNext();
-                dispatch(addData({qId: qid, aId: answer}));
+                dispatch(addData({ qId: qid, aId: answer }));
               }
             } else {
               handleNext();
             }
           }}
+          labelColor={colorPalette.white}
+          borderRadius={10}
         />
       )}
     </View>

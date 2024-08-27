@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './style';
 import { useScreenContext } from '../../../../context/screenContext';
@@ -92,7 +92,9 @@ const EmailSignup = () => {
     });
   }, [formData, error, navigation]);
   return (
-    <View style={screenStyles.container}>
+    <KeyboardAvoidingView style={screenStyles.container}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+    >
       <Text style={textStyle.headingText}>Create Your Account</Text>
       <View>
         <CustomTextInputComponent
@@ -128,7 +130,7 @@ const EmailSignup = () => {
           <Text style={textStyle.errorText}>{error.passwordErr}</Text>
         )}
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

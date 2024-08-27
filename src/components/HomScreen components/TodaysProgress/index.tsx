@@ -72,7 +72,6 @@ const TodaysProgress: React.FC = () => {
     id: key,
     data: dailyProgressData[key],
   }));
-console.log(groupedData[0])
 
   return (
     <View>

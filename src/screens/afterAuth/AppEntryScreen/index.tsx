@@ -14,14 +14,12 @@ const EntryScreen = () => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
-
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
-
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.contentContainer}>
@@ -29,7 +27,7 @@ const EntryScreen = () => {
           <FontAwesome6
             name="diamond"
             color={colorPalette.black}
-            size={width * 0.13}
+            size={isPortrait ? width * 0.13 : width * 0.09}
           />
           <Text
             style={textStyle.headingText}
@@ -42,8 +40,8 @@ const EntryScreen = () => {
         <View style={screenStyles.buttonContainer}>
           <CustomButton
             btnColor={colorPalette.tarocco}
-            btnHeight={isPortrait ? width * 0.12 : width * 0.1}
-            btnWidth={isPortrait ? width * 0.8 : width * 0.8}
+            btnHeight={isPortrait ? width * 0.12 : width * 0.08}
+            btnWidth={isPortrait ? width * 0.8 : width * 0.4}
             label="Start"
             children={undefined}
             borderRadius={10}

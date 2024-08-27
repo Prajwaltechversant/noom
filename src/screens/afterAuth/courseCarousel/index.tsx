@@ -31,7 +31,7 @@ const Coursecarousel = ({ route }: any) => {
   const isCompleted = route.params.isCompleted;
   const [color, setColor] = useState(colorPalette.black);
   const [addedToArticle, setAddedToArticle] = useState(false);
-  const [isImageLoading, setIsImageLoading] = useState(false)
+  const [isImageLoading, setIsImageLoading] = useState<boolean>()
   const artiCle = route.params
 
 
@@ -93,44 +93,47 @@ const Coursecarousel = ({ route }: any) => {
 
     return () => subscriber();
   }, [currentUid, id]);
-
   return (
-    <View style={screenStyles.container}>
-      <FlatList
-        ref={ref}
-        data={data}
-        renderItem={({ item }) => (
-          <View style={screenStyles.eachItem}>
-            {!isImageLoading ? <Image
-              source={{ uri: item.images[0] }}
-              style={screenStyles.image}
-              onLoadEnd={() => setIsImageLoading(true)}
-            /> :
-              <ImageSkeltonComponent height={height * 0.3} width={width} />}
-            <Text style={textStyle.headingText}>{item.title}</Text>
-            <ScrollView>
+    <FlatList
+      data={Array(1)}
+      renderItem={({ i }: any) => <View style={screenStyles.container}>
+        <FlatList
+          ref={ref}
+          data={data}
+          renderItem={({ item }) => (
+            <View style={screenStyles.eachItem}>
+              <Image
+                source={{ uri: item.images[0] }}
+                style={screenStyles.image}
+              />
+              <Text style={textStyle.headingText}>{item.title}</Text>
               <Text
                 style={[textStyle.labelText, screenStyles.paragraph]}
               >
                 {item.todo}
               </Text>
-            </ScrollView>
-          </View>
-        )}
-        scrollEnabled={false}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
-      />
-      <CustomButton
-        label={buttonLabel}
-        btnWidth={width * 0.8}
-        btnHeight={50}
-        btnColor={colorPalette.berry}
-        onPress={handleScroll}
-        labelColor="white"
-      />
-    </View>
+            </View>
+          )}
+          scrollEnabled={false}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+        />
+        <CustomButton
+          label={buttonLabel}
+          btnWidth={width * 0.8}
+          btnHeight={50}
+          btnColor={colorPalette.berry}
+          onPress={handleScroll}
+          labelColor="white"
+          borderRadius={10}
+
+        />
+      </View>}
+
+
+
+    />
   );
 };
 

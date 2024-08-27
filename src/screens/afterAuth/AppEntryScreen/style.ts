@@ -5,7 +5,7 @@ import { ScreenContextType } from "../../../types/types"
 const styles = (screenContext:ScreenContextType, width:number, height:number) => StyleSheet.create({
     container: {
         alignItems: 'center',
-        padding: screenContext.isPortrait ? height * 0.03 : height * 0.002,
+        padding: screenContext.isPortrait ? height * 0.03 : height * 0.001,
         backgroundColor: colorPalette.white,
         flex: 1,
     },
@@ -14,7 +14,7 @@ const styles = (screenContext:ScreenContextType, width:number, height:number) =>
         width: '100%',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop:screenContext.isPortrait ? height * 0.05 : height *0.3
+        paddingTop:screenContext.isPortrait ? height * 0.05 : height *0.01
 
     },
     headingContainer: {

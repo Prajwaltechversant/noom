@@ -14,10 +14,10 @@ import TrackPlayer from 'react-native-track-player';
 interface Props {
   item: CourseType;
   isArticle: boolean;
-  handleDelete?:()=>void
+  handleDelete?: () => void
 }
 
-const CourseItem: React.FC<Props> = ({ item, isArticle ,handleDelete}) => {
+const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
@@ -29,6 +29,8 @@ const CourseItem: React.FC<Props> = ({ item, isArticle ,handleDelete}) => {
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [trackDuration, setTrackDuration] = useState(0)
+
+
 
   const setupPlayerReady = async () => {
     try {
@@ -43,7 +45,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle ,handleDelete}) => {
         });
       }
       setIsPlayerReady(isSetup);
-      TrackPlayer.getProgress().then((progress) => console.log(progress))
+      // TrackPlayer.getProgress().then((progress) => console.log(progress))
     } catch (error) {
       console.error('Error setting up player:', error);
     }
@@ -61,7 +63,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle ,handleDelete}) => {
     try {
       await TrackPlayer.play();
     } catch (error) {
-      console.error('Error playing audio:', error);
+      console.error('Playing error..', error);
     }
   };
 
@@ -92,8 +94,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle ,handleDelete}) => {
     }
   }
 
- 
-  console.log(item)
+
   return (
     <>
       <View style={screenStyles.container}>

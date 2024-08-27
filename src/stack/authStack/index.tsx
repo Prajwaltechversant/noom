@@ -23,11 +23,18 @@ const RegisterStack = () => {
     <Stack.Navigator 
     
     >
-      <Stack.Screen name={screenNames.REGISTER_METHODS} component={RegisterMethods} />
+      <Stack.Screen name={screenNames.REGISTER_METHODS} component={RegisterMethods}
+       options={{
+        title:'noomin now'
+      }}
+      />
       <Stack.Screen name={screenNames.SIGNUP} component={Signup} />
       <Stack.Screen
         name={screenNames.EMAIL_SIGNUP}
         component={EmailSignup}
+        options={{
+          title:'Signup With Email'
+        }}
       />
     </Stack.Navigator>
   );
@@ -40,7 +47,12 @@ const AuthStack: React.FC = () => {
         name={screenNames.AUTH_ENTRY_SCREEN}
         component={EntryScreen}
       />
-      <Stack.Screen name={screenNames.REGISTER_STACK} component={RegisterStack} />
+      <Stack.Screen name={screenNames.REGISTER_STACK} component={RegisterStack}
+      
+      options={{
+        title:'Signup to use Noom'
+      }}
+      />
       <Stack.Screen name={screenNames.LOGIN} component={Login} />
     </Stack.Navigator>
   );

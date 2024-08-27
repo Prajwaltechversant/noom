@@ -3,20 +3,19 @@ import { ScreenContextType } from "../../../types/types";
 
 const styles =(screenContext:ScreenContextType, width:number, height:number) => StyleSheet.create({
     container:{
-        height,
-        width,
+        height:screenContext.isPortrait ? height : width,
+        width:screenContext.isPortrait ? width : height,
         justifyContent:'center',
         alignItems:'center',
-
-
     },
     btnContainer:{
-        marginTop:screenContext.isPortrait  ? width * 0.2 : width * 0.2
+        marginTop:screenContext.isPortrait  ? width * 0.2 : width * 0.001
     },
     privacyPolicy:{
         position:'absolute',
-        bottom:screenContext.isPortrait  ? width * 0.08 : width * 0.08
-    }
+        bottom:10,
+        alignSelf:'center'
+    },
 })
 
 export default styles

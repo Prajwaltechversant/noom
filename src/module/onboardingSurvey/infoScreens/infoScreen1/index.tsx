@@ -1,5 +1,5 @@
 import { View, Text, Image } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
 import textStyle from '../../../../style/text/style';
@@ -7,7 +7,9 @@ import CustomButton from '../../../../components/button/customButton';
 import { colorPalette } from '../../../../assets/colorpalette/colorPalette';
 import { useNavigation } from '@react-navigation/native';
 import { screenNames } from '../../../../preferences/staticVariable';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
 
 type Page = 'intro1' | 'intro2';
 
@@ -28,11 +30,15 @@ const InfoScreen: React.FC = ({ route }: any) => {
   const navigation: any = useNavigation();
   const currentUser = auth().currentUser?.email;
 
+  useEffect(() => {
+    firestore().collection('UserData').get().then(i => i.docs.map(item => console.log(item.data, 'sad')))
+  }, [])
+
   return (
     <View style={screenStyles.container}>
       {route.params.page === 'intro1' ? (
         <Text style={textStyle.headingText}>
-          You are in good hands {currentUser?.slice(0, 7)}
+          You are in good hands {currentUser?.slice(0, -10)}
         </Text>
       ) : (
         <Text style={textStyle.headingText}>
@@ -48,7 +54,7 @@ const InfoScreen: React.FC = ({ route }: any) => {
         />
         {route.params.page === 'intro1' ? (
           <Text style={textStyle.labelText} numberOfLines={2}>
-            You are not alone , wh've helped 1234 peoples lose weight!
+            You are not alone , we've helped 1234 peoples lose weight!
           </Text>
         ) : (
           <Text style={textStyle.labelText} numberOfLines={3}>
@@ -57,10 +63,11 @@ const InfoScreen: React.FC = ({ route }: any) => {
           </Text>
         )}
         <CustomButton
-          btnHeight={width * 0.2}
-          btnWidth={width * 0.8}
+          btnHeight={width * 0.1}
+          btnWidth={width * 0.4}
           label="Continue"
           btnColor={colorPalette.Lagoon}
+          labelColor={colorPalette.white}
           onPress={() => navigation.goBack(screenNames.ONBAORDING)}
         />
       </View>

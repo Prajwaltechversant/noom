@@ -64,19 +64,21 @@ export default function Login() {
     }
   };
 
-  if(loading) return <Loader/>
+  if (loading) return <Loader />
 
   return (
     <ImageBg
       image={require('../../../assets/images/background/login.jpg')}
-      height={height}
-      width={width}>
+      height={isPortrait ? height : width}
+      width={isPortrait ? width : height}
+
+    >
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
         style={[screenStyles.container]}>
         <Text style={textStyle.headingText}>Noom</Text>
         {isLogin && (
-          <Text style={textStyle.labelText}>
+          <Text style={[textStyle.labelText,{textAlign:'center'}]}>
             Sign in with your account information
           </Text>
         )}
@@ -86,7 +88,7 @@ export default function Login() {
             <>
               <CustomButton
                 btnColor={colorPalette.tarocco}
-                btnHeight={screenContext.isPortrait ? width * 0.1 : width * 0.1}
+                btnHeight={screenContext.isPortrait ? width * 0.1 : width * 0.08}
                 btnWidth={screenContext.isPortrait ? width * 0.8 : width * 0.8}
                 label="Login With email"
                 labelColor="white"
@@ -95,7 +97,7 @@ export default function Login() {
               />
               <CustomButton
                 btnColor={colorPalette.Lagoon}
-                btnHeight={screenContext.isPortrait ? width * 0.1 : width * 0.1}
+                btnHeight={screenContext.isPortrait ? width * 0.1 : width * 0.08}
                 btnWidth={screenContext.isPortrait ? width * 0.8 : width * 0.8}
                 label="Login With facebook"
                 labelColor="white"
@@ -104,7 +106,7 @@ export default function Login() {
               />
               <CustomButton
                 btnColor={colorPalette.Lagoon}
-                btnHeight={screenContext.isPortrait ? width * 0.1 : width * 0.1}
+                btnHeight={screenContext.isPortrait ? width * 0.1 : width * 0.08}
                 btnWidth={screenContext.isPortrait ? width * 0.8 : width * 0.8}
                 label="Login With google"
                 labelColor="white"
@@ -121,6 +123,13 @@ export default function Login() {
                 underlineColor='transprent'
                 outlineColor='transparent'
                 textColor="black"
+                style={{
+                  height: screenContext.isPortrait ? width * 0.1 : width * 0.08,
+                  width:screenContext.isPortrait ? width * 0.8 : width * 0.4,
+                  marginVertical:screenContext.isPortrait ? height*0.01:height*0.05,
+                  alignSelf:'center'
+
+                }}
               />
               <CustomTextInputComponent
                 mode="flat"
@@ -134,25 +143,37 @@ export default function Login() {
                     onPress={() => setShowPassword(!showPassword)}
                   />
                 }
+                style={{
+                  height: screenContext.isPortrait ? width * 0.1 : width * 0.08,
+                  width:screenContext.isPortrait ? width * 0.8 : width * 0.4,
+                  marginVertical:screenContext.isPortrait ? height*0.01:height*0.05,
+                  alignSelf:'center'
+
+                }}
               />
 
               <CustomButton
-                btnWidth={width * 0.8}
-                btnHeight={width * 0.12}
+                btnWidth={screenContext.isPortrait ? width * 0.8: width * 0.4}
+                btnHeight={screenContext.isPortrait ? width * 0.12 : width * 0.07}
                 btnColor="red"
                 label="Next"
                 borderRadius={5}
                 labelColor="white"
                 onPress={handleLogin}
+                
               />
             </>
           )}
         </View>
 
-        <View style={screenStyles.privacyPolicy}>
-          <PrivacyPolicy />
-        </View>
+
       </KeyboardAvoidingView>
+      <View style={screenStyles.privacyPolicy}>
+        <Text style={[textStyle.labelText,{textAlign:'center'}]} numberOfLines={2}>
+          By Proceeding, you concent to our Terms of use,
+          Support, Privacy Policy and Research Policy
+        </Text>
+      </View>
     </ImageBg>
   );
 }

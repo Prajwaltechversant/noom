@@ -11,8 +11,9 @@ const styles = (screenContext: any, width: number, height: number, btnColor: str
             flexDirection:icon || leftIcon ? 'row' :'column',
             justifyContent:leftIcon ? 'flex-start': 'center',
             alignItems: 'center',
-            marginVertical: screenContext.isPortrait ? width * 0.03 : 0.01,
+            marginVertical: screenContext.isPortrait ? width * 0.03 : width *0.008,
             gap: screenContext.isPortrait ? width * 0.05 : 0.01,
+            alignSelf:'center'
         },
         icon: {
             // marginHorizontal:screenContext.isPortrait ? width * 0.1 : 0.01

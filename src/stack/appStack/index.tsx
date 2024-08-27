@@ -45,114 +45,117 @@ const AppStack = () => {
   const isProfileCompleted = useAppSelector(
     state => state.authStatus.isProfileCompletd,
   );
-  const app = userProfileStatus.isOnBoardingCompleted && userProfileStatus.isProfileCompleted;
   const currentUid = auth().currentUser?.uid;
   const [isAdmin, setIsAdmin] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const subscriber = firestore()
       .collection(`UserData/${currentUid}/profileCompletionStatus`)
       .doc(currentUid)
       .onSnapshot((documentSnapshot: any) => {
-        setIsProfileStatus(documentSnapshot.data())
+        let res = documentSnapshot.data()
+        setIsProfileStatus({ ...res })
       });
     return () => subscriber();
   }, []);
 
+  const app = userProfileStatus.isOnBoardingCompleted && userProfileStatus.isProfileCompleted
 
+  console.log(admin_uid, currentUid)
   useEffect(() => {
     if (admin_uid === currentUid) {
       setIsAdmin(true)
     } else {
       setIsAdmin(false)
-
     }
   }, [])
+  console.log(isAdmin, 'asdef')
   return (
     <Stack.Navigator>
-      {!isAdmin ? <>
-        {!app ? (
-          <>
-            {!onBaodringStatus && (
-              <>
-                <Stack.Screen
-                  name={screenNames.APP_ENTRY_SCREEN}
-                  component={EntryScreen}
-                  options={{
-                    headerShown: true,
-                    header: () => {
-                      return (
-                        <View
-                          style={{
-                            height: height * 0.1,
-                            backgroundColor: colorPalette.sand,
-                            justifyContent: 'center',
-                          }}>
+      {!isAdmin ?
+        <>
+          {!app ? (
+            <>
+              {!userProfileStatus.isOnBoardingCompleted && (
+                <>
+                  <Stack.Screen
+                    name={screenNames.APP_ENTRY_SCREEN}
+                    component={EntryScreen}
+                    options={{
+                      headerShown: true,
+                      header: () => {
+                        return (
                           <View
                             style={{
+                              height: height * 0.1,
+                              backgroundColor: colorPalette.sand,
                               justifyContent: 'center',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              gap: 5,
                             }}>
-                            <Text
-                              style={textStyle.headingText}
-                              onPress={() => {
-                                auth().signOut();
-                                GoogleSignin.signOut();
+                            <View
+                              style={{
+                                justifyContent: 'center',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                gap: 5,
                               }}>
-                              NOOM
-                            </Text>
-                            <Text
-                              style={[
-                                {
-                                  backgroundColor: 'black',
-                                  color: 'white',
-                                  borderRadius: 20,
-                                  width: width * 0.2,
-                                  textAlign: 'center',
-                                },
-                              ]}>
-                              WEIGHT
-                            </Text>
+                              <Text
+                                style={textStyle.headingText}
+                                onPress={() => {
+                                  auth().signOut();
+                                  GoogleSignin.signOut();
+                                }}>
+                                NOOM
+                              </Text>
+                              <Text
+                                style={[
+                                  {
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    borderRadius: 20,
+                                    width: width * 0.2,
+                                    textAlign: 'center',
+                                  },
+                                ]}>
+                                WEIGHT
+                              </Text>
+                            </View>
                           </View>
-                        </View>
-                      );
-                    },
-                  }}
-                />
+                        );
+                      },
+                    }}
+                  />
+                  <Stack.Screen
+                    name={screenNames.ONBAORDING}
+                    component={OnboardingStack}
+                    options={{
+                      title: 'Noom',
+                      headerRight: () => (
+                        <Text style={textStyle.labelText}>{displayName !== null ? displayName : currentUser}</Text>
+                      ),
+                    }}
+                  />
+                </>
+              )}
+              {!userProfileStatus.isProfileCompleted && (
                 <Stack.Screen
-                  name={screenNames.ONBAORDING}
-                  component={OnboardingStack}
+                  name="profile"
+                  component={ProfileScreen1}
                   options={{
-                    title: 'Noom',
-                    headerRight: () => (
-                      <Text style={textStyle.labelText}>{displayName !== null ? displayName : currentUser}</Text>
-                    ),
+                    title: 'Fill Out Your Profile',
                   }}
                 />
-              </>
-            )}
-            {!isProfileCompleted && (
-              <Stack.Screen
-                name="profile"
-                component={ProfileScreen1}
-                options={{
-                  title: 'Fill Out Your Profile',
-                }}
-              />
-            )}
-          </>
-        ) : (
-          <Stack.Screen
-            name="drawer"
-            component={HomeTabStack}
+              )}
+            </>
+          ) : (
+            <Stack.Screen
+              name="drawer"
+              component={HomeTabStack}
 
-            options={{ headerShown: false }}
-          />
-        )}
-      </>
+              options={{ headerShown: false }}
+            />
+          )}
+        </>
         :
         <>
           <Stack.Screen

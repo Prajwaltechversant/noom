@@ -12,7 +12,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         },
         optionContainer: {
             flex: 1,
-            marginVertical: screenContext.isPortrait ? height * 0.1 : height * 0.1
+            marginVertical: screenContext.isPortrait ? height * 0.04 : height * 0.01,
         },
         options: {
         },
@@ -22,7 +22,9 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
             height: screenContext.isPortrait ? width * 0.2 : width * 0.08,
             marginVertical: 5
 
-        }
+        },
+        contentText: { textAlign: 'center', marginVertical: screenContext.isPortrait ? 10 : 20, fontStyle: 'italic' },
+
 
     }
 )

@@ -30,7 +30,6 @@ export const HomeNativeStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name={screenNames.HomeScreen} component={Home}
-
         options={{
           headerShown: false
         }}
@@ -42,7 +41,6 @@ export const HomeNativeStack = () => {
         }}
       />
       <Stack.Screen name={screenNames.Daily_ProgressScreen} component={DailyProgressScreen}
-
         options={{
           headerShown: true,
           title: ''

@@ -60,7 +60,7 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => 
 
       <View style={screenStyles.btnContainer}>
         <CustomButton
-          btnWidth={width * 0.8}
+          btnWidth={width * 0.4}
           btnHeight={isPortrait ? width * 0.2 : width * 0.08}
           label={'Next'}
           btnColor={colorPalette.berry}
@@ -72,15 +72,18 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => 
               handleNext();
             }
           }}
+          borderRadius={10}
         />
 
         {section.optional && (
           <CustomButton
-            btnWidth={width * 0.8}
+            btnWidth={width * 0.4}
             btnHeight={isPortrait ? width * 0.2 : width * 0.08}
             label={'Skip'}
             btnColor={colorPalette.berry}
             onPress={handleNext}
+          borderRadius={10}
+
           />
         )}
       </View>
