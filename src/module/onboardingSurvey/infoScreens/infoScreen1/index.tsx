@@ -30,8 +30,18 @@ const InfoScreen: React.FC = ({ route }: any) => {
   const navigation: any = useNavigation();
   const currentUser = auth().currentUser?.email;
 
+
+  const getUsersCount = async () => {
+    try {
+      const count = await firestore().collection('UserData').count().get()
+      // console.log(count,'ssfdfd')
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    firestore().collection('UserData').get().then(i => i.docs.map(item => console.log(item.data, 'sad')))
+    getUsersCount()
   }, [])
 
   return (
