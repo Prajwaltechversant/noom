@@ -39,12 +39,13 @@ const AppStack = () => {
     isOnBoardingCompleted: false,
     isProfileCompleted: false
   })
-  const onBaodringStatus = useAppSelector(
-    state => state.authStatus.isOnBoardingCompleted,
-  );
-  const isProfileCompleted = useAppSelector(
-    state => state.authStatus.isProfileCompletd,
-  );
+
+  // const onBaodringStatus = useAppSelector(
+  //   state => state.authStatus.isOnBoardingCompleted,
+  // );
+  // const isProfileCompleted = useAppSelector(
+  //   state => state.authStatus.isProfileCompletd,
+  // );
   const currentUid = auth().currentUser?.uid;
   const [isAdmin, setIsAdmin] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -149,9 +150,8 @@ const AppStack = () => {
             </>
           ) : (
             <Stack.Screen
-              name="drawer"
+              name={screenNames.Homepage}
               component={HomeTabStack}
-
               options={{ headerShown: false }}
             />
           )}
@@ -159,7 +159,7 @@ const AppStack = () => {
         :
         <>
           <Stack.Screen
-            name="drawer"
+            name={screenNames.Homepage}
             component={HomeTabStack}
             options={{ headerShown: false }}
           />

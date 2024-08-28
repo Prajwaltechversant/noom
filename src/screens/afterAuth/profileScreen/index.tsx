@@ -14,6 +14,8 @@ import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../../redux/hook';
 import { updateProfileStatus } from '../../../redux/slices/authStatus';
+import { screenNames } from '../../../preferences/staticVariable';
+import Loader from '../../../components/Loader';
 
 type Form = {
   lname: string | undefined;
@@ -42,6 +44,7 @@ const ProfileScreen1 = () => {
   const currentUid = auth().currentUser?.uid;
   const navigation: any = useNavigation();
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false)
   const handleImagePicker = async () => {
     try {
       const result: any = await launchImageLibrary({ mediaType: 'photo' });
@@ -69,6 +72,7 @@ const ProfileScreen1 = () => {
       if (!fname || !lname || !image) {
         Alert.alert('Please Add the details');
       } else {
+        setLoading(true)
         await storage().ref(`Users/${currentUid}/profile`).putFile(image);
         firestore()
           .collection(`UserData/${currentUid}/profile`)
@@ -80,7 +84,9 @@ const ProfileScreen1 = () => {
             updateAuthStatus()
           });
         dispatch(updateProfileStatus(true));
-        navigation.replace('Home');
+        setLoading(false)
+        // navigation.replace(screenNames.Homepage
+        // );
       }
     } catch (error) {
       console.log(error);
@@ -100,6 +106,7 @@ const ProfileScreen1 = () => {
       },
     });
   }, [formData, image]);
+  if (loading) return <Loader  />
   return (
     <KeyboardAvoidingView style={screenStyles.container}>
       <View style={screenStyles.profileSection}>

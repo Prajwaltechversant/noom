@@ -37,7 +37,9 @@ export const screenNames = {
     HomeNativeStack:'HomeScreen',
     WeighGraphScreen:'WeighGraphScreen',
     HomeScreen :'Home',
-    UserProfile:'UserProfileTab'
+    UserProfile:'UserProfileTab',
+    Homepage:'Homepage'
+
 
 
 }

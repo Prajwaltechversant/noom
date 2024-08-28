@@ -54,7 +54,7 @@ const Home: React.FC = () => {
       weekdays[date.getDay()] = date
         .toLocaleString(locale, { weekday: 'long' })
         .slice(0, 3);
-      date.setDate(date.getDate() + 1);  // need to update
+      date.setDate(date.getDate() + 1);  
     }
     setWeekdays(weekdays);
     setSelctedDate(weekdays[new Date().getDay()]);
