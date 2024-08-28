@@ -85,9 +85,10 @@ const PlanScreen = () => {
           <Card style={screenStyles.cardContainer}>
             <Card.Title
               title={item.title || 'Plan Title'}
-              titleStyle={{ textAlign: 'center' }}
+              titleStyle={{ textAlign: 'center', color: 'black', textTransform: 'capitalize',fontWeight:'700' }}
               titleNumberOfLines={2}
               style={screenStyles.cardTitle}
+              titleVariant='headlineLarge'
             />
             <Card.Content style={screenStyles.cardBody}>
               <View style={screenStyles.imageContainer}>
@@ -96,7 +97,7 @@ const PlanScreen = () => {
                   style={{ width: 50, height: 50, borderRadius: 25 }}
                 />
               </View>
-              <Text variant="titleLarge" style={screenStyles.title}>
+              <Text variant="titleLarge" style={[screenStyles.title,{textTransform:'capitalize',fontWeight:'600'}]}>
                 {item.title || 'Card title'}
               </Text>
               <View style={screenStyles.descriptionContainer}>
@@ -107,7 +108,10 @@ const PlanScreen = () => {
                       <View style={screenStyles.tickIcon}>
                         <MaterialIcons name="done" color={'white'} />
                       </View>
-                      <Text style={{ textAlign: 'justify' }}>
+                      <Text style={
+                        textStyle.labelText
+                        // { textAlign: 'justify',color:'#00202e',fontSize:20 }
+                        }>
                         {item.slice(0, 60)}
                       </Text>
                     </View>
@@ -121,7 +125,7 @@ const PlanScreen = () => {
                   label="Add it to my plan"
                   btnWidth={width * 0.4}
                   btnHeight={width * 0.1}
-                  btnColor={colorPalette.berry}
+                  btnColor={'#2c4875'}
                   borderRadius={20}
                   labelColor="white"
                   onPress={() => handleNext(item.id)}

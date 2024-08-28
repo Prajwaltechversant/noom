@@ -1,27 +1,28 @@
 
 
 
-  import React from 'react';
-import {Dimensions, View} from 'react-native';
-import {WebView} from 'react-native-webview';
-import {useScreenContext} from '../../../context/screenContext';
+import React from 'react';
+import { Dimensions, View } from 'react-native';
+import { WebView } from 'react-native-webview';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
-import {Text} from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { Text } from 'react-native-paper';
 import CustomButton from '../../../components/button/customButton';
-import {colorPalette} from '../../../assets/colorpalette/colorPalette';
-import {screenNames} from '../../../preferences/staticVariable';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import { screenNames } from '../../../preferences/staticVariable';
 import textStyle from '../../../style/text/style';
 
 const EChartFinal = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
+
   const option = {
     title: {
       text: '',
@@ -31,7 +32,7 @@ const EChartFinal = () => {
       axisPointer: {
         type: 'cross',
         label: {
-          backgroundColor: '#6a7985',
+          backgroundColor: 'yellow',
         },
       },
     },
@@ -62,10 +63,10 @@ const EChartFinal = () => {
       {
         name: 'Weight loss',
         type: 'line',
-        color:'gray',
+        color: 'gray',
         stack: 'Total',
         areaStyle: {},
-      
+
         emphasis: {
           focus: 'series',
         },
@@ -83,9 +84,7 @@ const EChartFinal = () => {
 
     </head>
     <body>
-      <div id="main" style="width: ${width * 0.8}px; height:  ${
-    height * 0.4
-  };"></div>
+      <div id="main" style="width: ${isPortrait ? width * 0.8 : height * 0.8}px; height:  ${isPortrait ? width * 0.8 : height * 0.6};"></div>
       <script>
         var myChart = echarts.init(document.getElementById('main'));
         var option = ${JSON.stringify(option)};
@@ -95,13 +94,12 @@ const EChartFinal = () => {
     </html>
   `;
 
-    // const navigation: any = useNavigation();
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.chartWrapper}>
         <WebView
           originWhitelist={['*']}
-          source={{html}}
+          source={{ html }}
           style={screenStyles.chartContainer}
           setBuiltInZoomControls={false}
           setDisplayZoomControls={false}

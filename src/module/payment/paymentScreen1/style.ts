@@ -5,7 +5,7 @@ import { colorPalette } from "../../../assets/colorpalette/colorPalette";
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
         alignItems: 'center',
-        // paddingTop: screenContext.isPortrait ? height * 0.03 : height * 0.002,
+        padding: screenContext.isPortrait ? height * 0.03 : height * 0.002,
         backgroundColor: colorPalette.white,
         flex: 1,
         justifyContent:'space-evenly'
@@ -13,7 +13,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     headerContainer: {
         backgroundColor: colorPalette.offWhite,
         width: '100%',
-        paddingHorizontal: screenContext.isPortrait ? height * 0.03 : height * 0.002,
+        paddingHorizontal: screenContext.isPortrait ? height * 0.03 : height * 0.01,
+        // alignSelf:'center'
 
     },
     headerText: {
@@ -21,7 +22,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         fontSize: 20,
         color: colorPalette.black,
         fontWeight: '500',
-        textAlign:"justify",
+        textAlign:"center",
         letterSpacing:1
 
     },
@@ -52,8 +53,9 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
     },
     amountText: {
-        color: colorPalette.berry,
-        fontWeight:'400'
+        color: colorPalette.btnPrimary,
+        fontWeight:'800',
+        fontSize:15
     }
 })
 

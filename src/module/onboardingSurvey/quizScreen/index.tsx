@@ -1,4 +1,4 @@
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, ScrollView } from 'react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
@@ -19,6 +19,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { OnBoardProps } from '../multiChoiceScreen';
 import { addData } from '../../../redux/slices/onBoardingAnswers';
 import { useAppDispatch } from '../../../redux/hook';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
@@ -38,7 +39,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
     tabWidth / 2,
   ];
 
-  const translateX = useSharedValue(sliderPositions[4]);
+  const translateX = useSharedValue(0);
   const [answer, setAnswer] = useState<string | undefined>(undefined);
   const qid = section.id;
   const dispatch = useAppDispatch()
@@ -69,13 +70,13 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
     }).runOnJS(true);
   console.log(answer)
   return (
-    <View style={screenStyles.container}>
+    <ScrollView style={screenStyles.container} contentContainerStyle={{ alignItems: 'center' }}>
       <View style={screenStyles.contentContainer}>
         <Text style={textStyle.questionText}>i want to ...</Text>
         <View style={screenStyles.optionContainer}>
           <View style={screenStyles.options}>
             <View style={screenStyles.optionBox}>
-              <Text style={textStyle.questionText}>
+              <Text style={[textStyle.labelText, { fontWeight: '700', textAlign: 'justify' }]}>
                 {section.options[0].label}
               </Text>
             </View>
@@ -85,7 +86,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
               <View style={screenStyles.seperatorBar}></View>
             </View>
             <View style={screenStyles.optionBox}>
-              <Text style={textStyle.questionText}>
+              <Text style={[textStyle.labelText, { fontWeight: '700', textAlign: 'justify' }]}>
                 {section.options[1].label}
               </Text>
             </View>
@@ -145,17 +146,19 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
 
       <CustomButton
         btnColor="red"
-        btnHeight={width * 0.2}
-        btnWidth={width * 0.8}
+        btnHeight={isPortrait ? width * 0.1 : width * 0.1}
+        btnWidth={isPortrait ? width * 0.5 : width * 0.4}
         label="Next"
         onPress={() => {
           if (answer) {
             dispatch(addData({ qId: qid, aId: answer }));
             handleNext();
-          }else{
+          } else {
             Alert.alert("'Please Choose your answer")
           }
         }}
+        labelColor={colorPalette.white}
+        borderRadius={10}
       />
       <View style={screenStyles.hintContainer}>
         <Text
@@ -170,7 +173,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
           one you're agree closest to agreeing with
         </Text>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

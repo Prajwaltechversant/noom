@@ -56,14 +56,14 @@ const PaymentScreen1 = () => {
               <TouchableOpacity
                 style={[screenStyles.amountBox,
                 {
-                  backgroundColor: plan === item ? colorPalette.salmon : colorPalette.berry,
+                  backgroundColor: plan === item ? '#d7f9f8' : colorPalette.berry,
 
                 }
                 ]}
                 onPress={() => setPlan(item)}>
                 <Text style={[screenStyles.amountText,
                 {
-                  color: plan === item ? colorPalette.berry : colorPalette.salmon,
+                  color: plan === item ? colorPalette.berry : '#d7f9f8',
 
                 }
                 ]}>{item}</Text>
@@ -72,15 +72,15 @@ const PaymentScreen1 = () => {
           )}
         />
 
-        <Text style={textStyle.labelText}>
+        <Text style={[textStyle.labelText, { textAlign: 'center' }]}>
           This option will help nus support those who need to select the lowest
           trail prices
         </Text>
 
         <CustomButton
           label="Continoue"
-          btnWidth={width * 0.8}
-          btnHeight={height * 0.1}
+          btnWidth={isPortrait ? width * 0.7 : width * 0.3}
+          btnHeight={screenContext.isPortrait ? width * 0.12 : height * 0.1}
           btnColor={colorPalette.berry}
           onPress={() => {
             if (plan > 0) {
@@ -89,6 +89,8 @@ const PaymentScreen1 = () => {
               });
             }
           }}
+          labelColor='white'
+          borderRadius={10}
         />
       </View>
     </View>

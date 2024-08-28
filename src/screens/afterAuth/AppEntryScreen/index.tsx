@@ -20,6 +20,7 @@ const EntryScreen = () => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
+  // console.log(scale,fontScale,'scale ')12345
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.contentContainer}>

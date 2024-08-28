@@ -4,23 +4,25 @@ import { colorPalette } from "../../../assets/colorpalette/colorPalette";
 
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
-        // paddingTop: screenContext.isPortrait ? height * 0.03 : height * 0.002,
-        backgroundColor: colorPalette.white,
+        paddingHorizontal: screenContext.isPortrait ? width * 0.04 : height * 0.002,
+        backgroundColor: colorPalette.offWhite,
         flex: 1,
         alignItems: 'center',
+        // alignSelf:'center'
     },
     cardContainer: {
-        width: screenContext.isPortrait ? width * 0.9 : width * .8,
+        width: screenContext.isPortrait ? width * 0.9 : height * .8,
         marginVertical: screenContext.isPortrait ? width * 0.08 : width * .08,
         justifyContent: 'center',
-        backgroundColor: colorPalette.sand
+        backgroundColor: '#95b8d1' 
         , borderRadius: 20,
-        elevation: 5
+        elevation: 1,
+        shadowColor:'black'
     },
     cardTitle: {
-        backgroundColor: colorPalette.blossom,
+        backgroundColor: '#eac4d5',
         borderTopLeftRadius: 20,
-        borderTopRightRadius: 20
+        borderTopRightRadius: 20,
     },
     imageContainer: {
         justifyContent: 'center', alignItems: 'center'

@@ -8,26 +8,29 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     container: {
         backgroundColor: colorPalette.white,
         flex: 1,
-        height:'100%'
+        // height:'100%',
+        padding:1
     },
     content: {
-        paddingHorizontal: screenContext.isPortrait ? height * 0.03 : height * 0.002,
+        paddingHorizontal: screenContext.isPortrait ? height * 0.03 : height * 0.03,
 
     },
     headerContainer: {
         backgroundColor: colorPalette.moss,
         alignItems: 'center',
-        height: screenContext.isPortrait ? height * 0.2 : height * 0.1,
+        height: screenContext.isPortrait ? height * 0.2 : width * 0.1,
         width: '100%',
         justifyContent: 'center',
     },
     personilzedBox: {
         backgroundColor: colorPalette.mint,
         borderRadius: 10,
-        paddingHorizontal: screenContext.isPortrait ? height * 0.03 : height * 0.002,
-        height: screenContext.isPortrait ? height * 0.2 : height * 0.3,
+        paddingHorizontal: screenContext.isPortrait ? width * 0.03 : height * 0.002,
+        height: screenContext.isPortrait ? height * 0.3 : width * 0.4,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width:screenContext.isPortrait ? width * 0.8 : height * 0.8,
+        alignSelf:'center'
     },
     collapseViewBtn: {
         marginVertical: screenContext.isPortrait ? height * 0.03 : height * 0.002,

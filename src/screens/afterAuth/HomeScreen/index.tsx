@@ -46,11 +46,14 @@ const Home: React.FC = () => {
   const [dailyProgressData, setDailyProgressData] = useState<any[]>([]);
 
   useEffect(() => {
-    const weekdays: string[] = [];
-    let date = new Date();
-    for (let i = 0; i < 7; i++) {
-      weekdays.push(date.toLocaleString(locale, { weekday: 'long' }));
-      date.setDate(date.getDate() + 1);
+    const locale = 'en-US';
+    const date = new Date();
+    const weekdays: any = [];
+    while (!weekdays[date.getDay()]) {
+      weekdays[date.getDay()] = date
+        .toLocaleString(locale, {weekday: 'long'})
+        .slice(0, 3);
+      date.setDate(date.getDate() + 1);  // need to update
     }
     setWeekdays(weekdays);
     setSelctedDate(weekdays[new Date().getDay()]);
@@ -166,7 +169,7 @@ const Home: React.FC = () => {
       console.log(error);
     }
   };
-
+console.log(weekdays)
 
   return (
     <View style={screenStyles.container}>
