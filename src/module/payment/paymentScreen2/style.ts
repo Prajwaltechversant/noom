@@ -18,7 +18,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     headerContainer: {
         backgroundColor: colorPalette.moss,
         alignItems: 'center',
-        height: screenContext.isPortrait ? height * 0.2 : width * 0.1,
+        height: screenContext.isPortrait ? height * 0.2 : width * 0.4,
         width: '100%',
         justifyContent: 'center',
     },

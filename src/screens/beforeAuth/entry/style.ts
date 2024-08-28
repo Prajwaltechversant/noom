@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 import { colorPalette } from "../../../assets/colorpalette/colorPalette";
+import { ScreenContextType } from "../../../types/types";
 
-const styles = (screenContext, width, height,) => StyleSheet.create({
+const styles = (screenContext: ScreenContextType, width: number, height: number,) => StyleSheet.create({
     container: {
         backgroundColor: colorPalette.white,
         flex: 1,
@@ -18,14 +19,12 @@ const styles = (screenContext, width, height,) => StyleSheet.create({
     },
     bannerImg: {
         width: screenContext.isPortrait ? width : height,
-        height: screenContext.isPortrait ? width * 1.2 : width * 0.6,
+        height: screenContext.isPortrait ? height * 0.6 : width * 0.4            ,
         resizeMode: 'stretch',
     },
     subHeading: {
         color: colorPalette.black,
         textAlign: 'center'
-        // justifyContent:'center'
-
     },
     actionContainer: {
         padding: screenContext.isPortrait ? width * 0.06 : width * 0.06,

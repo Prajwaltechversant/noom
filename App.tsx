@@ -24,8 +24,8 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaView style={{ flex: 1 }}>
           <ScreenContextProvider>
-            {/* <RootStack /> */}
-            <Loader />
+            <RootStack />
+            {/* <Loader /> */}
           </ScreenContextProvider>
         </SafeAreaView>
       </PersistGate>
