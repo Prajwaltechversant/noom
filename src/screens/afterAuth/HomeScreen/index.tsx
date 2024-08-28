@@ -17,6 +17,7 @@ import AddProgressModal from '../../../components/modal/customModal';
 import AddProgressItemComponent from '../../../components/HomScreen components/addProgressItem';
 import TodaysProgress from '../../../components/HomScreen components/TodaysProgress';
 import NoDataComponent from '../../../components/noDataComponent';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Home: React.FC = () => {
   const screenContext = useScreenContext();
@@ -51,7 +52,7 @@ const Home: React.FC = () => {
     const weekdays: any = [];
     while (!weekdays[date.getDay()]) {
       weekdays[date.getDay()] = date
-        .toLocaleString(locale, {weekday: 'long'})
+        .toLocaleString(locale, { weekday: 'long' })
         .slice(0, 3);
       date.setDate(date.getDate() + 1);  // need to update
     }
@@ -169,7 +170,7 @@ const Home: React.FC = () => {
       console.log(error);
     }
   };
-console.log(weekdays)
+  // console.log(weekdays)
 
   return (
     <View style={screenStyles.container}>
@@ -214,21 +215,12 @@ console.log(weekdays)
                     ListEmptyComponent={<Loader />}
                   />
 
-                  {weekdays[new Date().getDay()] === selctedDate && <TodaysProgress />}
+                  <TodaysProgress handleDailyProgressModal={handleDailyProgressModal} />
                 </View>
               </>
               )}
             />
-            <TouchableOpacity style={screenStyles.footerBtn}
-              onPress={handleDailyProgressModal}
-            >
-              <Button
-                icon="plus"
-                style={screenStyles.btn}
-              >
-                Track More Progress
-              </Button>
-            </TouchableOpacity>
+
             <AddProgressModal visible={progressModalVisible} setProgressModalVisible={setProgressModalVisible}>
               <FlatList
                 data={dailyProgressData}

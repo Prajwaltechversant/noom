@@ -14,7 +14,7 @@ import {
     DataZoomComponent,
 } from 'echarts/components';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { ActivityIndicator, Text } from 'react-native-paper';
+import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import styles from './style';
 import { useScreenContext } from '../../../context/screenContext';
 import textStyle from '../../../style/text/style';
@@ -54,7 +54,7 @@ function ChartComponent({ option }: { option: any }) {
             chart = echarts.init(chartRef.current, 'light', {
                 renderer: 'svg',
                 width: width,
-                height: height * 0.8,
+                height: screenContext.isPortrait ? height * 0.78 : height * 0.6,
             });
             chart.setOption(option);
         }
@@ -78,33 +78,57 @@ export default function WeighScreen() {
     const [weight, setWeight] = useState<number>(0);
     const [weightGoal, setWeightGoal] = useState<number>(0);
     const navigation = useNavigation()
-    const [visible, setVisble] = useState(false)
+    const [visible, setVisible] = useState(false)
     const [selectedValue, setSelctedvalue] = useState(0)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [confirmWeight, setConfirmWeight] = useState(false)
+
+
+    const fetchDailyProgressWeight = async () => {
+        try {
+            const res = await firestore()
+                .collection(`UserData/${currentUid}/dailyProgress`)
+                .where('id', '==', 'logweight')
+                .get()
+            const data = res.docs.map(i => i.data())
+            const sorted = data.sort((a, b) => a.addedDate.toDate().getTime() - b.addedDate.toDate().getTime());
+            const dateSet = sorted.map((item: any) => item.addedDate.toDate().toDateString());
+            const weightSet = sorted.map((item: any) => item.data.count);
+            setAllData([weight, ...weightSet]);
+            setAllDate(['first', ...dateSet]);
+            setIsLoading(false)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 
     useEffect(() => {
-        const subscriber = firestore()
-            .collection(`UserData/${currentUid}/dailyProgress`)
-            .where('id', '==', 'logweight')
-            .onSnapshot(snapshot => {
-                const weigh = snapshot.docs.map(doc => doc.data());
-                const sorted = weigh.sort((a, b) => a.addedDate.toDate().getTime() - b.addedDate.toDate().getTime());
-                const dateSet = sorted.map((item: any) => item.addedDate.toDate().toDateString());
-                const weightSet = sorted.map((item: any) => item.data.count);
+        // const subscriber = firestore()
+        //     .collection(`UserData/${currentUid}/dailyProgress`)
+        //     .where('id', '==', 'logweight')
+        //     .onSnapshot(snapshot => {
+        //         const weigh = snapshot.docs.map(doc => doc.data());
+        //         const sorted = weigh.sort((a, b) => a.addedDate.toDate().getTime() - b.addedDate.toDate().getTime());
+        //         const dateSet = sorted.map((item: any) => item.addedDate.toDate().toDateString());
+        //         const weightSet = sorted.map((item: any) => item.data.count);
 
-                if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
-                    setAllData([weight, ...weightSet]);
-                    setAllDate(['first', ...dateSet]);
+        //         if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
+        //             setAllData([weight, ...weightSet]);
+        //             setAllDate(['first', ...dateSet]);
 
-                } else {
-                    setAllData(weightSet);
-                    setAllDate(dateSet);
+        //         } else {
+        //             setAllData(weightSet);
+        //             setAllDate(dateSet);
 
-                }
-            });
+        //         }
+        //     });
 
-        return () => subscriber();
-    }, [currentUid, weight]);
+        // return () => subscriber();
+        fetchWeightDetails();
+        fetchDailyProgressWeight()
+    }, []);
 
 
 
@@ -115,20 +139,20 @@ export default function WeighScreen() {
                 .where('id', '==', 'logweight')
                 .get()
             const docs = ref.docs.map(i => i.data())
-            setVisble(!visible)
             await addToDailyProgress2(docs[0], selectedValue)
-            setVisble(!visible)
+            setVisible(!visible)
             setSelctedvalue(0)
+            await fetchDailyProgressWeight()
+
         } catch (error) {
             console.log(error)
         }
     }
     useEffect(() => {
-        fetchWeightDetails();
         navigation.setOptions({
             headerRight: () => {
                 return (
-                    <TouchableOpacity style={screenStyles.headerBtn} onPress={addWeight}>
+                    <TouchableOpacity style={screenStyles.headerBtn} onPress={() => setVisible(!visible)}>
                         <Text style={[textStyle.labelText, { color: colorPalette.white }]}>
                             Add
                         </Text>
@@ -198,6 +222,9 @@ export default function WeighScreen() {
         ],
     };
 
+
+
+    if(isLoading) return <ActivityIndicator style={StyleSheet.absoluteFill}  />
     return (
         <View style={screenStyles.container}>
             {/* {isLoading && <ActivityIndicator style={StyleSheet.absoluteFill} color='red' />} */}
@@ -218,13 +245,13 @@ export default function WeighScreen() {
             </View>
             <ChartComponent option={option} />
 
-            <CustomComponentModal visible={visible} modalHeight={height * .4} setProgressModalVisible={setVisble}>
-                <CustomScale maxValue={250} minValue={0} selectedScaleValue={selectedValue} setSelectedScaleValue={setSelctedvalue}  />
+            <CustomComponentModal visible={visible} modalHeight={screenContext.isPortrait ? height * .4 : height * .6} setProgressModalVisible={setVisible}>
+                <CustomScale maxValue={250} minValue={0} selectedScaleValue={selectedValue} setSelectedScaleValue={setSelctedvalue} />
                 <CustomButton
                     label='Save'
                     btnColor={colorPalette.mint}
-                    btnWidth={width * 0.4}
-                    btnHeight={height * 0.05}
+                    btnWidth={screenContext.isPortrait ? width * 0.4 : width * 0.2}
+                    btnHeight={screenContext.isPortrait ? height * 0.05 : width * 0.04}
                     borderRadius={20}
                     onPress={addWeight}
                     labelColor={colorPalette.black}

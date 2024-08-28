@@ -10,6 +10,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         backgroundColor: colorPalette.offWhite,
         flex: 1,
         alignItems: 'center',
+
     },
     headerContainer: {
         // borderBottomWidth: 1,
@@ -29,18 +30,18 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     contentContainer: {
         width: width * 0.9,
         height: 'auto',
-        marginVertical: height * 0.02
+        marginVertical: height * 0.02,
 
     },
     headerTextContainer: {
         flexDirection: 'row',
-         justifyContent: 'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center',
     },
-    dayContainer:{
-        borderWidth:1,
-        borderRadius:5,
-        padding:2
+    dayContainer: {
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 2
     },
     btn: {
         borderColor: 'red',
@@ -49,11 +50,18 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems: 'center', justifyContent: 'center',
         borderWidth: 1
     },
-    footerBtn:{
+    footerBtn: {
         bottom:10,
-        backgroundColor:'transparent',
-        position:'absolute',
+        backgroundColor: 'red',
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems:'center',
+        right:10,
         
+
+
     }
 
 })

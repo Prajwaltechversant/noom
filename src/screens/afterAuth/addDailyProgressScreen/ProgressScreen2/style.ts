@@ -5,39 +5,37 @@ import { colorPalette } from "../../../../assets/colorpalette/colorPalette";
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        // justifyContent: 'space-evenly',
-        paddingHorizontal: width * 0.01
+        paddingHorizontal: screenContext.isPortrait ? width * 0.01 : height * 0.1,
+        paddingTop: screenContext.isPortrait ? width * 0.01 : height * 0.01
     },
     headerContainer: {
         // flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         width: width * 0.8,
-        margin: height * 0.01,
+        margin: screenContext.isPortrait ? height * 0.01 : height * 0.001,
     },
 
     btnConatiner: {
-        bottom: 0,
-        position: 'absolute'
+        // bottom: 0,
+        // position: 'absolute'
     },
     goalText: {
         fontSize: 18,
-        marginBottom: 20,
-        textAlign: 'center',
         color: colorPalette.black,
-        fontWeight: '800'
-
+        fontWeight: '800',
     },
     resultContainer: {
         // borderWidth: 1,
-        marginVertical: height * 0.1,
-        padding: width * 0.1,
+        marginVertical: screenContext.isPortrait ? height * 0.1 : width * 0.04,
         borderRadius: 20,
         elevation: 5,
         backgroundColor: colorPalette.sky,
         width: width * 0.8,
-        justifyContent: 'space-evenly'
+        justifyContent: 'center',
+        height: screenContext.isPortrait ? width * 0.3 : height * 0.1,
+        borderWidth: 1,
+        alignItems: 'center',
     },
     scaleView: {
         backgroundColor: colorPalette.offWhite,
@@ -45,7 +43,14 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems: 'center',
         elevation: 2,
         borderRadius: 10,
-        padding: 10
+        // borderWidth: 1,
+        margin:1
+    },
+    headerImage: {
+        width: width * 0.08,
+        height: width * 0.08,
+        resizeMode: 'center'
+
     }
 })
 

@@ -5,11 +5,11 @@ import { colorPalette } from "../../../assets/colorpalette/colorPalette";
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
         alignItems: 'center',
-        padding: screenContext.isPortrait ? height * 0.03 : height * 0.002,
+        padding: screenContext.isPortrait ? height * 0.03 : height * 0.01,
         backgroundColor: colorPalette.white,
         flex: 1,
         marginVertical: screenContext.isPortrait ? height * 0.008 : height * 0.002,
-        borderRadius: screenContext.isPortrait ? height * 0.01 : height * 0.002,
+        borderRadius: screenContext.isPortrait ? height * 0.01 : width * 0.01,
         elevation: 1,
         shadowColor: colorPalette.black,
         flexDirection: 'row',
@@ -26,7 +26,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     col2: {
         // borderWidth: 1
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        // padding
     },
     text: {
         color: colorPalette.black,

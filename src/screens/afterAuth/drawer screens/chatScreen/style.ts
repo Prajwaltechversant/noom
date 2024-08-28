@@ -6,12 +6,15 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     container: {
         backgroundColor: colorPalette.white,
         flex: 1,
-        paddingHorizontal: screenContext.isPortrait ? width * .01 : width * .07,
+        padding: screenContext.isPortrait ? width * .01 : height * .01,
         alignItems: 'center',
+        // borderWidth: 1
     },
     messageContainer: {
-        width: width * .98,
-        height:'90%',
+        width: screenContext.isPortrait ? width * .9 : height * .98,
+        // borderWidth: 1,
+        // flex: 0.9
+        // height:screenContext.isPortrait ? height*0.8 : 20
     }
 })
 

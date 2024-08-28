@@ -26,13 +26,10 @@ const ChatScreen: React.FC = ({ route }: any) => {
     const currentEmail = auth().currentUser?.email;
     const userID = route.params?.userId
     const isAdmin = admin_uid === currentUid
-    // console.log(isAdmin,'asd')
     const [allMessages, SetAllMessages] = useState([])
     const chatRef = firestore().collection(`Chats`)
     const [message, setMessage] = useState<string>('')
     const listRef = useRef<FlatList>(null)
-
-
     const sendMessage = async () => {
         try {
             if (message && message.length > 0) {
@@ -62,8 +59,6 @@ const ChatScreen: React.FC = ({ route }: any) => {
             console.log(error)
         }
     }
-
-
     useEffect(() => {
         const subscriber = firestore()
             .collection('Chats')

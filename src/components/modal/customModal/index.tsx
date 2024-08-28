@@ -34,6 +34,7 @@ const CustomModal = ({children, visible,setProgressModalVisible, ...props}: Moda
         onRequestClose={() => {
           setProgressModalVisible(!visible);
         }}
+        
         >
         <View style={screenStyles.centeredView}>
           <View style={screenStyles.modalView}>

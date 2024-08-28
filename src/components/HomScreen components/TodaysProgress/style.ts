@@ -9,10 +9,10 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         backgroundColor: '#fff',
         marginVertical: 5,
         borderRadius: 10,
- 
         elevation: 1,
         margin: 1,
-        padding: 5
+        padding: screenContext.isPortrait ? width * 0.01 : height * 0.01,
+        
     },
     cardTitle: {
         fontSize: 18,
@@ -24,7 +24,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     image: {
         width: width * 0.1,
         height: width * 0.1,
-        borderRadius: 50,
+        // borderRadius: 50,
         resizeMode: 'cover'
     },
     cardHeader:{
@@ -34,6 +34,15 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     cardFooter:{
         alignSelf:'center'
+    },
+    footerBtn: {
+        backgroundColor: 'red',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems:'center',
+        
+
+
     }
 })
 

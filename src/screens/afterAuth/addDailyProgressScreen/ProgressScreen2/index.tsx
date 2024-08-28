@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
@@ -21,17 +21,20 @@ const LogWeightScreen: React.FC<Props> = ({ category, item }) => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-  const navigation: any = useNavigation();
+  const navigation = useNavigation();
   const [selectedScaleValue, setSelectedScaleValue] = useState(0)
   const handleSave = () => {
-    addToDailyProgress2(item, selectedScaleValue)
+    if (selectedScaleValue > 0) {
+      addToDailyProgress2(item, selectedScaleValue)
+      navigation.goBack()
+    }
   }
 
-  console.log(item,'hgd')
+  console.log(item, 'hgd')
   return (
-    <View style={screenStyles.container}>
+    <ScrollView style={screenStyles.container} contentContainerStyle={{ alignItems: 'center' }}>
       <View style={screenStyles.headerContainer}>
-        <Image source={{ uri: item.image }} height={width * 0.08} width={width * 0.08} resizeMode='center' />
+        <Image source={{ uri: item.image }} style={screenStyles.headerImage} />
         <Text style={[screenStyles.goalText,]}>{item.title}</Text>
       </View>
       <View style={screenStyles.scaleView}>
@@ -40,26 +43,24 @@ const LogWeightScreen: React.FC<Props> = ({ category, item }) => {
           selectedScaleValue={selectedScaleValue}
           minValue={item?.level?.min}
           maxValue={item?.level?.max}
-          step={1}
         />
         <View style={screenStyles.resultContainer}>
           <Text style={screenStyles.goalText}>Logged Value : {selectedScaleValue} {item?.level?.unit} </Text>
         </View>
       </View>
 
-
       <View style={screenStyles.btnConatiner}>
         <CustomButton
           label='Save'
           btnColor={colorPalette.btnPrimary}
-          btnWidth={width * 0.8}
-          btnHeight={height * 0.07}
+          btnWidth={width * 0.3}
+          btnHeight={height * 0.1}
           borderRadius={20}
           onPress={handleSave}
 
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

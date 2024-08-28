@@ -4,7 +4,6 @@ import { colorPalette } from "../../../../assets/colorpalette/colorPalette";
 
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
-
         backgroundColor: colorPalette.offWhite,
         flex: 1,
         alignItems: 'center',
@@ -14,7 +13,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         backgroundColor: colorPalette.offWhite,
         elevation: 5,
         borderRadius: 4,
-        alignItems: 'center'
+        alignItems: 'center',
+        margin: 1
     },
     textInput: {
         // borderWidth:1,
@@ -35,15 +35,10 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         backgroundColor: colorPalette.white,
         marginVertical: height * 0.01,
         borderRadius: 5,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
         elevation: 5,
         flexDirection: 'row',
+        margin: 1
+        ,
         paddingHorizontal: 10
     },
     addQuantiyBox: {
@@ -59,7 +54,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         height: 60,
         alignItems: 'center',
         borderRadius: 5,
-        paddingHorizontal:60
+        paddingHorizontal: 60
     },
     itemImage: {
         height: 40,

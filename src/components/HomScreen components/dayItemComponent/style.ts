@@ -12,8 +12,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems:'center',
     },
     innerCircle: {
-        width: screenContext.isPortrait ? width * 0.08 : width * 0.1,
-        height: screenContext.isPortrait ? width * 0.08 : width * 0.1,
+        width: screenContext.isPortrait ? width * 0.08 : width * 0.075,
+        height: screenContext.isPortrait ? width * 0.08 : width * 0.075,
         borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',

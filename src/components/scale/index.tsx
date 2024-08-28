@@ -13,7 +13,7 @@ interface Props {
   selectedScaleValue: number
 }
 
-const CustomScale: React.FC<Props> = ({ minValue, maxValue,  setSelectedScaleValue, selectedScaleValue }) => {
+const CustomScale: React.FC<Props> = ({ minValue, maxValue, setSelectedScaleValue, selectedScaleValue }) => {
 
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
@@ -67,8 +67,6 @@ const CustomScale: React.FC<Props> = ({ minValue, maxValue,  setSelectedScaleVal
           <View style={screenStyles.pointer}></View>
         </View>
         <ScrollView
-
-
           ref={scrollViewRef}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -77,11 +75,9 @@ const CustomScale: React.FC<Props> = ({ minValue, maxValue,  setSelectedScaleVal
           scrollEventThrottle={16}
           snapToInterval={width / 5}
           decelerationRate="fast"
-          // onLayout={(e) => console.log(e.nativeEvent.layout.width, 'waryhgsd')}
         >
           {scaleItems.map((value, index) => (
             <View key={index} style={screenStyles.markerContainer}
-
             >
               <Text style={textStyle.labelText}>{value}</Text>
             </View>

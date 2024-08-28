@@ -4,8 +4,9 @@ import { colorPalette } from "../../../assets/colorpalette/colorPalette";
 
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
-        height,
-        alignItems: 'center'
+        // height,
+        alignItems: 'center',
+        flex:1,
     },
     addBtn: {
         marginRight: width * 0.1,

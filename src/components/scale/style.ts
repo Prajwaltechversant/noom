@@ -7,7 +7,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         // padding: wid,
         // borderWidth: 1,
         backgroundColor: 'white',
-        height: height * 0.15,
+        height: screenContext.isPortrait ? height * 0.15 : height * 0.15,
         width: 'auto',
         alignItems: 'center',
         // justifyContent: 'center',
@@ -16,7 +16,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
     pointerContainer: {
         position: 'absolute',
-        left: width * 0.49,
+        left: screenContext.isPortrait ? width * 0.49 : height * 0.32,
         zIndex: 1,
 
     },
@@ -40,27 +40,24 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
     },
     markerContainer: {
-        width: width / 5,
+        width: screenContext.isPortrait ? width / 5 : height / 5,
         alignItems: 'center',
         justifyContent: 'center',
-        height: height * 0.1,
+        height: screenContext.isPortrait ? width * 0.17 : height * 0.1,
         borderRightWidth: 2,
-        borderColor: colorPalette.white
-
+        borderColor: colorPalette.white,
+        // borderWidth: 1
     },
     markerText: {
         color: colorPalette.white,
         fontSize: 16,
         borderWidth: 1
-
     },
     selectedValueText: {
         marginTop: 20,
         fontSize: 18,
         borderWidth: 1
-
     },
-
 })
 
 export default styles

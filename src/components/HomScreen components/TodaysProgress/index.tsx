@@ -8,10 +8,15 @@ import firestore from '@react-native-firebase/firestore';
 import auth, { firebase } from '@react-native-firebase/auth';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
+interface Props {
+  // children: React.ReactElement,
+  handleDailyProgressModal: () => void
+}
 
-const TodaysProgress: React.FC = () => {
+const TodaysProgress: React.FC<Props> = ({ handleDailyProgressModal }) => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
@@ -51,7 +56,7 @@ const TodaysProgress: React.FC = () => {
         )
         .onSnapshot(snapshot => {
           const resData: any = snapshot.docs.map(i => i.data());
-          const group = resData.reduce((acc:any, obj:any) => {
+          const group = resData.reduce((acc: any, obj: any) => {
             const value = obj.id;
             if (!acc[value]) {
               acc[value] = [];
@@ -87,15 +92,18 @@ const TodaysProgress: React.FC = () => {
               <Image source={{ uri: item.data[0].image }} style={screenStyles.image} />
             </View>
             <View style={screenStyles.cardFooter}>
-             {/* { <Text>{item.data.length} In Todays Progress</Text>} */}
+              {/* { <Text>{item.data.length} In Todays Progress</Text>} */}
             </View>
           </View>
         )}
         keyExtractor={item => item.id}
-
-
+        ListFooterComponent={<TouchableOpacity style={[screenStyles.card, { flexDirection: 'row', justifyContent: 'space-between',alignItems:'center' }]}
+          onPress={handleDailyProgressModal}
+        >
+          <Text>Track More Progress</Text>
+          <AntDesign name='plus' size={width * 0.07} color={'green'}  />
+        </TouchableOpacity>}
         ListEmptyComponent={<Text>You haven't logged</Text>}
-        
       />
     </View>
   );

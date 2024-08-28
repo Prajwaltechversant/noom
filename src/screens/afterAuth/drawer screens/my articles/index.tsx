@@ -53,11 +53,9 @@ const MyArticleScreen = () => {
   return (
     <View style={screenStyles.container}>
       <FlatList
-
+      contentContainerStyle={{}}
         data={allRticles}
         renderItem={({ item }: any) => <CourseItem item={item} isArticle handleDelete={() => handleDelete(item.id)} />}
-
-
         ListEmptyComponent={
           <NoDataComponent  />
 

@@ -25,7 +25,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         shadowRadius: 4,
         elevation: 10,
         width: width * .9
-        , height: height * 0.8
+        , height: height * 0.4
     },
     button: {
         borderRadius: 20,
