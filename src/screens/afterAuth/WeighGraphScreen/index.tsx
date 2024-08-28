@@ -82,8 +82,7 @@ export default function WeighScreen() {
     const [selectedValue, setSelctedvalue] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
     const [confirmWeight, setConfirmWeight] = useState(false)
-
-console.log(allData)
+    
     const fetchDailyProgressWeight = async () => {
         try {
             const res = await firestore()
@@ -224,7 +223,7 @@ console.log(allData)
 
 
 
-    if(isLoading) return <ActivityIndicator style={StyleSheet.absoluteFill}  />
+    if (isLoading) return <ActivityIndicator style={StyleSheet.absoluteFill} />
     return (
         <View style={screenStyles.container}>
             {/* {isLoading && <ActivityIndicator style={StyleSheet.absoluteFill} color='red' />} */}
