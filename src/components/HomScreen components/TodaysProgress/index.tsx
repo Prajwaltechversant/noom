@@ -97,13 +97,13 @@ const TodaysProgress: React.FC<Props> = ({ handleDailyProgressModal }) => {
           </View>
         )}
         keyExtractor={item => item.id}
-        ListFooterComponent={<TouchableOpacity style={[screenStyles.card, { flexDirection: 'row', justifyContent: 'space-between',alignItems:'center' }]}
+        ListFooterComponent={<TouchableOpacity style={[screenStyles.card, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}
           onPress={handleDailyProgressModal}
         >
           <Text>Track More Progress</Text>
-          <AntDesign name='plus' size={width * 0.07} color={'green'}  />
+          <AntDesign name='plus' size={width * 0.07} color={'green'} />
         </TouchableOpacity>}
-        ListEmptyComponent={<Text>You haven't logged</Text>}
+        ListEmptyComponent={<Text style={textStyle.labelText}>Please add Daily Progress Data</Text>}
       />
     </View>
   );

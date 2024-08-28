@@ -79,11 +79,12 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => 
         {section.optional && (
           <CustomButton
             btnWidth={width * 0.4}
-            btnHeight={isPortrait ? width * 0.2 : width * 0.08}
+            btnHeight={isPortrait ? width * 0.1 : width * 0.08}
             label={'Skip'}
-            btnColor={colorPalette.berry}
+            btnColor={colorPalette.Lagoon}
             onPress={handleNext}
           borderRadius={10}
+          labelColor='white'
 
           />
         )}

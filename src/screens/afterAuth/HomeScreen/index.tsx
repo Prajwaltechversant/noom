@@ -41,7 +41,8 @@ const Home: React.FC = () => {
   const [dayText, setDayText] = useState<string>('Today');
   const [isSelected, setIsSelected] = useState(false);
   const [isPrev, setIsPrev] = useState(false);
-  const isFirst = useAppSelector(state => state.dailyStatus.isFirstTime);
+  const isFirst = useAppSelector(state => state.dailyStatus.isFirstTime); // need to change
+  const [test, setTest] = useState(0)  // need to change
   const [isLoading, setIsLoading] = useState(false);
   const [progressModalVisible, setProgressModalVisible] = useState(false);
   const [dailyProgressData, setDailyProgressData] = useState<any[]>([]);
@@ -54,12 +55,35 @@ const Home: React.FC = () => {
       weekdays[date.getDay()] = date
         .toLocaleString(locale, { weekday: 'long' })
         .slice(0, 3);
-      date.setDate(date.getDate() + 1);  
+      date.setDate(date.getDate() + 1);
     }
     setWeekdays(weekdays);
     setSelctedDate(weekdays[new Date().getDay()]);
   }, [locale]);
 
+  const updateAuthStatus = async (todayStart: any) => {
+    try {
+      await firestore().collection(`UserData/${currentUid}/profileCompletionStatus`).doc(currentUid).set({
+        isOnBoardingCompleted: true,
+        isProfileCompleted: true,
+        isFirst: todayStart
+      })
+
+    } catch (error) {
+      console.error("Error ", error);
+    }
+  }
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection(`UserData/${currentUid}/profileCompletionStatus`)
+      .doc(currentUid)
+      .onSnapshot((documentSnapshot: any) => {
+        let res = documentSnapshot.data().isFirst
+        setTest(res)
+      });
+    return () => subscriber();
+  }, []);
+  // console.log(test<new Date().setHours(0, 0, 0, 0))
   const handleSelectedTimeStamp = () => {
     try {
       const todayIndex = weekdays.indexOf(weekdays[new Date().getDay()]);
@@ -85,6 +109,7 @@ const Home: React.FC = () => {
     const shuffled = [...array].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, n);
   };
+
   useEffect(() => {
     const fetchAndAddCourses = async () => {
       setIsLoading(true);
@@ -93,18 +118,14 @@ const Home: React.FC = () => {
           .collection(`UserData/${currentUid}/dailyCourse`)
           .get();
         const existingCoursesArray = existingCoursesSnapshot.docs.map(doc => doc.data().id);
-
         const coursesSnapshot = await firestore().collection('courses').get();
         const courses = coursesSnapshot.docs.map(doc => doc.data());
         const availableCourses = courses.filter(course => !existingCoursesArray.includes(course.id));
-
         if (selctedDate === weekdays[new Date().getDay()] && availableCourses.length > 0) {
           const todayStart = new Date().setHours(0, 0, 0, 0);
-
-          if (Number(isFirst) < Number(todayStart)) {
+          if (test > 0 && Number(test) < Number(todayStart)) {
             const randomCourses = getRandomItems(availableCourses, 3);
             const batch = firestore().batch();
-
             randomCourses.forEach((course: any) => {
               const docRef = firestore()
                 .collection(`UserData/${currentUid}/dailyCourse`)
@@ -116,6 +137,7 @@ const Home: React.FC = () => {
               });
             });
             await batch.commit();
+            updateAuthStatus(todayStart)
             dispatch(addDailyStatus(todayStart));
           }
         }
@@ -126,7 +148,8 @@ const Home: React.FC = () => {
       }
     };
     fetchAndAddCourses();
-  }, [selctedDate, weekdays, currentUid, isFirst, dispatch]);
+  }, [selctedDate, weekdays, currentUid, isFirst, dispatch, test]);
+
 
   useEffect(() => {
     const fetchTodaysCourses = async () => {
@@ -144,7 +167,6 @@ const Home: React.FC = () => {
         console.error('Error fetching data', error);
       }
     };
-
     fetchTodaysCourses();
     const startOfDay = new Date(selctedTimestamp.toDate().setHours(0, 0, 0, 0));
     const endOfDay = new Date(selctedTimestamp.toDate().setHours(23, 59, 59, 999));
@@ -170,7 +192,6 @@ const Home: React.FC = () => {
       console.log(error);
     }
   };
-  // console.log(weekdays)
 
   return (
     <View style={screenStyles.container}>

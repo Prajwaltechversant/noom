@@ -14,9 +14,7 @@ import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../../redux/hook';
 import { updateProfileStatus } from '../../../redux/slices/authStatus';
-import { screenNames } from '../../../preferences/staticVariable';
 import Loader from '../../../components/Loader';
-
 type Form = {
   lname: string | undefined;
   fname: string | undefined;
@@ -24,7 +22,6 @@ type Form = {
   image: string | undefined;
 
 };
-
 const ProfileScreen1 = () => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
@@ -50,7 +47,6 @@ const ProfileScreen1 = () => {
       const result: any = await launchImageLibrary({ mediaType: 'photo' });
       setImage(result.assets[0].uri);
       setFormData({ ...formData, image: result.assets[0].uri });
-
     } catch (error) {
       console.log(error);
     }
@@ -59,13 +55,15 @@ const ProfileScreen1 = () => {
     try {
       await firestore().collection(`UserData/${currentUid}/profileCompletionStatus`).doc(currentUid).set({
         isOnBoardingCompleted: true,
-        isProfileCompleted: true
+        isProfileCompleted: true,
+        isFirst:new Date(new Date().setDate(new Date().getDate()-1)).setHours(0, 0, 0, 0)
       })
 
     } catch (error) {
       console.error("Error ", error);
     }
   }
+
   const handleSubmit = async () => {
     const { fname, lname } = formData;
     try {
@@ -85,8 +83,6 @@ const ProfileScreen1 = () => {
           });
         dispatch(updateProfileStatus(true));
         setLoading(false)
-        // navigation.replace(screenNames.Homepage
-        // );
       }
     } catch (error) {
       console.log(error);

@@ -19,13 +19,15 @@ import { admin_uid } from "@env"
 import HomeTabStack from './HomeStack';
 import ChatScreen from '../../screens/afterAuth/drawer screens/chatScreen';
 import firestore from '@react-native-firebase/firestore';
+import Loader from '../../components/Loader';
 
 const Stack = createNativeStackNavigator();
 
 
 type ProfileStatus = {
   isOnBoardingCompleted: boolean,
-  isProfileCompleted: boolean
+  isProfileCompleted: boolean,
+  isFirst: string | number
 }
 
 const AppStack = () => {
@@ -37,7 +39,8 @@ const AppStack = () => {
   const displayName = auth().currentUser?.displayName;
   const [userProfileStatus, setIsProfileStatus] = useState<ProfileStatus>({
     isOnBoardingCompleted: false,
-    isProfileCompleted: false
+    isProfileCompleted: false,
+    isFirst: 0
   })
 
   // const onBaodringStatus = useAppSelector(
@@ -57,13 +60,13 @@ const AppStack = () => {
       .onSnapshot((documentSnapshot: any) => {
         let res = documentSnapshot.data()
         setIsProfileStatus({ ...res })
+        setIsLoading(false)
       });
     return () => subscriber();
   }, []);
 
   const app = userProfileStatus.isOnBoardingCompleted && userProfileStatus.isProfileCompleted
 
-  console.log(admin_uid, currentUid)
   useEffect(() => {
     if (admin_uid === currentUid) {
       setIsAdmin(true)
@@ -71,7 +74,8 @@ const AppStack = () => {
       setIsAdmin(false)
     }
   }, [])
-  console.log(isAdmin, 'asdef')
+
+  if(isLoading) return <Loader />
   return (
     <Stack.Navigator>
       {!isAdmin ?

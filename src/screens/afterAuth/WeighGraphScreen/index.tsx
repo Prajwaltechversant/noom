@@ -83,7 +83,7 @@ export default function WeighScreen() {
     const [isLoading, setIsLoading] = useState(true)
     const [confirmWeight, setConfirmWeight] = useState(false)
 
-
+console.log(allData)
     const fetchDailyProgressWeight = async () => {
         try {
             const res = await firestore()

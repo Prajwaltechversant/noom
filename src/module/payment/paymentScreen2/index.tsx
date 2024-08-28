@@ -55,7 +55,6 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
       try {
         const snapshot = await firestore().collection('plans').get();
         const planArray = snapshot.docs.map(doc => doc.data());
-
         const filteredItems = planArray.flatMap(plan =>
           plan.plans.filter((planItem: any) =>
             addOnPlans.some((addOn: any) =>
@@ -63,13 +62,11 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
             )
           )
         );
-
         setPlanDetails(filteredItems);
       } catch (error) {
         console.error("Error ", error);
       }
     };
-
     loadItems();
   }, [addOnPlans]);
 
@@ -78,9 +75,9 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
     try {
       await firestore().collection(`UserData/${currentUId}/profileCompletionStatus`).doc(currentUId).set({
         isOnBoardingCompleted: true,
-        isProfileCompleted: false
+        isProfileCompleted: false,
+        isFirst:new Date(new Date().setDate(new Date().getDate()-1)).setHours(0, 0, 0, 0)
       })
-
     } catch (error) {
       console.error("Error ", error);
 
@@ -106,7 +103,6 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
   };
 
   const handleDelete = (id: any) => {
-
     let newState = [...planDetails]
     setPlanDetails(newState.filter(item => item.id !== id))
     dispatch(removePlan(id))
