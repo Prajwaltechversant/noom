@@ -35,7 +35,7 @@ const EChartFinal = () => {
       axisPointer: {
         type: 'cross',
         label: {
-          backgroundColor: 'yellow',
+          backgroundColor: 'black',
         },
       },
     },

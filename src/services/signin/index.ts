@@ -12,7 +12,7 @@ export const login = async ({ email, password }: SignupWithEmailtype) => {
     }
     else {
         try {
-            await auth().signInWithEmailAndPassword(email, password)
+            await auth().signInWithEmailAndPassword(email.trim(), password.trim())
             console.log('User account created & signed in!');
             return { res: true, error: undefined };
 

@@ -42,8 +42,8 @@ const Home: React.FC = () => {
   const [dayText, setDayText] = useState<string>('Today');
   const [isSelected, setIsSelected] = useState(false);
   const [isPrev, setIsPrev] = useState(false);
-  const isFirst = useAppSelector(state => state.dailyStatus.isFirstTime); // need to change
-  const [test, setTest] = useState(0)  // need to change
+  const isFirst = useAppSelector(state => state.dailyStatus.isFirstTime); 
+  const [test, setTest] = useState(0)  
   const [isLoading, setIsLoading] = useState(false);
   const [progressModalVisible, setProgressModalVisible] = useState(false);
   const [dailyProgressData, setDailyProgressData] = useState<any[]>([]);
@@ -69,7 +69,6 @@ const Home: React.FC = () => {
         isProfileCompleted: true,
         isFirst: todayStart
       })
-
     } catch (error) {
       console.error("Error ", error);
     }
@@ -84,7 +83,7 @@ const Home: React.FC = () => {
       });
     return () => subscriber();
   }, []);
-  // console.log(test<new Date().setHours(0, 0, 0, 0))
+
   const handleSelectedTimeStamp = () => {
     try {
       const todayIndex = weekdays.indexOf(weekdays[new Date().getDay()]);
@@ -122,10 +121,12 @@ const Home: React.FC = () => {
         const coursesSnapshot = await firestore().collection('courses').get();
         const courses = coursesSnapshot.docs.map(doc => doc.data());
         const availableCourses = courses.filter(course => !existingCoursesArray.includes(course.id));
+
         if (selctedDate === weekdays[new Date().getDay()] && availableCourses.length > 0) {
           const todayStart = new Date().setHours(0, 0, 0, 0);
           if (test > 0 && Number(test) < Number(todayStart)) {
             const randomCourses = getRandomItems(availableCourses, 3);
+            console.log(randomCourses.length, 1)
             const batch = firestore().batch();
             randomCourses.forEach((course: any) => {
               const docRef = firestore()
@@ -139,6 +140,7 @@ const Home: React.FC = () => {
             });
             await batch.commit();
             updateAuthStatus(todayStart)
+            // console.log("Course Added")
             dispatch(addDailyStatus(todayStart));
           }
         }
@@ -149,7 +151,7 @@ const Home: React.FC = () => {
       }
     };
     fetchAndAddCourses();
-  }, [selctedDate, weekdays, currentUid, isFirst, dispatch, test]);
+  }, [selctedDate, weekdays, currentUid, dispatch, test]);
 
 
   useEffect(() => {
@@ -253,7 +255,8 @@ const Home: React.FC = () => {
               />
             </AddProgressModal>
           </>
-          : <ActivityLoader  style={StyleSheet.absoluteFill} />
+          : <NoDataComponent />
+        //  <ActivityLoader  style={StyleSheet.absoluteFill} />
       }
     </View>
   );

@@ -74,7 +74,7 @@ export default function Login() {
 
     >
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={[screenStyles.container]}>
         <Text style={textStyle.headingText}>Noom</Text>
         {isLogin && (

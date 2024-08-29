@@ -297,12 +297,13 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
 
                 <View style={{ alignItems: 'center' }}>
                   <CustomButton
-                    btnWidth={width * 0.8}
-                    btnHeight={isPortrait ? width * 0.2 : width * 0.08}
+                    btnWidth={width * 0.4}
+                    btnHeight={isPortrait ? width * 0.1 : width * 0.08}
                     label={'Pay Now '}
                     btnColor={colorPalette.berry}
                     borderRadius={10}
                     onPress={handlepayment}
+                    labelColor='white'
                   />
                 </View>
               </>

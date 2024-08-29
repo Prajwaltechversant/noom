@@ -11,6 +11,7 @@ import FlowChart from '../../../screens/afterAuth/drawer screens/Progress';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import DailyProgress from '../../../screens/afterAuth/drawer screens/Progress';
 
 const Drawer = createDrawerNavigator();
 
@@ -56,8 +57,8 @@ const DrawerStack = ({ route }: any) => {
 
       />
       <Drawer.Screen
-        name={'progress'}
-        component={FlowChart}
+        name={screenNames.DailyProgress}
+        component={DailyProgress}
         options={{
           drawerIcon: () => <FontAwesome name="map-signs" color={'black'} size={20} />,
           title: 'Progress'

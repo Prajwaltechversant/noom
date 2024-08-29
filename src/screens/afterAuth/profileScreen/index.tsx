@@ -80,9 +80,10 @@ const ProfileScreen1 = () => {
           .then(() => {
             console.log('profile added');
             updateAuthStatus()
+            setLoading(false)
+
           });
         dispatch(updateProfileStatus(true));
-        setLoading(false)
       }
     } catch (error) {
       console.log(error);
@@ -102,7 +103,7 @@ const ProfileScreen1 = () => {
       },
     });
   }, [formData, image]);
-  if (loading) return <Loader  />
+  // if (loading) return <Loader  />
   return (
     <KeyboardAvoidingView style={screenStyles.container}>
       <View style={screenStyles.profileSection}>

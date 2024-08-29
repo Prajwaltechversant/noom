@@ -38,7 +38,8 @@ export const screenNames = {
     WeighGraphScreen:'WeighGraphScreen',
     HomeScreen :'Home',
     UserProfile:'UserProfileTab',
-    Homepage:'Homepage'
+    Homepage:'Homepage',
+    DailyProgress:'progress'
 
 
 

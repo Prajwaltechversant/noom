@@ -25,17 +25,14 @@ const AdminScreens: React.FC = () => {
     const currentUid = auth().currentUser?.uid;
     const currentEmail = auth().currentUser?.email;
     const navigation: any = useNavigation()
-// console.log(admin_uid)
 
     useEffect(() => {
         let arr: any = []
         const subscriber = firestore()
             .collection('Chats')
             .where('toId', '==', admin_uid)
-            // .orderBy('sendTime', 'asc')
             .onSnapshot(documentSnapshot => {
                 const resData: any = documentSnapshot?.docs.map(i => i.data());
-                // console.log(resData,'a')
                 const unique = resData.filter((obj: any, index: any) => {
                     return index === resData.findIndex((o: any) => obj.userID === o.userID);
                 });
@@ -48,7 +45,6 @@ const AdminScreens: React.FC = () => {
     const handleNavigation = (uid: any) => {
         try {
             navigation.navigate(screenNames.Message_Screen, { userId: uid }
-
                 // {
                 //     screen: screenNames.Message_Screen, params: {
                 //         userId: uid

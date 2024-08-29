@@ -148,6 +148,8 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
     addToDailyProgress1(item, selectedItem, quantity)
     setQuantity(0);
     setModalVisible(!modalVisible);
+    navigation.goBack()
+
   }
 
   const startOfDay = new Date(
@@ -156,10 +158,6 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
 const endOfDay = new Date(
     new Date().setHours(23, 59, 59, 999),
 );
-
-
-console.log(firebase.firestore.Timestamp.fromDate(startOfDay))
-console.log(firebase.firestore.Timestamp.fromDate(endOfDay))
 
   return (
     <View style={screenStyles.container}>
