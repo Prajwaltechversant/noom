@@ -25,7 +25,6 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => 
   );
   const navigation: any = useNavigation();
   const [answer, setAnswer] = useState<any>(undefined);
-
   const dispatch = useAppDispatch();
   const qid = section.id;
 

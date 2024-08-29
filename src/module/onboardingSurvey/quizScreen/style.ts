@@ -34,6 +34,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         backgroundColor: colorPalette.offWhite,
         borderRadius: 5,
         borderColor: colorPalette.sand,
+        padding:1,
+        elevation:1
 
     },
     optionSeparator: {

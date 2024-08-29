@@ -15,6 +15,9 @@ export const onBoardingSlice = createSlice({
                 ...state,
                 [qId]:aId
             });
+        },
+        fetchData : (state,action)=>{
+            
         }
     }
 

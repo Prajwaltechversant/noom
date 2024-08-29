@@ -1,24 +1,27 @@
 import React from 'react';
-import {Dimensions, View} from 'react-native';
-import {WebView} from 'react-native-webview';
-import {useScreenContext} from '../../../context/screenContext';
+import { Dimensions, View } from 'react-native';
+import { WebView } from 'react-native-webview';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
-import {Text} from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { Text } from 'react-native-paper';
 import CustomButton from '../../../components/button/customButton';
-import {colorPalette} from '../../../assets/colorpalette/colorPalette';
-import {screenNames} from '../../../preferences/staticVariable';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import { screenNames } from '../../../preferences/staticVariable';
 import textStyle from '../../../style/text/style';
+import { useAppSelector } from '../../../redux/hook';
 
 const EChartComponent = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
+  const state = useAppSelector(state => state.onBoarding)
+  // console.log(state.userWeight, state.idealWeight);
   const option = {
     title: {
       text: '',
@@ -68,7 +71,7 @@ const EChartComponent = () => {
           focus: 'series',
         },
         smooth: true,
-        data: [80, 60, 50, 40, 30, 20, 10],
+        data: [state.userWeight, state.userWeight - 5, state.userWeight - 10, state.userWeight - 15, state.userWeight - 20, state.userWeight - 25, state.idealWeight],
       },
       {
         name: 'Without Diet',
@@ -82,7 +85,7 @@ const EChartComponent = () => {
           focus: 'series',
         },
         smooth: true,
-        data: [70, 60, 70, 50, 80, 90, 100],
+        data: [state.userWeight, state.userWeight, state.userWeight-2, state.userWeight+2, state.userWeight-2, state.userWeight+2, state.userWeight],
       },
     ],
   };
@@ -95,9 +98,8 @@ const EChartComponent = () => {
 
     </head>
     <body>
-      <div id="main" style="width: ${width * 0.8}px; height:  ${
-    height * 0.4
-  };"></div>
+      <div id="main" style="width: ${width * 0.8}px; height:  ${height * 0.4
+    };"></div>
       <script>
         var myChart = echarts.init(document.getElementById('main'));
         var option = ${JSON.stringify(option)};
@@ -107,7 +109,10 @@ const EChartComponent = () => {
     </html>
   `;
 
-    const navigation: any = useNavigation();
+  const navigation: any = useNavigation();
+
+
+
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
@@ -119,7 +124,7 @@ const EChartComponent = () => {
       <View style={screenStyles.chartWrapper}>
         <WebView
           originWhitelist={['*']}
-          source={{html}}
+          source={{ html }}
           style={screenStyles.chartContainer}
           setBuiltInZoomControls={false}
           setDisplayZoomControls={false}
@@ -131,12 +136,14 @@ const EChartComponent = () => {
       </Text>
 
       <CustomButton
-        btnHeight={width * 0.2}
+        btnHeight={width * 0.1}
         btnWidth={width * 0.8}
         label="Got it!"
         btnColor={colorPalette.Lagoon}
         onPress={() => navigation.goBack(screenNames.ONBAORDING)}
-        />
+        labelColor='white'
+        borderRadius={10}
+      />
     </View>
   );
 };

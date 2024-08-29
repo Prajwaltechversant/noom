@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import textStyle from '../../../style/text/style';
 import DayItem from '../../../components/HomScreen components/dayItemComponent';
@@ -18,6 +18,7 @@ import AddProgressItemComponent from '../../../components/HomScreen components/a
 import TodaysProgress from '../../../components/HomScreen components/TodaysProgress';
 import NoDataComponent from '../../../components/noDataComponent';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import ActivityLoader from '../../../components/ActivityLoader';
 
 const Home: React.FC = () => {
   const screenContext = useScreenContext();
@@ -252,7 +253,7 @@ const Home: React.FC = () => {
               />
             </AddProgressModal>
           </>
-          : <NoDataComponent />
+          : <ActivityLoader  style={StyleSheet.absoluteFill} />
       }
     </View>
   );

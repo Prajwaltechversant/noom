@@ -68,7 +68,6 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
         setAnswer(undefined)
       }
     }).runOnJS(true);
-  console.log(answer)
   return (
     <ScrollView style={screenStyles.container} contentContainerStyle={{ alignItems: 'center' }}>
       <View style={screenStyles.contentContainer}>
@@ -76,7 +75,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
         <View style={screenStyles.optionContainer}>
           <View style={screenStyles.options}>
             <View style={screenStyles.optionBox}>
-              <Text style={[textStyle.labelText, { fontWeight: '700', textAlign: 'justify' }]}>
+              <Text style={[textStyle.labelText, { fontWeight: '700', textAlign: 'center' }]}>
                 {section.options[0].label}
               </Text>
             </View>
@@ -86,7 +85,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
               <View style={screenStyles.seperatorBar}></View>
             </View>
             <View style={screenStyles.optionBox}>
-              <Text style={[textStyle.labelText, { fontWeight: '700', textAlign: 'justify' }]}>
+              <Text style={[textStyle.labelText, { fontWeight: '700', textAlign: 'center' }]}>
                 {section.options[1].label}
               </Text>
             </View>

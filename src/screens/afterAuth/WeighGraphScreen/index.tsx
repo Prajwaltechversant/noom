@@ -28,6 +28,7 @@ import Scale from 'echarts/types/src/scale/Scale.js';
 import CustomScale from '../../../components/scale';
 import CustomButton from '../../../components/button/customButton';
 import { addToDailyProgress2 } from '../../../services/dailyprogress';
+import ActivityLoader from '../../../components/ActivityLoader';
 echarts.use([
     TitleComponent,
     TooltipComponent,
@@ -80,9 +81,9 @@ export default function WeighScreen() {
     const navigation = useNavigation()
     const [visible, setVisible] = useState(false)
     const [selectedValue, setSelctedvalue] = useState(0)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [confirmWeight, setConfirmWeight] = useState(false)
-    
+
     const fetchDailyProgressWeight = async () => {
         try {
             const res = await firestore()
@@ -93,9 +94,15 @@ export default function WeighScreen() {
             const sorted = data.sort((a, b) => a.addedDate.toDate().getTime() - b.addedDate.toDate().getTime());
             const dateSet = sorted.map((item: any) => item.addedDate.toDate().toDateString());
             const weightSet = sorted.map((item: any) => item.data.count);
-            setAllData([weight, ...weightSet]);
-            setAllDate(['first', ...dateSet]);
-            setIsLoading(false)
+            if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
+                setAllData([weight, ...weightSet]);
+                setAllDate(['first', ...dateSet]);
+
+            } else {
+                setAllData(weightSet);
+                setAllDate(dateSet);
+
+            }
         } catch (error) {
             console.log(error)
         }
@@ -123,10 +130,12 @@ export default function WeighScreen() {
 
         //         }
         //     });
+            // setIsLoading(false)
 
         // return () => subscriber();
         fetchWeightDetails();
         fetchDailyProgressWeight()
+
     }, []);
 
 
@@ -223,11 +232,9 @@ export default function WeighScreen() {
 
 
 
-    if (isLoading) return <ActivityIndicator style={StyleSheet.absoluteFill} />
+    if (isLoading) return <ActivityLoader style={StyleSheet.absoluteFill} />
     return (
         <View style={screenStyles.container}>
-            {/* {isLoading && <ActivityIndicator style={StyleSheet.absoluteFill} color='red' />} */}
-
             <View style={screenStyles.tittleContainer}>
                 <View style={screenStyles.textContainer}>
                     <Text style={textStyle.labelText}>Your Weight</Text>

@@ -12,6 +12,7 @@ import CustomButton from '../../../components/button/customButton';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import { screenNames } from '../../../preferences/staticVariable';
 import textStyle from '../../../style/text/style';
+import { useAppSelector } from '../../../redux/hook';
 
 const EChartFinal = () => {
   const screenContext = useScreenContext();
@@ -22,6 +23,8 @@ const EChartFinal = () => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
+  const state = useAppSelector(state => state.onBoarding)
+
 
   const option = {
     title: {
@@ -71,7 +74,7 @@ const EChartFinal = () => {
           focus: 'series',
         },
         smooth: true,
-        data: [70, 60, 50, 40, 30, 20, 10,],
+        data: [state.userWeight, state.userWeight - 5, state.userWeight - 10, state.userWeight - 15, state.userWeight - 20, state.idealWeight]
       },
 
     ],
