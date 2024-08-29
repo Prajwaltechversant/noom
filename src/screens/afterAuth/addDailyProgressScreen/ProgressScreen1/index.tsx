@@ -20,7 +20,7 @@ import { Image } from 'react-native';
 import auth, { firebase } from '@react-native-firebase/auth';
 import firestore, { doc, Filter } from '@react-native-firebase/firestore';
 import { TextInput } from 'react-native-paper';
-import {  addToDailyProgress1 } from '../../../../services/dailyprogress';
+import { addToDailyProgress1 } from '../../../../services/dailyprogress';
 interface Props {
   item: any;
   category: string;
@@ -93,71 +93,41 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
     searchQuery.length < 1 && setSeachResult([]);
   }, [searchQuery]);
 
-  // const addToDailyProgress = () => {
-  //   let isExisting = false;
-  //   let existingCount = 0;
-  //   let docId: string;
-  //   firestore()
-  //     .collection(`UserData/${currentUser}/dailyProgress`)
-  //     .where('id', '==', item.id)
-  //     .where('data.id', '==', selectedItem.id)
-  //     .get()
-  //     .then(i => {
-  //       i.size > 0 ? (isExisting = true) : (isExisting = false);
-  //       i.forEach(item => {
-  //         existingCount += item.data().data.count;
-  //         docId = item.id;
-  //       });
-  //     })
-  //     .finally(() => {
-  //       if (isExisting) {
-  //         if (quantity > 0) {
-  //           firestore()
-  //             .collection(`UserData/${currentUser}/dailyProgress`)
-  //             .doc(docId)
-  //             .update({
-  //               id: item.id,
-  //               title: item.title,
-  //               data: {...selectedItem, count: quantity + existingCount},
-  //               itemId: selectedItem.id,
-  //               image:item.image
-  //             })
-  //             .then(i => console.log('data added'));
-  //         }
-  //       } else {
-  //         if (quantity >= 0) {
-  //           firestore()
-  //             .collection(`UserData/${currentUser}/dailyProgress`)
-  //             .add({
-  //               id: item.id,
-  //               title: item.title,
-  //               data: {...selectedItem, count: quantity},
-  //               itemId: selectedItem.id,
-  //               image:item.image
 
-  //             })
-  //             .then(i => console.log('data added'));
-  //         }
-  //       }
-  //       setQuantity(0);
-  //       setModalVisible(!modalVisible);
-  //     });
-  // };
 
   const handleSave = () => {
-    addToDailyProgress1(item, selectedItem, quantity)
-    setQuantity(0);
-    setModalVisible(!modalVisible);
-    navigation.goBack()
 
+    let count = 0
+
+    firestore().collection(`UserData/${currentUser}/dailyProgress`)
+      .doc(`${item.id}-${selectedItem.id}`)
+      .get()
+      .then(item => {
+        const res: any = item.data()
+        count = count + res.data.count
+      })
+      .finally(
+        ()=>{
+          if (count > 0) {
+            let newQuantity = quantity + count
+            addToDailyProgress1(item, selectedItem, newQuantity)
+
+          } else {
+            addToDailyProgress1(item, selectedItem, quantity)
+          }
+          setQuantity(0);
+          setModalVisible(!modalVisible);
+          navigation.goBack()
+        }
+      )
   }
 
-  const startOfDay = new Date(
-    new Date().setHours(0, 0, 0, 0),
-);
-const endOfDay = new Date(
-    new Date().setHours(23, 59, 59, 999),
-);
+  // const startOfDay = new Date(
+  //   new Date().setHours(0, 0, 0, 0),
+  // );
+  // const endOfDay = new Date(
+  //   new Date().setHours(23, 59, 59, 999),
+  // );
 
   return (
     <View style={screenStyles.container}>

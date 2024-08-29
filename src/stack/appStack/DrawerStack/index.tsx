@@ -7,11 +7,11 @@ import MyArticleScreen from '../../../screens/afterAuth/drawer screens/my articl
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import HeaderTab from '../../../components/headerTab';
 import ChatScreen from '../../../screens/afterAuth/drawer screens/chatScreen';
-import FlowChart from '../../../screens/afterAuth/drawer screens/Progress';
+import FlowChart from '../../../screens/afterAuth/Progress';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import DailyProgress from '../../../screens/afterAuth/drawer screens/Progress';
+import DailyProgress from '../../../screens/afterAuth/Progress';
 
 const Drawer = createDrawerNavigator();
 
@@ -20,10 +20,8 @@ const Drawer = createDrawerNavigator();
 const DrawerStack = ({ route }: any) => {
   return (
     <Drawer.Navigator
-
       screenOptions={{
         headerRight: () => <HeaderTab />,
-        
       }}
 
 
@@ -55,15 +53,6 @@ const DrawerStack = ({ route }: any) => {
 
         }}
 
-      />
-      <Drawer.Screen
-        name={screenNames.DailyProgress}
-        component={DailyProgress}
-        options={{
-          drawerIcon: () => <FontAwesome name="map-signs" color={'black'} size={20} />,
-          title: 'Progress'
-
-        }}
       />
     </Drawer.Navigator>
   );

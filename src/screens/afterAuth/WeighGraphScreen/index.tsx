@@ -109,36 +109,36 @@ export default function WeighScreen() {
     }
 
 
+    useEffect(() => { fetchWeightDetails() }, [])
 
     useEffect(() => {
-        // const subscriber = firestore()
-        //     .collection(`UserData/${currentUid}/dailyProgress`)
-        //     .where('id', '==', 'logweight')
-        //     .onSnapshot(snapshot => {
-        //         const weigh = snapshot.docs.map(doc => doc.data());
-        //         const sorted = weigh.sort((a, b) => a.addedDate.toDate().getTime() - b.addedDate.toDate().getTime());
-        //         const dateSet = sorted.map((item: any) => item.addedDate.toDate().toDateString());
-        //         const weightSet = sorted.map((item: any) => item.data.count);
+        const subscriber = firestore()
+            .collection(`UserData/${currentUid}/dailyProgress`)
+            .where('id', '==', 'logweight')
+            .onSnapshot(snapshot => {
+                const weigh = snapshot.docs.map(doc => doc.data());
+                const sorted = weigh.sort((a, b) => a.addedDate.toDate().getTime() - b.addedDate.toDate().getTime());
+                const dateSet = sorted.map((item: any) => item.addedDate.toDate().toDateString());
+                const weightSet = sorted.map((item: any) => item.data.count);
 
-        //         if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
-        //             setAllData([weight, ...weightSet]);
-        //             setAllDate(['first', ...dateSet]);
+                if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
+                    setAllData([weight, ...weightSet]);
+                    setAllDate(['first', ...dateSet]);
 
-        //         } else {
-        //             setAllData(weightSet);
-        //             setAllDate(dateSet);
+                } else {
+                    setAllData(weightSet);
+                    setAllDate(dateSet);
 
-        //         }
-        //     });
-            // setIsLoading(false)
+                }
+            });
+        setIsLoading(false)
 
-        // return () => subscriber();
-        fetchWeightDetails();
-        fetchDailyProgressWeight()
+        return () => subscriber();
+        // fetchDailyProgressWeight()
 
-    }, []);
+    }, [weight,weightGoal]);
 
-
+    console.log(allData)
 
     const addWeight = async () => {
         try {

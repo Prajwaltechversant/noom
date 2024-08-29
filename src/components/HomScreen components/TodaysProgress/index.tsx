@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import textStyle from '../../../style/text/style';
 import { useScreenContext } from '../../../context/screenContext';
@@ -9,6 +9,7 @@ import auth, { firebase } from '@react-native-firebase/auth';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { screenNames } from '../../../preferences/staticVariable';
 
 
 interface Props {
@@ -78,6 +79,11 @@ const TodaysProgress: React.FC<Props> = ({ handleDailyProgressModal }) => {
     data: dailyProgressData[key],
   }));
 
+  const handleNavigation = (item: any) => {
+    navigation.navigate(screenNames.DailyProgress, {
+      item: item
+    })
+  }
   return (
     <View>
       <Text style={[textStyle.questionText, { textAlign: 'left' }]}>
@@ -85,17 +91,24 @@ const TodaysProgress: React.FC<Props> = ({ handleDailyProgressModal }) => {
       </Text>
       <FlatList
         data={groupedData}
-        renderItem={({ item }) => (
-          <View style={screenStyles.card}>
-            <View style={screenStyles.cardHeader}>
-              <Text style={screenStyles.cardTitle}>{item.data[0].title}</Text>
-              <Image source={{ uri: item.data[0].image }} style={screenStyles.image} />
-            </View>
-            <View style={screenStyles.cardFooter}>
-              {/* { <Text>{item.data.length} In Todays Progress</Text>} */}
-            </View>
-          </View>
-        )}
+        renderItem={({ item }) => {
+          return (
+            <Pressable
+              onPress={() => handleNavigation(item.data)}
+            >
+              <View style={screenStyles.card}
+              >
+                <View style={screenStyles.cardHeader} >
+                  <Text style={screenStyles.cardTitle}>{item.data[0].title}</Text>
+                  <Image source={{ uri: item.data[0].image }} style={screenStyles.image} />
+                </View>
+                <View style={screenStyles.cardFooter}>
+                </View>
+              </View>
+            </Pressable>
+          )
+        }
+        }
         keyExtractor={item => item.id}
         ListFooterComponent={<TouchableOpacity style={[screenStyles.card, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}
           onPress={handleDailyProgressModal}

@@ -18,6 +18,8 @@ import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import DrawerStack from '../DrawerStack';
 import WeighScreen from '../../../screens/afterAuth/WeighGraphScreen';
 import UserProfile from '../../../screens/afterAuth/UserProfile';
+import ProgressScreen from '../../../module/onboardingSurvey/progressScreen';
+import DailyProgress from '../../../screens/afterAuth/Progress';
 // import WeighGraphScreen from '../../../screens/afterAuth/WeighGraphScreen/s';
 
 const Tab = createBottomTabNavigator();
@@ -41,6 +43,13 @@ export const HomeNativeStack = () => {
         }}
       />
       <Stack.Screen name={screenNames.Daily_ProgressScreen} component={DailyProgressScreen}
+        options={{
+          headerShown: true,
+          title: ''
+        }}
+      />
+      <Stack.Screen name={screenNames.DailyProgress} component={DailyProgress}
+
         options={{
           headerShown: true,
           title: ''
