@@ -63,8 +63,8 @@ const ChatScreen: React.FC = ({ route }: any) => {
         const subscriber = firestore()
             .collection('Chats')
             .where(Filter.or(
-                Filter('fromId', '==', currentUid),
-                Filter('toId', '==', currentUid)
+                Filter('fromId', '==', userID ? userID : currentUid),
+                Filter('toId', '==', userID ? userID : currentUid)
             ))
             .onSnapshot(documentSnapshot => {
                 const resData: any = documentSnapshot.docs.map(i => i.data());

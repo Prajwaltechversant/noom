@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import React, { Dispatch, SetStateAction } from 'react'
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
@@ -24,7 +24,7 @@ const ChatBox: React.FC<Props> = ({ setMessage, sendMessage,message }) => {
     isPortrait ? height : width,
   );
   return (
-    <View style={screenStyles.container}>
+    <KeyboardAvoidingView style={screenStyles.container}>
       <View style={screenStyles.messageBox}>
         <CustomTextInputComponent
           mode='outlined'
@@ -45,7 +45,7 @@ const ChatBox: React.FC<Props> = ({ setMessage, sendMessage,message }) => {
 
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 

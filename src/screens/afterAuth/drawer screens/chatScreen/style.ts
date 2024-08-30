@@ -13,7 +13,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     messageContainer: {
         width: screenContext.isPortrait ? width * .9 : height * .98,
         // borderWidth: 1,
-        // flex: 0.9
+        flex: 0.9
         // height:screenContext.isPortrait ? height*0.8 : 20
     }
 })

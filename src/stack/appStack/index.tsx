@@ -75,7 +75,7 @@ const AppStack = () => {
     }
   }, [])
 
-  if(isLoading) return <Loader />
+  if (isLoading) return <Loader />
   return (
     <Stack.Navigator>
       {!isAdmin ?
@@ -170,11 +170,11 @@ const AppStack = () => {
           <Stack.Screen
             name={screenNames.Message_Screen}
             component={ChatScreen}
-          // options={{
-          //   : () => (
-          //     <AntDesign name="message1" color={'black'} size={20} />
-          //   ),
-          // }}
+
+            options={{
+
+              title: 'Chat with user'
+            }}
           />
         </>
       }

@@ -11,7 +11,7 @@ import auth from '@react-native-firebase/auth';
 import AdminScreens from '../../../screens/afterAuth/admin';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 import { TouchableOpacityBase } from 'react-native';
 import textStyle from '../../../style/text/style';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
@@ -20,6 +20,7 @@ import WeighScreen from '../../../screens/afterAuth/WeighGraphScreen';
 import UserProfile from '../../../screens/afterAuth/UserProfile';
 import ProgressScreen from '../../../module/onboardingSurvey/progressScreen';
 import DailyProgress from '../../../screens/afterAuth/Progress';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 // import WeighGraphScreen from '../../../screens/afterAuth/WeighGraphScreen/s';
 
 const Tab = createBottomTabNavigator();
@@ -108,7 +109,26 @@ const HomeTabStack = ({ route }: any) => {
           {/* UserProfile */}
         </>
         :
-        <Tab.Screen name={screenNames.ChatScreen} component={AdminScreens} />
+        <Tab.Screen name={screenNames.ChatScreen} component={AdminScreens}
+
+          options={{
+            headerRight: () => {
+              return (
+                <TouchableOpacity style={{ marginRight: 20 }}
+
+                  onPress={() => {
+                    auth().signOut();
+                    GoogleSignin.signOut();
+                  }}
+                >
+                  <Text style={[textStyle.labelText, { color: colorPalette.stream }]}>
+                    Logout
+                  </Text>
+                </TouchableOpacity>
+              );
+            },
+          }}
+        />
       }
     </Tab.Navigator >
   );

@@ -31,7 +31,7 @@ const Coursecarousel = ({ route }: any) => {
   const isCompleted = route.params.isCompleted;
   const [color, setColor] = useState(colorPalette.black);
   const [addedToArticle, setAddedToArticle] = useState(false);
-  const [isImageLoading, setIsImageLoading] = useState<boolean>()
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(true)
   const artiCle = route.params
 
 
@@ -94,34 +94,51 @@ const Coursecarousel = ({ route }: any) => {
     return () => subscriber();
   }, [currentUid, id]);
   return (
-    <FlatList
-      data={Array(1)}
-      renderItem={({ i }: any) => <View style={screenStyles.container}>
-        <FlatList
-          ref={ref}
-          data={data}
-          renderItem={({ item }) => (
-            <View style={screenStyles.eachItem}>
-              <Image
-                source={{ uri: item.images[0] }}
-                style={screenStyles.image}
-              />
-              <Text style={textStyle.headingText}>{item.title}</Text>
-              <Text
-                style={[textStyle.labelText, screenStyles.paragraph]}
-              >
-                {item.todo}
-              </Text>
-            </View>
-          )}
-          scrollEnabled={false}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-        />
+    <>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+
+        data={Array(1)}
+        renderItem={({ i }: any) => <View style={screenStyles.container}>
+          <FlatList
+            ref={ref}
+            data={data}
+
+            renderItem={({ item }) => (
+              <View style={screenStyles.eachItem}>
+                <View>
+                  <Image
+                    source={{ uri: item.images[0] }}
+                    style={screenStyles.image}
+                    onLoad={() => setIsImageLoading(false)}
+                  />
+                  {
+                    isImageLoading && <ImageSkeltonComponent width={width} height={height * 0.3} />
+                  }
+                </View>
+                <Text style={textStyle.headingText}>{item.title}</Text>
+                <Text
+                  style={[textStyle.labelText, screenStyles.paragraph]}
+                >
+                  {item.todo}
+                </Text>
+              </View>
+            )}
+            scrollEnabled={false}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+          />
+
+        </View>}
+
+
+
+      />
+      <View style={{ position: 'absolute', bottom: 0,alignSelf:'center' }}>
         <CustomButton
           label={buttonLabel}
-          btnWidth={width * 0.8}
+          btnWidth={width * 0.4}
           btnHeight={50}
           btnColor={colorPalette.berry}
           onPress={handleScroll}
@@ -129,11 +146,8 @@ const Coursecarousel = ({ route }: any) => {
           borderRadius={10}
 
         />
-      </View>}
-
-
-
-    />
+      </View>
+    </>
   );
 };
 

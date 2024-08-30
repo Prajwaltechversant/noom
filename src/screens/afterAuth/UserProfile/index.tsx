@@ -54,7 +54,6 @@ const UserProfile = () => {
 
   const  fullName = profileData?.fname + ' ' + profileData?.lname
 
-console.log(profileData)
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.profileContainer}>
