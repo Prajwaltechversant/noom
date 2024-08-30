@@ -13,3 +13,11 @@ export interface SignupWithEmailErrorType {
     emailErr:string | undefined,
 
 }
+
+export interface DebitCardError {
+    number : string | undefined,
+    cvv:string | undefined,
+    exp:string | undefined,
+
+
+}

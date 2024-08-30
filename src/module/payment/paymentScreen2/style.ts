@@ -63,7 +63,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         justifyContent: 'center',
         backgroundColor: colorPalette.white,
         elevation:8,
-        borderRadius: 10
+        borderRadius: 10,
+        padding:screenContext.isPortrait ? width*0.01 : height*0.001
     },
     planBox:{
         flexDirection:'row',

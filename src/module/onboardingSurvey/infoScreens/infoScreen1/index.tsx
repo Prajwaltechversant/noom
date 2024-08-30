@@ -1,5 +1,5 @@
 import { View, Text, Image } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
 import textStyle from '../../../../style/text/style';
@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { screenNames } from '../../../../preferences/staticVariable';
 import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import ImageSkeltonComponent from '../../../../components/skeltons/imageSkelton';
 
 
 type Page = 'intro1' | 'intro2';
@@ -29,6 +30,7 @@ const InfoScreen: React.FC = ({ route }: any) => {
   );
   const navigation: any = useNavigation();
   const currentUser = auth().currentUser?.email;
+  const [isImageIsLoading, setIsImageIsLoading] = useState(true)
 
 
   const getUsersCount = async () => {
@@ -56,12 +58,18 @@ const InfoScreen: React.FC = ({ route }: any) => {
         </Text>
       )}
       <View style={screenStyles.contentWrapper}>
-        <Image
-          source={{
-            uri: route.params.image,
-          }}
-          style={screenStyles.contentImage}
-        />
+        <View>
+          <Image
+            source={{
+              uri: route.params.image,
+            }}
+            style={screenStyles.contentImage}
+            onLoad={() => setIsImageIsLoading(false)}
+          />
+          {isImageIsLoading && <View style={{ position: 'absolute' }}>
+            <ImageSkeltonComponent width={isPortrait ? width * .8 : width * .7} height={isPortrait ? height * 0.5 : height * 0.2} />
+          </View>}
+        </View>
         {route.params.page === 'intro1' ? (
           <Text style={textStyle.labelText} numberOfLines={2}>
             You are not alone , we've helped 1234 peoples lose weight!

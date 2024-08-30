@@ -71,7 +71,6 @@ const EmailSignup = () => {
     if (!newError.emailErr && !newError.passwordErr) {
       setError({ emailErr: undefined, passwordErr: undefined });
       const res:any = await signUpWithEmail(formData);
-      // console.log(res,'a')
      if(res.length>0){
       Alert.alert(res)
      }

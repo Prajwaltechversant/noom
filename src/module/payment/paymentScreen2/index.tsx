@@ -1,4 +1,4 @@
-import { View, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { View, ScrollView, TouchableOpacity, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
@@ -20,6 +20,8 @@ import { updateOnBoardingStatus } from '../../../redux/slices/authStatus';
 import { useSelector } from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather'
 import { removePlan } from '../../../redux/slices/planSlice';
+import { validation } from '../../../services/validation';
+import { DebitCardError } from '../../../types/signup';
 
 
 type CardDetails = 'number' | 'cvv' | 'exp'
@@ -44,12 +46,13 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
   const currentUser = auth().currentUser?.email;
   const displayName = auth().currentUser?.displayName;
   const addOnPlans = useAppSelector(state => state.planDetails)
-  console.log(addOnPlans)
   const [planDetails, setPlanDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState({
     number: '', cvv: '', exp: ''
   })
-
+  const [cardError, setCardError] = useState<DebitCardError>({
+    number: undefined, cvv: undefined, exp: undefined
+  })
   useEffect(() => {
     const loadItems = async () => {
       try {
@@ -71,35 +74,65 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
   }, [addOnPlans]);
 
 
+
+
   const updateAuthStatus = async () => {
     try {
       await firestore().collection(`UserData/${currentUId}/profileCompletionStatus`).doc(currentUId).set({
         isOnBoardingCompleted: true,
         isProfileCompleted: false,
-        isFirst:new Date(new Date().setDate(new Date().getDate()-1)).setHours(0, 0, 0, 0)
+        isFirst: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(0, 0, 0, 0)
       })
     } catch (error) {
       console.error("Error ", error);
-
     }
   }
 
   const handlepayment = () => {
-    try {
-      firestore()
-        .collection(`UserData/${currentUId}/survey`)
-        .add({
-          ...survey,
-        })
-        .then(() => {
-          AsyncStorage.setItem('surveyStatus', 'true');
-          dispatch(updateOnBoardingStatus(true));
-          updateAuthStatus()
-          navigation.replace('profile');
-        });
-    } catch (error) {
-      console.log(error);
+
+    let isCardError: any = validation('cardNo', cardDetails.number)
+    let isCvv: any = validation('cvv', '364')
+    let isExp: any = validation('exp', cardDetails.exp)
+
+    let newError = { ...cardError }
+
+    // console.log(cardDetails.cvv)
+    if (!isCardError.value) {
+      newError.number = isCardError.error
+    } else {
+      newError.number = undefined
     }
+    if (!isCvv.value) {
+      newError.cvv = isCvv.error
+    } else {
+      newError.cvv = undefined
+    }
+    if (!isExp.value) {
+      newError.exp = isExp.error
+    } else {
+      newError.exp = undefined
+
+    }
+    setCardError(newError)
+
+    if (!newError.cvv && !newError.exp && !newError.number) {
+      try {
+        firestore()
+          .collection(`UserData/${currentUId}/survey`)
+          .add({
+            ...survey,
+          })
+          .then(() => {
+            AsyncStorage.setItem('surveyStatus', 'true');
+            dispatch(updateOnBoardingStatus(true));
+            updateAuthStatus()
+            navigation.replace('profile');
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
   };
 
   const handleDelete = (id: any) => {
@@ -108,17 +141,18 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
     dispatch(removePlan(id))
   }
 
-
-  const handleChange = (text: any) => {
+  const handleChange = (text: string) => {
     const cleanedText = text.replace(/\D/g, '');
+    // console.log(text, text.length, cleanedText, cleanedText.length)
     let formattedText = '';
     if (cleanedText.length > 2) {
       formattedText = `${cleanedText.slice(0, 2)}/${cleanedText.slice(2, 4)}`;
     } else {
-      formattedText = cleanedText;
+      formattedText = text;
     }
     setCardDetails({ ...cardDetails, exp: formattedText })
   };
+
   return (
     <ScrollView style={screenStyles.container}>
       <View style={{ alignItems: 'center' }}>
@@ -259,7 +293,10 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                 </TouchableOpacity>
                 <Divider />
                 {showCardOption && (
-                  <View style={screenStyles.cardOption}>
+                  <KeyboardAvoidingView style={screenStyles.cardOption}
+
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                  >
                     <CustomTextInputComponent
                       textColor='black'
                       label={'Card Number'}
@@ -267,19 +304,26 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                       outlineColor="transparent"
                       inputMode="numeric"
                       onChangeText={e => setCardDetails({ ...cardDetails, number: e })}
-                    />
+                      maxLength={16}
+                      error={cardError.number ? true : false}
 
+                    />
+                    {cardError.number && <Text style={textStyle.errorText}>{cardError.number}</Text>
+                    }
                     <CustomTextInputComponent
                       textColor='black'
                       label={'Cvv'}
                       mode="outlined"
                       outlineColor="transparent"
                       inputMode="numeric"
-
                       maxLength={3}
                       onChangeText={e => setCardDetails({ ...cardDetails, cvv: e })}
+                      error={cardError.cvv ? true : false}
+
 
                     />
+                    {cardError.cvv && <Text style={textStyle.errorText}>{cardError.cvv}</Text>
+                    }
                     <CustomTextInputComponent
                       textColor='black'
                       label={'exp'}
@@ -290,9 +334,12 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                       placeholder='MM/YY'
                       onChangeText={handleChange}
                       value={cardDetails.exp}
+                      error={cardError.exp ? true : false}
 
                     />
-                  </View>
+                    {cardError.exp && <Text style={textStyle.errorText}>{cardError.exp}</Text>
+                    }
+                  </KeyboardAvoidingView>
                 )}
 
                 <View style={{ alignItems: 'center' }}>

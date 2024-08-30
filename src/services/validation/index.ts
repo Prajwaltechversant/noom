@@ -39,6 +39,38 @@ export const validation = (type: Inputs, value: any) => {
                     return { error: 'Password must be at least 6 characters long \n &  include at least one letter and one number.', value: false }
                 }
             }
+
+        case 'cvv':
+            if (!value) {
+                return { error: 'Please enter Cvv', value: false }
+            }
+            else {
+                if (!validator.isLength(value, { min: 3 })) {
+                    return { error: 'cvv must be 3', value: false }
+                } else {
+                    return { error: undefined, value: true }
+
+                }
+            }
+
+        case "cardNo":
+            if (!value) {
+                return { error: 'Please enter debit card number', value: false }
+            }
+            else {
+                if (!validator.isLength(value, { min: 16, max: 16 })) {
+                    return { error: 'Please check the debit card number', value: false }
+                } else {
+                    return { error: undefined, value: true }
+                }
+            }
+        case 'exp':
+            if (!value) {
+                return { error: 'Please enter debit card exp date', value: false }
+            }
+            else {
+                return { error: undefined, value: true }
+            }
     }
 
 
