@@ -7,13 +7,12 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems: 'center',
         backgroundColor: colorPalette.white,
         justifyContent: 'center',
-        marginVertical:10
+        marginVertical: 10
     },
     headerContainer: {
         backgroundColor: colorPalette.offWhite,
-        width:'100%',
-        borderWidth:1
-
+        width: '100%',
+        borderWidth: 1
     },
     chartWrapper: {
         borderRadius: 20,

@@ -1,24 +1,21 @@
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import textStyle from '../../../style/text/style';
-import DayItem from '../../../components/HomScreen components/dayItemComponent';
-import { useScreenContext } from '../../../context/screenContext';
-import styles from './style';
-import { useNavigation } from '@react-navigation/native';
-import CourseItem from '../../../components/HomScreen components/course box';
-import { Button } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
+import textStyle from '../../../style/text/style';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import DailyCourse, { addDailyStatus } from '../../../redux/slices/DailyCourse';
+import { useScreenContext } from '../../../context/screenContext';
 import Loader from '../../../components/Loader';
 import AddProgressModal from '../../../components/modal/customModal';
 import AddProgressItemComponent from '../../../components/HomScreen components/addProgressItem';
 import TodaysProgress from '../../../components/HomScreen components/TodaysProgress';
 import NoDataComponent from '../../../components/noDataComponent';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import ActivityLoader from '../../../components/ActivityLoader';
+import { staticVariables } from '../../../preferences/staticVariable';
+import CourseItem from '../../../components/HomScreen components/course box';
+import DayItem from '../../../components/HomScreen components/dayItemComponent';
+import styles from './style';
 
 const Home: React.FC = () => {
   const screenContext = useScreenContext();
@@ -28,26 +25,28 @@ const Home: React.FC = () => {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-  const navigation = useNavigation();
   const currentUid = auth().currentUser?.uid;
   const dispatch = useAppDispatch();
   const locale = 'en-US';
-  const [modalVisible, setModalVisible] = useState(false);
-  const [weekdays, setWeekdays] = useState<string[]>([]);
-  const [selctedDate, setSelctedDate] = useState<string>('');
-  const [todaysCourse, setTodaysCourse] = useState<any[]>([]);
+  const [weekdays, setWeekdays] = useState<string[]>(staticVariables.EMPTY_ARRAY);
+  const [selctedDate, setSelctedDate] = useState<string>(staticVariables.EMPTY_STRING);
+  const [todaysCourse, setTodaysCourse] = useState<any[]>(staticVariables.EMPTY_ARRAY);
   const [selctedTimestamp, setSelctedTimeStamp] = useState(
     firebase.firestore.Timestamp.fromDate(new Date())
   );
   const [dayText, setDayText] = useState<string>('Today');
   const [isSelected, setIsSelected] = useState(false);
   const [isPrev, setIsPrev] = useState(false);
-  const isFirst = useAppSelector(state => state.dailyStatus.isFirstTime); 
-  const [test, setTest] = useState(0)  
+  const isFirst = useAppSelector(state => state.dailyStatus.isFirstTime);
+  const [test, setTest] = useState(0)
   const [isLoading, setIsLoading] = useState(false);
   const [progressModalVisible, setProgressModalVisible] = useState(false);
   const [dailyProgressData, setDailyProgressData] = useState<any[]>([]);
 
+
+
+
+  // Array of week days
   useEffect(() => {
     const locale = 'en-US';
     const date = new Date();
@@ -62,6 +61,8 @@ const Home: React.FC = () => {
     setSelctedDate(weekdays[new Date().getDay()]);
   }, [locale]);
 
+
+  // function to update the profile completion status of user to firebase
   const updateAuthStatus = async (todayStart: any) => {
     try {
       await firestore().collection(`UserData/${currentUid}/profileCompletionStatus`).doc(currentUid).set({
@@ -70,9 +71,11 @@ const Home: React.FC = () => {
         isFirst: todayStart
       })
     } catch (error) {
-      console.error("Error ", error);
+      Alert.alert((error as Error).message)
     }
   }
+
+
   useEffect(() => {
     const subscriber = firestore()
       .collection(`UserData/${currentUid}/profileCompletionStatus`)
@@ -84,10 +87,29 @@ const Home: React.FC = () => {
     return () => subscriber();
   }, []);
 
-  const handleSelectedTimeStamp = () => {
+
+
+  //function to fetch todays course
+  const fetchTodaysCourses = async (date: any) => {
+    const startOfDay = new Date(date.toDate().setHours(0, 0, 0, 0));
+    const endOfDay = new Date(date.toDate().setHours(23, 59, 59, 999));
+    const snapshot = await firestore()
+      .collection(`UserData/${currentUid}/dailyCourse`)
+      .where('addedDate', '>=', firebase.firestore.Timestamp.fromDate(startOfDay))
+      .where('addedDate', '<=', firebase.firestore.Timestamp.fromDate(endOfDay))
+      .get()
+    const courses = snapshot.docs.map(doc => doc.data());
+    setTodaysCourse(courses);
+
+  };
+
+
+
+  //function to select day
+  const handleSelectedTimeStamp = async (day: string) => {
     try {
       const todayIndex = weekdays.indexOf(weekdays[new Date().getDay()]);
-      const selctedDateIndex = weekdays.indexOf(selctedDate);
+      const selctedDateIndex = weekdays.indexOf(day);
       if (selctedDateIndex <= todayIndex) {
         setIsPrev(true);
         const newDate = new Date();
@@ -95,13 +117,16 @@ const Home: React.FC = () => {
           newDate.getDate() - Math.abs(todayIndex - selctedDateIndex)
         );
         setSelctedTimeStamp(firebase.firestore.Timestamp.fromDate(newDate));
-        setDayText(selctedDate === weekdays[new Date().getDay()] ? 'Today' : selctedDate);
+        setDayText(day === weekdays[new Date().getDay()] ? 'Today' : day);
         setIsSelected(!isSelected);
+        await fetchTodaysCourses(firebase.firestore.Timestamp.fromDate(newDate))
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert((error as Error).message)
     }
   };
+
+  // filtering of course data from firestore 
   const getRandomItems = (array: any, n: number) => {
     if (array.length <= n) {
       return array.slice();
@@ -110,6 +135,9 @@ const Home: React.FC = () => {
     return shuffled.slice(0, n);
   };
 
+
+
+  // Create dayily course and add to firebase at once in a day or first time user run noom
   useEffect(() => {
     const fetchAndAddCourses = async () => {
       setIsLoading(true);
@@ -126,7 +154,6 @@ const Home: React.FC = () => {
           const todayStart = new Date().setHours(0, 0, 0, 0);
           if (test > 0 && Number(test) < Number(todayStart)) {
             const randomCourses = getRandomItems(availableCourses, 3);
-            console.log(randomCourses.length, 1)
             const batch = firestore().batch();
             randomCourses.forEach((course: any) => {
               const docRef = firestore()
@@ -140,12 +167,11 @@ const Home: React.FC = () => {
             });
             await batch.commit();
             updateAuthStatus(todayStart)
-            // console.log("Course Added")
             dispatch(addDailyStatus(todayStart));
           }
         }
       } catch (error) {
-        console.error('Error fetching data', error);
+        Alert.alert((error as Error).message)
       } finally {
         setIsLoading(false);
       }
@@ -154,23 +180,9 @@ const Home: React.FC = () => {
   }, [selctedDate, weekdays, currentUid, dispatch, test]);
 
 
+
+  // realtime listener to fetch updated data
   useEffect(() => {
-    const fetchTodaysCourses = async () => {
-      try {
-        const startOfDay = new Date(selctedTimestamp.toDate().setHours(0, 0, 0, 0));
-        const endOfDay = new Date(selctedTimestamp.toDate().setHours(23, 59, 59, 999));
-        const snapshot = await firestore()
-          .collection(`UserData/${currentUid}/dailyCourse`)
-          .where('addedDate', '>=', firebase.firestore.Timestamp.fromDate(startOfDay))
-          .where('addedDate', '<=', firebase.firestore.Timestamp.fromDate(endOfDay))
-          .get();
-        const courses = snapshot.docs.map(doc => doc.data());
-        setTodaysCourse(courses);
-      } catch (error) {
-        console.error('Error fetching data', error);
-      }
-    };
-    fetchTodaysCourses();
     const startOfDay = new Date(selctedTimestamp.toDate().setHours(0, 0, 0, 0));
     const endOfDay = new Date(selctedTimestamp.toDate().setHours(23, 59, 59, 999));
     const subscriber = firestore()
@@ -183,8 +195,11 @@ const Home: React.FC = () => {
       });
 
     return () => subscriber();
-  }, [selctedTimestamp, currentUid]);
+  }, [selctedTimestamp]);
 
+
+
+  // function to open daily progress modal
   const handleDailyProgressModal = async () => {
     try {
       const snapshot = await firestore().collection('dailyProgress').get();
@@ -192,7 +207,7 @@ const Home: React.FC = () => {
       setDailyProgressData(progressData);
       setProgressModalVisible(true);
     } catch (error) {
-      console.log(error);
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -205,7 +220,6 @@ const Home: React.FC = () => {
             <DayItem
               day={item}
               isSelected={selctedDate === item}
-              setSelctedDate={setSelctedDate}
               handleSelectedTimeStamp={handleSelectedTimeStamp}
             />
           )}
@@ -217,7 +231,6 @@ const Home: React.FC = () => {
         todaysCourse.length > 0 ?
           <>
             <FlatList
-
               data={Array(1)}
               showsVerticalScrollIndicator={false}
               renderItem={({ i }: any) => (<>
@@ -238,7 +251,6 @@ const Home: React.FC = () => {
                     renderItem={({ item }) => <CourseItem item={item} isArticle={false} />}
                     ListEmptyComponent={<Loader />}
                   />
-
                   <TodaysProgress handleDailyProgressModal={handleDailyProgressModal} />
                 </View>
               </>
@@ -256,7 +268,6 @@ const Home: React.FC = () => {
             </AddProgressModal>
           </>
           : <NoDataComponent />
-        //  <ActivityLoader  style={StyleSheet.absoluteFill} />
       }
     </View>
   );

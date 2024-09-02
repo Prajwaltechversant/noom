@@ -39,7 +39,6 @@ const OnBoardingProgressBar: React.FC<Props> = ({
     }).start();
   }, [progress]);
 
-  console.log(progress);
 
   const interploatedWidth = animatedWidth.interpolate({
     inputRange: [0, 100],

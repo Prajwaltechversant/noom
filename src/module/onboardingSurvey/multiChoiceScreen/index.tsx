@@ -11,6 +11,7 @@ import { Checkbox } from 'react-native-paper';
 import { addData } from '../../../redux/slices/onBoardingAnswers';
 import { useAppDispatch } from '../../../redux/hook';
 import { color } from 'echarts';
+import { staticVariables } from '../../../preferences/staticVariable';
 
 export interface OnBoardProps {
   section: {
@@ -42,9 +43,9 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({ section, handleNext }) => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
-  const [checked, setChecked] = React.useState(['']);
-  const [checkedItem, setCheckedItem] = useState<any>([]);
-  const [isPressed, setIsPressed] = useState('');
+  const [checked, setChecked] = React.useState([staticVariables.EMPTY_STRING]);
+  const [checkedItem, setCheckedItem] = useState<any>(staticVariables.EMPTY_ARRAY);
+  const [isPressed, setIsPressed] = useState(staticVariables.EMPTY_STRING);
   const [answer, setAnswer] = useState<undefined | string>(undefined);
 
   const dispatch = useAppDispatch();
@@ -60,7 +61,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({ section, handleNext }) => {
   }, []);
   const handleChecked = (item: string) => {
     let arr = [...checkedItem];
-    let checkedId: any = [];
+    let checkedId: any = staticVariables.EMPTY_ARRAY;
     arr.forEach((i, index) => {
       ``;
       if (i.label === item) {

@@ -1,14 +1,14 @@
-import {View, Text, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, Pressable } from 'react-native';
+import React, { useState } from 'react';
 import DatePicker from 'react-native-date-picker';
 import CustomTextInputComponent from '../../components/textInput';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 
 interface Props {
   setAnswer: (e: any) => void;
 }
 
-const DatePickerComponent: React.FC<Props> = ({setAnswer}) => {
+const DatePickerComponent: React.FC<Props> = ({ setAnswer }) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   return (
@@ -21,6 +21,7 @@ const DatePickerComponent: React.FC<Props> = ({setAnswer}) => {
         mode="outlined"
         editable={false}
         placeholder={date.toDateString()}
+        textColor={'black'}
       />
       <DatePicker
         modal

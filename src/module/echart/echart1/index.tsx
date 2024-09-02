@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Text } from 'react-native-paper';
 import CustomButton from '../../../components/button/customButton';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
-import { screenNames } from '../../../preferences/staticVariable';
+import { screenNames, staticVariables } from '../../../preferences/staticVariable';
 import textStyle from '../../../style/text/style';
 import { useAppSelector } from '../../../redux/hook';
 
@@ -21,10 +21,9 @@ const EChartComponent = () => {
     isPortrait ? height : width,
   );
   const state = useAppSelector(state => state.onBoarding)
-  // console.log(state.userWeight, state.idealWeight);
   const option = {
     title: {
-      text: '',
+      text: staticVariables.EMPTY_STRING,
     },
     tooltip: {
       trigger: 'axis',
@@ -85,7 +84,7 @@ const EChartComponent = () => {
           focus: 'series',
         },
         smooth: true,
-        data: [state.userWeight, state.userWeight, state.userWeight-2, state.userWeight+2, state.userWeight-2, state.userWeight+2, state.userWeight],
+        data: [state.userWeight, state.userWeight, state.userWeight - 2, state.userWeight + 2, state.userWeight - 2, state.userWeight + 2, state.userWeight],
       },
     ],
   };
@@ -110,9 +109,6 @@ const EChartComponent = () => {
   `;
 
   const navigation: any = useNavigation();
-
-
-
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
@@ -134,7 +130,6 @@ const EChartComponent = () => {
         Scientific reports - 78 % of participants using noom lost weight over a
         6 months study
       </Text>
-
       <CustomButton
         btnHeight={width * 0.1}
         btnWidth={width * 0.8}

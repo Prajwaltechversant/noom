@@ -34,15 +34,12 @@ const CustomScale: React.FC<Props> = ({ minValue, maxValue, setSelectedScaleValu
     return scale;
   };
   const scaleItems = generateScale();
-  // console.log(scaleItems)
 
   const handleScroll = (e: any) => {
     const xOffset = e.nativeEvent.contentOffset.x;
-    // console.log(xOffset)
     const itemWidth = width / 5;
     const index = Math.round(xOffset / itemWidth);
     const newValue = scaleItems[index];
-    // console.log(index, 'saf')
     if (newValue !== selectedScaleValue) {
       setSelectedScaleValue(newValue);
     }

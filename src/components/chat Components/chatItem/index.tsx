@@ -26,11 +26,12 @@ const ChatItem: React.FC<Props> = ({ item, currentUid }) => {
             backgroundColor: item.fromId === currentUid ? '#128C7E' : '#075E51',
             alignSelf: item.fromId === currentUid ? 'flex-end' : 'flex-start',
         }]}>
-            <Text style={[textStyle.labelText, 
-                { 
-                    textAlign: item.role === 'admin' ? 'left' : 'right',
-                     color: 'white' }
-                ]}>{item.message}</Text>
+            <Text style={[textStyle.labelText,
+            {
+                textAlign: item.role === 'admin' ? 'left' : 'right',
+                color: 'white'
+            }
+            ]}>{item.message}</Text>
         </View>
     )
 }

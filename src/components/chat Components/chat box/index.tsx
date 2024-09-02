@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import CustomTextInputComponent from '../../textInput';
+import { staticVariables } from '../../../preferences/staticVariable';
 
 
 interface Props {
@@ -28,7 +29,7 @@ const ChatBox: React.FC<Props> = ({ setMessage, sendMessage,message }) => {
       <View style={screenStyles.messageBox}>
         <CustomTextInputComponent
           mode='outlined'
-          label={''}
+          label={staticVariables.EMPTY_STRING}
           value={message}
           textColor='red'
           style={screenStyles.textInput}

@@ -9,6 +9,7 @@ import textStyle from '../../../style/text/style';
 import { Divider } from 'react-native-paper';
 import { dailCourseStatus } from '../../../redux/slices/DailyCourse';
 import Loader from '../../../components/Loader';
+import { staticVariables } from '../../../preferences/staticVariable';
 
 const DailyProgress = ({ route }: any) => {
   const screenContext = useScreenContext();
@@ -20,9 +21,9 @@ const DailyProgress = ({ route }: any) => {
     isPortrait ? height : width,
   );
   const currentUid = auth().currentUser?.uid;
-  const [dailyProgressData, setDailyProgressData] = useState<any>([])
+  const [dailyProgressData, setDailyProgressData] = useState<any>(staticVariables.EMPTY_ARRAY)
   const data = route.params.item
-  const [unit, setUnit] = useState('')
+  const [unit, setUnit] = useState(staticVariables.EMPTY_STRING)
 
   useEffect(() => {
     firestore().collection('dailyProgress').where('id', '==', data[0].id)
@@ -40,7 +41,7 @@ const DailyProgress = ({ route }: any) => {
       {/* {data.length > 1 && <Text style={textStyle.headingText}>{total}</Text>} */}
 
       <Text style={[textStyle.labelText, { textAlign: 'center' }]}>
-        {data.length > 1 ? `You have Logged ${data.length}  Today` : ''}
+        {data.length > 1 ? `You have Logged ${data.length}  Today` : staticVariables.EMPTY_STRING}
       </Text>
 
       <FlatList

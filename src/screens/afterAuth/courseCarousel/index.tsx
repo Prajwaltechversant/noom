@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
@@ -47,7 +47,8 @@ const Coursecarousel = ({ route }: any) => {
           .doc(id)
           .update({ isCompleted: true })
           .then(() => navigation.navigate(screenNames.HomeScreen))
-          .catch(error => console.error('Error updating course:', error));
+          .catch(error => Alert.alert((error as Error).message)
+          );
       } else {
         navigation.navigate(screenNames.HomeScreen);
       }
@@ -65,7 +66,7 @@ const Coursecarousel = ({ route }: any) => {
         setColor(colorPalette.moss);
       }
     } catch (error) {
-      console.error('Error saving to article:', error);
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -89,7 +90,8 @@ const Coursecarousel = ({ route }: any) => {
           setAddedToArticle(true);
           setColor(colorPalette.moss);
         }
-      }, error => console.error('Error...', error));
+      }, error => Alert.alert((error as Error).message)
+      );
 
     return () => subscriber();
   }, [currentUid, id]);
@@ -97,13 +99,11 @@ const Coursecarousel = ({ route }: any) => {
     <>
       <FlatList
         showsHorizontalScrollIndicator={false}
-
         data={Array(1)}
         renderItem={({ i }: any) => <View style={screenStyles.container}>
           <FlatList
             ref={ref}
             data={data}
-
             renderItem={({ item }) => (
               <View style={screenStyles.eachItem}>
                 <View>
@@ -129,13 +129,9 @@ const Coursecarousel = ({ route }: any) => {
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
           />
-
         </View>}
-
-
-
       />
-      <View style={{ position: 'absolute', bottom: 0,alignSelf:'center' }}>
+      <View style={{ position: 'absolute', bottom: 0, alignSelf: 'center' }}>
         <CustomButton
           label={buttonLabel}
           btnWidth={width * 0.4}
@@ -144,7 +140,6 @@ const Coursecarousel = ({ route }: any) => {
           onPress={handleScroll}
           labelColor="white"
           borderRadius={10}
-
         />
       </View>
     </>

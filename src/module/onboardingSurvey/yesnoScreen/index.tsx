@@ -1,10 +1,10 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import {useScreenContext} from '../../../context/screenContext';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
-import {addData} from '../../../redux/slices/onBoardingAnswers';
+import { addData } from '../../../redux/slices/onBoardingAnswers';
 import { useAppDispatch } from '../../../redux/hook';
 
 interface OnBoardProps {
@@ -25,9 +25,9 @@ interface OnBoardProps {
   };
   handleNext: () => void;
 }
-const YesNoScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
+const YesNoScreen: React.FC<OnBoardProps> = ({ section, handleNext }) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
@@ -40,14 +40,14 @@ const YesNoScreen: React.FC<OnBoardProps> = ({section, handleNext}) => {
     <View style={screenStyles.container}>
       <Text style={textStyle.questionText}>{section.question}</Text>
       <View style={screenStyles.contentContainer}>
-        <Image source={{uri: section.img}} style={screenStyles.image} />
+        <Image source={{ uri: section.img }} style={screenStyles.image} />
         <Text style={textStyle.questionText}>{section.content}</Text>
         <View style={screenStyles.optionContainer}>
           {section.options.map(i => (
             <TouchableOpacity
               style={screenStyles.box}
               onPress={() => {
-                dispatch(addData({qId: qid, aId: i.id}));
+                dispatch(addData({ qId: qid, aId: i.id }));
                 handleNext()
               }}
               key={Math.random().toString(36).substring(2)}>

@@ -14,7 +14,6 @@ import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../../../components/button/customButton';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import textStyle from '../../../style/text/style';
-import PrivacyPolicy from '../../../components/privacyPolicy';
 import CustomTextInputComponent from '../../../components/textInput';
 import { SignupWithEmailtype } from '../../../types/signup';
 import { TextInput } from 'react-native-paper';
@@ -31,7 +30,6 @@ export default function Login() {
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-
   const [isLogin, setIsLogin] = useState(false);
   const navigation: any = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
@@ -40,14 +38,12 @@ export default function Login() {
     email: undefined,
     password: undefined,
   });
-
   const handleStateUpdate = (
     input: keyof SignupWithEmailtype,
     value: string,
   ) => {
     setFormData({ ...formData, [input]: value });
   };
-
   const handleLogin = async () => {
     const { email, password } = formData;
     if (!password || !email) {
@@ -56,10 +52,8 @@ export default function Login() {
       setIsLoading(true)
       const response: any = await login(formData);
       setIsLoading(false)
-
       if (!response?.res) {
-        console.log(response);
-        Alert.alert(response.error);
+        Alert.alert(response?.error);
       }
     }
   };
@@ -71,14 +65,13 @@ export default function Login() {
       image={require('../../../assets/images/background/login.jpg')}
       height={isPortrait ? height : width}
       width={isPortrait ? width : height}
-
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={[screenStyles.container]}>
         <Text style={textStyle.headingText}>Noom</Text>
         {isLogin && (
-          <Text style={[textStyle.labelText,{textAlign:'center'}]}>
+          <Text style={[textStyle.labelText, { textAlign: 'center' }]}>
             Sign in with your account information
           </Text>
         )}
@@ -125,9 +118,9 @@ export default function Login() {
                 textColor="black"
                 style={{
                   height: screenContext.isPortrait ? width * 0.1 : width * 0.08,
-                  width:screenContext.isPortrait ? width * 0.8 : width * 0.4,
-                  marginVertical:screenContext.isPortrait ? height*0.01:height*0.05,
-                  alignSelf:'center'
+                  width: screenContext.isPortrait ? width * 0.8 : width * 0.4,
+                  marginVertical: screenContext.isPortrait ? height * 0.01 : height * 0.05,
+                  alignSelf: 'center'
 
                 }}
               />
@@ -145,22 +138,21 @@ export default function Login() {
                 }
                 style={{
                   height: screenContext.isPortrait ? width * 0.1 : width * 0.08,
-                  width:screenContext.isPortrait ? width * 0.8 : width * 0.4,
-                  marginVertical:screenContext.isPortrait ? height*0.01:height*0.05,
-                  alignSelf:'center'
+                  width: screenContext.isPortrait ? width * 0.8 : width * 0.4,
+                  marginVertical: screenContext.isPortrait ? height * 0.01 : height * 0.05,
+                  alignSelf: 'center'
 
                 }}
               />
-
               <CustomButton
-                btnWidth={screenContext.isPortrait ? width * 0.8: width * 0.4}
+                btnWidth={screenContext.isPortrait ? width * 0.8 : width * 0.4}
                 btnHeight={screenContext.isPortrait ? width * 0.12 : width * 0.07}
                 btnColor="red"
                 label="Next"
                 borderRadius={5}
                 labelColor="white"
                 onPress={handleLogin}
-                
+
               />
             </>
           )}
@@ -169,7 +161,7 @@ export default function Login() {
 
       </KeyboardAvoidingView>
       <View style={screenStyles.privacyPolicy}>
-        <Text style={[textStyle.labelText,{textAlign:'center'}]} numberOfLines={2}>
+        <Text style={[textStyle.labelText, { textAlign: 'center' }]} numberOfLines={2}>
           By Proceeding, you concent to our Terms of use,
           Support, Privacy Policy and Research Policy
         </Text>

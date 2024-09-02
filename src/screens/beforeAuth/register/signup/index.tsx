@@ -1,17 +1,18 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {useScreenContext} from '../../../../context/screenContext';
+import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
-import {SignupProps} from '../../../../types/types';
-import {Button, TextInput} from 'react-native-paper';
-import {colorPalette} from '../../../../assets/colorpalette/colorPalette';
+import { useNavigation } from '@react-navigation/native';
+import { SignupProps } from '../../../../types/types';
+import { Button, TextInput } from 'react-native-paper';
+import { colorPalette } from '../../../../assets/colorpalette/colorPalette';
 import UidModal from '../../../../components/uidModal';
-import {faceBookSignup, googleSignup} from '../../../../services/signup';
+import { faceBookSignup, googleSignup } from '../../../../services/signup';
+import { staticVariables } from '../../../../preferences/staticVariable';
 
-const Signup: React.FC = ({route}: any) => {
+const Signup: React.FC = ({ route }: any) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
 
   const screenStyles = styles(
@@ -20,10 +21,9 @@ const Signup: React.FC = ({route}: any) => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
-
   const [error, setError] = useState({
-    emailError: '',
-    passwordError: '',
+    emailError: staticVariables.EMPTY_STRING,
+    passwordError: staticVariables.EMPTY_STRING,
   });
 
   return (
@@ -60,7 +60,7 @@ const Signup: React.FC = ({route}: any) => {
               <TouchableOpacity
                 style={[
                   screenStyles.signupBtn,
-                  {backgroundColor: colorPalette.btnPrimary},
+                  { backgroundColor: colorPalette.btnPrimary },
                 ]}
                 onPress={() => navigation.navigate('emailSignup')}>
                 <Text style={screenStyles.btnText}>Sign up With email</Text>
@@ -71,10 +71,10 @@ const Signup: React.FC = ({route}: any) => {
               <TouchableOpacity
                 style={[
                   screenStyles.signupBtn,
-                  {backgroundColor: colorPalette.btnSec},
+                  { backgroundColor: colorPalette.btnSec },
                 ]}
                 onPress={googleSignup}
-                >
+              >
                 <Text>Sign up With google</Text>
               </TouchableOpacity>
             </View>
@@ -84,7 +84,7 @@ const Signup: React.FC = ({route}: any) => {
                 onPress={faceBookSignup}
                 style={[
                   screenStyles.signupBtn,
-                  {backgroundColor: colorPalette.btnSec},
+                  { backgroundColor: colorPalette.btnSec },
                 ]}>
                 <Text>Sign up With facebook</Text>
               </TouchableOpacity>

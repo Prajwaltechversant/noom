@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, Alert } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
@@ -8,7 +8,7 @@ import firestore, { Filter } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { admin_uid } from "@env"
 import { firebase } from '@react-native-firebase/auth';
-import { push } from '../../HomeScreen/dataset';
+import { staticVariables } from '../../../../preferences/staticVariable';
 
 
 
@@ -26,9 +26,9 @@ const ChatScreen: React.FC = ({ route }: any) => {
     const currentEmail = auth().currentUser?.email;
     const userID = route.params?.userId
     const isAdmin = admin_uid === currentUid
-    const [allMessages, SetAllMessages] = useState([])
+    const [allMessages, SetAllMessages] = useState(staticVariables.EMPTY_ARRAY)
     const chatRef = firestore().collection(`Chats`)
-    const [message, setMessage] = useState<string>('')
+    const [message, setMessage] = useState<string>(staticVariables.EMPTY_STRING)
     const listRef = useRef<FlatList>(null)
     const sendMessage = async () => {
         try {
@@ -52,11 +52,11 @@ const ChatScreen: React.FC = ({ route }: any) => {
                         role: 'admin',
                     })
                 }
-                setMessage('')
+                setMessage(staticVariables.EMPTY_STRING)
                 listRef.current?.scrollToEnd()
             }
         } catch (error) {
-            console.log(error)
+            Alert.alert((error as Error).message)
         }
     }
     useEffect(() => {

@@ -33,18 +33,6 @@ const InfoScreen: React.FC = ({ route }: any) => {
   const [isImageIsLoading, setIsImageIsLoading] = useState(true)
 
 
-  const getUsersCount = async () => {
-    try {
-      const count = await firestore().collection('UserData').count().get()
-      // console.log(count,'ssfdfd')
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    getUsersCount()
-  }, [])
 
   return (
     <View style={screenStyles.container}>

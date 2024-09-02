@@ -1,20 +1,20 @@
 import { StyleSheet } from "react-native";
 import { ScreenContextType } from "../../../types/types";
 
-const styles =(screenContext:ScreenContextType, width:number, height:number) => StyleSheet.create({
-    container:{
-        height:screenContext.isPortrait ? height : width,
-        width:screenContext.isPortrait ? width : height,
-        justifyContent:'center',
-        alignItems:'center',
+const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
+    container: {
+        height: screenContext.isPortrait ? height : width,
+        width: screenContext.isPortrait ? width : height,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    btnContainer:{
-        marginTop:screenContext.isPortrait  ? width * 0.2 : width * 0.001
+    btnContainer: {
+        marginTop: screenContext.isPortrait ? width * 0.2 : width * 0.001
     },
-    privacyPolicy:{
-        position:'absolute',
-        bottom:10,
-        alignSelf:'center'
+    privacyPolicy: {
+        position: 'absolute',
+        bottom: 10,
+        alignSelf: 'center'
     },
 })
 

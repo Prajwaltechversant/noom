@@ -1,4 +1,4 @@
-import { View, Text, KeyboardAvoidingView, Alert, Image } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Alert, Image, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
@@ -15,6 +15,10 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../../redux/hook';
 import { updateProfileStatus } from '../../../redux/slices/authStatus';
 import Loader from '../../../components/Loader';
+import ActivityLoader from '../../../components/ActivityLoader';
+import { showMessage } from 'react-native-flash-message';
+import FlashMessage from "react-native-flash-message";
+
 type Form = {
   lname: string | undefined;
   fname: string | undefined;
@@ -48,7 +52,8 @@ const ProfileScreen1 = () => {
       setImage(result.assets[0].uri);
       setFormData({ ...formData, image: result.assets[0].uri });
     } catch (error) {
-      console.log(error);
+      Alert.alert((error as Error).message)
+
     }
   };
   const updateAuthStatus = async () => {
@@ -56,11 +61,11 @@ const ProfileScreen1 = () => {
       await firestore().collection(`UserData/${currentUid}/profileCompletionStatus`).doc(currentUid).set({
         isOnBoardingCompleted: true,
         isProfileCompleted: true,
-        isFirst:new Date(new Date().setDate(new Date().getDate()-1)).setHours(0, 0, 0, 0)
+        isFirst: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(0, 0, 0, 0)
       })
-
     } catch (error) {
-      console.error("Error ", error);
+      Alert.alert((error as Error).message)
+
     }
   }
 
@@ -78,7 +83,10 @@ const ProfileScreen1 = () => {
             ...formData,
           })
           .then(() => {
-            console.log('profile added');
+            showMessage({
+              message: "Profile Added",
+              type: "success",
+            });
             updateAuthStatus()
             setLoading(false)
 
@@ -86,7 +94,7 @@ const ProfileScreen1 = () => {
         dispatch(updateProfileStatus(true));
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -103,9 +111,11 @@ const ProfileScreen1 = () => {
       },
     });
   }, [formData, image]);
-  // if (loading) return <Loader  />
+  if (loading) return <ActivityLoader style={StyleSheet.absoluteFill} />
   return (
     <KeyboardAvoidingView style={screenStyles.container}>
+      <FlashMessage position="top" />
+
       <View style={screenStyles.profileSection}>
         <Text style={textStyle.questionText}>Profile Picture</Text>
         {!image ? (

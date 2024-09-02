@@ -34,8 +34,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         backgroundColor: colorPalette.offWhite,
         borderRadius: 5,
         borderColor: colorPalette.sand,
-        padding:1,
-        elevation:1
+        padding: 1,
+        elevation: 1
 
     },
     optionSeparator: {
@@ -70,7 +70,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         position: 'absolute',
         borderRadius: 20,
         justifyContent: 'center', alignItems: 'center',
-        bottom: screenContext.isPortrait ? width * 0.03 : height * 0.09 
+        bottom: screenContext.isPortrait ? width * 0.03 : height * 0.09
     },
     hintContainer: {
         backgroundColor: colorPalette.sand,

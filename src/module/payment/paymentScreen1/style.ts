@@ -8,7 +8,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         padding: screenContext.isPortrait ? height * 0.03 : height * 0.002,
         backgroundColor: colorPalette.white,
         flex: 1,
-        justifyContent:'space-evenly'
+        justifyContent: 'space-evenly'
     },
     headerContainer: {
         backgroundColor: colorPalette.offWhite,
@@ -22,15 +22,15 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         fontSize: 20,
         color: colorPalette.black,
         fontWeight: '500',
-        textAlign:"center",
-        letterSpacing:1
+        textAlign: "center",
+        letterSpacing: 1
 
     },
     paymentContainer: {
         marginVertical: screenContext.isPortrait ? height * 0.02 : height * 0.002,
         alignItems: 'center',
         height: 'auto',
-        flex:1,
+        flex: 1,
         // justifyContent:'space-between',
 
     },
@@ -42,7 +42,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems: 'center',
         elevation: 1,
         borderRadius: 5,
-        borderWidth:1
+        borderWidth: 1
 
 
     },
@@ -54,8 +54,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     amountText: {
         color: colorPalette.btnPrimary,
-        fontWeight:'800',
-        fontSize:15
+        fontWeight: '800',
+        fontSize: 15
     }
 })
 

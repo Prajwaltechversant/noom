@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
@@ -7,6 +7,9 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import CourseItem from '../../../../components/HomScreen components/course box';
 import NoDataComponent from '../../../../components/noDataComponent';
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
+import { staticVariables } from '../../../../preferences/staticVariable';
 
 const MyArticleScreen = () => {
   const screenContext = useScreenContext();
@@ -20,7 +23,7 @@ const MyArticleScreen = () => {
   );
   const navigation: any = useNavigation();
   const currentUid = auth().currentUser?.uid;
-  const [allRticles, setAllArticles] = useState([])
+  const [allRticles, setAllArticles] = useState(staticVariables.EMPTY_ARRAY)
 
   useEffect(() => {
     const subscriber = firestore()
@@ -42,22 +45,23 @@ const MyArticleScreen = () => {
 
       if (!querySnapshot.empty) {
         await Promise.all(querySnapshot.docs.map(doc => doc.ref.delete()));
-        console.log('deleted');
-      } else {
-        console.log('No data');
+        showMessage({
+          message: "Deleted From My Articles",
+          type: "info",
+        });
       }
     } catch (error) {
-      console.error('Error... ', error);
+      Alert.alert((error as Error).message)
     }
   };
   return (
     <View style={screenStyles.container}>
       <FlatList
-      contentContainerStyle={{}}
+        contentContainerStyle={{}}
         data={allRticles}
         renderItem={({ item }: any) => <CourseItem item={item} isArticle handleDelete={() => handleDelete(item.id)} />}
         ListEmptyComponent={
-          <NoDataComponent  />
+          <NoDataComponent />
 
         }
       />

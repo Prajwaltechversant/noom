@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native"
 import { colorPalette } from "../../../../assets/colorpalette/colorPalette"
+import { ScreenContextType } from "../../../../types/types"
 
-const styles = (screenContext, width, height) => StyleSheet.create({
+const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
         flex: 1,
         padding: screenContext.isPortrait ? height * 0.03 : height * 0.002,
@@ -11,7 +12,6 @@ const styles = (screenContext, width, height) => StyleSheet.create({
         fontSize: 25,
         textAlign: 'center'
     },
-
     textInput: {
         backgroundColor: colorPalette.white,
     },
@@ -25,8 +25,6 @@ const styles = (screenContext, width, height) => StyleSheet.create({
         flex: 1,
         marginTop: screenContext.isPortrait ? height * 0.01 : height * 0.002,
         marginBottom: screenContext.isPortrait ? height * 0.07 : height * 0.08,
-
-
     },
     textInputContainer: {
         paddingVertical: 30
@@ -36,19 +34,19 @@ const styles = (screenContext, width, height) => StyleSheet.create({
         borderRadius: 0,
         height: screenContext.isPortrait ? width * 0.12 : width * 0.12,
         justifyContent: 'center', alignItems: 'center',
-        
-        
+
+
     },
-    signupBtn:{
+    signupBtn: {
         width: screenContext.isPortrait ? width * 0.9 : width * 0.8,
-        borderRadius: 0,
+        // borderRadius: 0,
         height: screenContext.isPortrait ? width * 0.12 : width * 0.12,
         justifyContent: 'center', alignItems: 'center',
-        marginVertical:screenContext.isPortrait ? height * 0.02 : height * 0.01,
-        borderRadius:10
+        marginVertical: screenContext.isPortrait ? height * 0.02 : height * 0.01,
+        borderRadius: 10
     },
-    btnText:{
-        color:colorPalette.white
+    btnText: {
+        color: colorPalette.white
     }
 })
 

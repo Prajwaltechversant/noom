@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import firestore, { Filter } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -9,7 +9,7 @@ import styles from './style';
 import CustomButton from '../../../components/button/customButton';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import { useNavigation } from '@react-navigation/native';
-import { screenNames } from '../../../preferences/staticVariable';
+import { screenNames, staticVariables } from '../../../preferences/staticVariable';
 const AdminScreens: React.FC = () => {
 
 
@@ -21,7 +21,7 @@ const AdminScreens: React.FC = () => {
         isPortrait ? width : height,
         isPortrait ? height : width,
     );
-    const [allRequests, setAllRequests] = useState([])
+    const [allRequests, setAllRequests] = useState(staticVariables.EMPTY_ARRAY)
     const currentUid = auth().currentUser?.uid;
     const currentEmail = auth().currentUser?.email;
     const navigation: any = useNavigation()
@@ -45,14 +45,9 @@ const AdminScreens: React.FC = () => {
     const handleNavigation = (uid: any) => {
         try {
             navigation.navigate(screenNames.Message_Screen, { userId: uid }
-                // {
-                //     screen: screenNames.Message_Screen, params: {
-                //         userId: uid
-                //     }
-                // }
             );
         } catch (error) {
-            console.log(error)
+            Alert.alert((error as Error).message)
         }
     }
 

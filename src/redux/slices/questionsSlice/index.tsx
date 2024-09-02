@@ -1,6 +1,7 @@
 import {createSlice, current} from '@reduxjs/toolkit';
+import { staticVariables } from '../../../preferences/staticVariable';
 
-let initialState: any = [];
+let initialState: any = staticVariables.EMPTY_ARRAY;
 export const questionsSlice = createSlice({
   name: 'questions',
   initialState,

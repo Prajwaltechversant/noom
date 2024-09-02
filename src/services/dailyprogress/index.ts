@@ -23,7 +23,7 @@ export const addToDailyProgress1 = async (item: any, selectedItem: any, quantity
             image: item.image,
             addedDate: firebase.firestore.Timestamp.now(),
         })
-        .then(i => console.log('data added'));
+   
 };
 
 export const addToDailyProgress2 = (item: any, logValue: number) => {
@@ -54,7 +54,6 @@ export const addToDailyProgress2 = (item: any, logValue: number) => {
                             image: item.image,
                             addedDate: firebase.firestore.Timestamp.now(),
                         })
-                        .then(i => console.log('data added'));
                 }
             } else {
                 if (logValue >= 0) {
@@ -69,7 +68,6 @@ export const addToDailyProgress2 = (item: any, logValue: number) => {
 
 
                         })
-                        .then(i => console.log('data added'));
                 }
             }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Modal, Text, Pressable, TouchableOpacity } from 'react-native';
+import { View, Modal, Text, Pressable, TouchableOpacity, Alert } from 'react-native';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import textStyle from '../../../style/text/style';
@@ -45,7 +45,7 @@ const PlayerModal: React.FC<Props> = ({
     isPortrait ? height : width
   );
 
-  
+
   useEffect(() => {
     const handlePlaybackStateChange = (event: { state: State }) => {
       if (event.state === State.Ended) {
@@ -57,7 +57,8 @@ const PlayerModal: React.FC<Props> = ({
     };
 
     const handlePlaybackError = (event: PlaybackErrorEvent) => {
-      console.error('Playback error:', event.message);
+      Alert.alert(event.message)
+
     };
 
     TrackPlayer.addEventListener(Event.PlaybackState, handlePlaybackStateChange);
@@ -72,7 +73,7 @@ const PlayerModal: React.FC<Props> = ({
         setProgress(progress.position);
         setDuration(progress.duration);
       } catch (error) {
-        console.error('Error  progress..', error);
+        Alert.alert((error as Error).message)
       }
     }, 1000);
 
@@ -84,7 +85,7 @@ const PlayerModal: React.FC<Props> = ({
       await playAudio();
       setIsPlaying(true);
     } catch (error) {
-      console.error('Error playing ', error);
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -93,7 +94,7 @@ const PlayerModal: React.FC<Props> = ({
       await pauseAudio();
       setIsPlaying(false);
     } catch (error) {
-      console.error('Error pausing ..', error);
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -104,13 +105,14 @@ const PlayerModal: React.FC<Props> = ({
       setEnd(false);
       setProgress(0);
     } catch (error) {
-      console.error('Error restarting .', error);
+      Alert.alert((error as Error).message)
     }
   };
 
   const handleSeek = (value: number) => {
     seekToPosition(value);
-    TrackPlayer.seekTo(value).catch(error => console.error('Error...', error));
+    TrackPlayer.seekTo(value).catch(error => Alert.alert((error as Error).message)
+    );
   };
 
   const closePlayer = async () => {
@@ -125,7 +127,7 @@ const PlayerModal: React.FC<Props> = ({
           .update({ isCompleted: true });
       }
     } catch (error) {
-      console.error('Error..', error);
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -139,7 +141,7 @@ const PlayerModal: React.FC<Props> = ({
       >
         <View style={screenStyles.centeredView}>
           <View style={screenStyles.modalView}>
-            <Text style={[textStyle.questionText,{textTransform:'uppercase'}]}>{item.title}</Text>
+            <Text style={[textStyle.questionText, { textTransform: 'uppercase' }]}>{item.title}</Text>
 
             <View style={screenStyles.controlls}>
               <View style={screenStyles.slider}>

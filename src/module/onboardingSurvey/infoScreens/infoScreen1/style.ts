@@ -9,15 +9,15 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         flex: 1,
         alignItems: 'center',
     },
-    contentImage:{
-        width:screenContext.isPortrait ? width * .8 : width *.7,
-        height:screenContext.isPortrait ? height * 0.5 : height*0.2
+    contentImage: {
+        width: screenContext.isPortrait ? width * .8 : width * .7,
+        height: screenContext.isPortrait ? height * 0.5 : height * 0.2
 
     },
-    contentWrapper:{
-        flex:1,
-        alignItems:'center',
-        justifyContent:'space-evenly'
+    contentWrapper: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
 
     }
 })

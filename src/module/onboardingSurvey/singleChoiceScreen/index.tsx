@@ -11,8 +11,13 @@ import PaperDropdown from '../../../components/dropdown';
 import DatePickerComponent from '../../datePicker';
 import { OnBoardProps } from '../multiChoiceScreen';
 import { addData } from '../../../redux/slices/onBoardingAnswers';
-import { useAppDispatch } from '../../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { showMessage } from 'react-native-flash-message';
+import FlashMessage from "react-native-flash-message";
+import { staticVariables } from '../../../preferences/staticVariable';
+
 
 const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
   const screenContext = useScreenContext();
@@ -27,9 +32,37 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => 
   const [answer, setAnswer] = useState<any>(undefined);
   const dispatch = useAppDispatch();
   const qid = section.id;
+  const currentUid = auth().currentUser?.uid;
+  const data = useAppSelector(state => state.onBoarding)
+
+
+  const handleAnswer = async () => {
+    if (answer) {
+      if (qid === 'name') auth().currentUser?.updateProfile({ displayName: answer })
+      if (qid === 'idealWeight') {
+        if (Number(answer) < Number(data.userWeight)) {
+          dispatch(addData({ qId: qid, aId: answer }));
+          setAnswer(staticVariables.EMPTY_STRING);
+          handleNext();
+        } else {
+          showMessage({
+            message: "Please Confirm your weight",
+            description: "Ideal Weight must be less than current weight",
+            type: "warning",
+          });
+        }
+      } else {
+        dispatch(addData({ qId: qid, aId: answer }));
+        setAnswer(staticVariables.EMPTY_STRING);
+        handleNext();
+      }
+    }
+  }
 
   return (
     <View style={screenStyles.container}>
+      <FlashMessage position="top" />
+
       <View style={screenStyles.contentContainer}>
         <Text style={textStyle.questionText}>{section.question}</Text>
         {section.content && (
@@ -64,12 +97,7 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => 
           label={'Next'}
           btnColor={colorPalette.berry}
           onPress={() => {
-            if (answer) {
-              if (qid === 'name') auth().currentUser?.updateProfile({ displayName: answer })
-              dispatch(addData({ qId: qid, aId: answer }));
-              setAnswer('');
-              handleNext();
-            }
+            handleAnswer()
           }}
           borderRadius={10}
           labelColor='white'
@@ -82,8 +110,8 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => 
             label={'Skip'}
             btnColor={colorPalette.Lagoon}
             onPress={handleNext}
-          borderRadius={10}
-          labelColor='white'
+            borderRadius={10}
+            labelColor='white'
 
           />
         )}

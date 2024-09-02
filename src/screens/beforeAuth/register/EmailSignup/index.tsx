@@ -5,7 +5,6 @@ import { useScreenContext } from '../../../../context/screenContext';
 import { useNavigation } from '@react-navigation/native';
 import CustomTextInputComponent from '../../../../components/textInput';
 import textStyle from '../../../../style/text/style';
-import Feather from 'react-native-vector-icons/Feather';
 import {
   SignupWithEmailErrorType,
   SignupWithEmailtype,
@@ -21,13 +20,11 @@ const EmailSignup = () => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
-
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-
   const [formData, setFormData] = useState<SignupWithEmailtype>({
     email: undefined,
     password: undefined,
@@ -39,7 +36,6 @@ const EmailSignup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
   const dispatch = useAppDispatch()
-
   const handleStateUpdate = (
     input: keyof SignupWithEmailtype,
     value: string,
@@ -54,7 +50,6 @@ const EmailSignup = () => {
   const handleSignup = async () => {
     let isEmail: any = validation('email', formData.email);
     let isPassword: any = validation('password', formData.password);
-
     let newError = { ...error };
 
     if (!isEmail.value) {
@@ -70,10 +65,10 @@ const EmailSignup = () => {
     setError(newError);
     if (!newError.emailErr && !newError.passwordErr) {
       setError({ emailErr: undefined, passwordErr: undefined });
-      const res:any = await signUpWithEmail(formData);
-     if(res.length>0){
-      Alert.alert(res)
-     }
+      const res: any = await signUpWithEmail(formData);
+      if (res.length > 0) {
+        Alert.alert(res)
+      }
     }
   };
 
@@ -92,7 +87,7 @@ const EmailSignup = () => {
   }, [formData, error, navigation]);
   return (
     <KeyboardAvoidingView style={screenStyles.container}
-    behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
     >
       <Text style={textStyle.headingText}>Create Your Account</Text>
       <View>

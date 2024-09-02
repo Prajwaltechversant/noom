@@ -13,7 +13,7 @@ import {
     TooltipComponent,
     DataZoomComponent,
 } from 'echarts/components';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import styles from './style';
 import { useScreenContext } from '../../../context/screenContext';
@@ -29,6 +29,7 @@ import CustomScale from '../../../components/scale';
 import CustomButton from '../../../components/button/customButton';
 import { addToDailyProgress2 } from '../../../services/dailyprogress';
 import ActivityLoader from '../../../components/ActivityLoader';
+import { staticVariables } from '../../../preferences/staticVariable';
 echarts.use([
     TitleComponent,
     TooltipComponent,
@@ -74,14 +75,14 @@ export default function WeighScreen() {
         isPortrait ? height : width,
     );
     const currentUid = auth().currentUser?.uid;
-    const [allData, setAllData] = useState<number[]>([]);
-    const [alldate, setAllDate] = useState<string[]>([]);
+    const [allData, setAllData] = useState<number[]>(staticVariables.EMPTY_ARRAY);
+    const [alldate, setAllDate] = useState<string[]>(staticVariables.EMPTY_ARRAY);
     const [weight, setWeight] = useState<number>(0);
     const [weightGoal, setWeightGoal] = useState<number>(0);
     const navigation = useNavigation()
     const [visible, setVisible] = useState(false)
     const [selectedValue, setSelctedvalue] = useState(0)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [confirmWeight, setConfirmWeight] = useState(false)
 
     const fetchDailyProgressWeight = async () => {
@@ -104,7 +105,8 @@ export default function WeighScreen() {
 
             }
         } catch (error) {
-            console.log(error)
+            Alert.alert((error as Error).message)
+
         }
     }
 
@@ -120,6 +122,9 @@ export default function WeighScreen() {
                 const sorted = weigh.sort((a, b) => a.addedDate.toDate().getTime() - b.addedDate.toDate().getTime());
                 const dateSet = sorted.map((item: any) => item.addedDate.toDate().toDateString());
                 const weightSet = sorted.map((item: any) => item.data.count);
+                if (weightSet.length < 1) {
+                    Alert.alert("Please Log Weight to see the graph")
+                }
 
                 if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
                     setAllData([weight, ...weightSet]);
@@ -132,13 +137,10 @@ export default function WeighScreen() {
                 }
             });
         setIsLoading(false)
-
         return () => subscriber();
-        // fetchDailyProgressWeight()
 
-    }, [weight,weightGoal]);
+    }, [weight, weightGoal]);
 
-    console.log(allData)
 
     const addWeight = async () => {
         try {
@@ -153,7 +155,7 @@ export default function WeighScreen() {
             await fetchDailyProgressWeight()
 
         } catch (error) {
-            console.log(error)
+            Alert.alert((error as Error).message)
         }
     }
     useEffect(() => {
@@ -178,13 +180,13 @@ export default function WeighScreen() {
             setWeight(data[0]?.userWeight || 0);
             setWeightGoal(data[0]?.idealWeight || 0);
         } catch (error) {
-            console.error(error);
+            Alert.alert((error as Error).message)
         }
     };
 
     const option = {
         title: {
-            text: '',
+            text: staticVariables.EMPTY_STRING,
         },
         tooltip: {
             trigger: 'axis',

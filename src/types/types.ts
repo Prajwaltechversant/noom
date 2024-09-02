@@ -5,13 +5,11 @@ import { ButtonProps, TextInputProps } from "react-native-paper";
 
 export interface SignupProps {
     signupMethod: boolean;
-
 }
 export interface ImageBgProps {
 
     image: string | ImageSourcePropType;
     children: React.ReactNode;
-
     width: number;
     height: number;
 }
@@ -34,7 +32,6 @@ export type CustomTextInput = {
     rightIcon?: string;
     backgroundColor?: string;
     textColor: string;
-
 }
 
 

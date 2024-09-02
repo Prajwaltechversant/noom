@@ -22,6 +22,7 @@ import Feather from 'react-native-vector-icons/Feather'
 import { removePlan } from '../../../redux/slices/planSlice';
 import { validation } from '../../../services/validation';
 import { DebitCardError } from '../../../types/signup';
+import { staticVariables } from '../../../preferences/staticVariable';
 
 
 type CardDetails = 'number' | 'cvv' | 'exp'
@@ -46,9 +47,9 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
   const currentUser = auth().currentUser?.email;
   const displayName = auth().currentUser?.displayName;
   const addOnPlans = useAppSelector(state => state.planDetails)
-  const [planDetails, setPlanDetails] = useState<any>([])
+  const [planDetails, setPlanDetails] = useState<any>(staticVariables.EMPTY_ARRAY)
   const [cardDetails, setCardDetails] = useState({
-    number: '', cvv: '', exp: ''
+    number: staticVariables.EMPTY_STRING, cvv: staticVariables.EMPTY_STRING, exp: staticVariables.EMPTY_STRING
   })
   const [cardError, setCardError] = useState<DebitCardError>({
     number: undefined, cvv: undefined, exp: undefined
@@ -67,7 +68,6 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
         );
         setPlanDetails(filteredItems);
       } catch (error) {
-        console.error("Error ", error);
       }
     };
     loadItems();
@@ -84,7 +84,6 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
         isFirst: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(0, 0, 0, 0)
       })
     } catch (error) {
-      console.error("Error ", error);
     }
   }
 
@@ -95,8 +94,6 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
     let isExp: any = validation('exp', cardDetails.exp)
 
     let newError = { ...cardError }
-
-    // console.log(cardDetails.cvv)
     if (!isCardError.value) {
       newError.number = isCardError.error
     } else {
@@ -129,7 +126,6 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
             navigation.replace('profile');
           });
       } catch (error) {
-        console.log(error);
       }
     }
 
@@ -142,14 +138,14 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
   }
 
   const handleChange = (text: string) => {
-    const cleanedText = text.replace(/\D/g, '');
-    // console.log(text, text.length, cleanedText, cleanedText.length)
-    let formattedText = '';
+    const cleanedText = text.replace(/\D/g, staticVariables.EMPTY_STRING);
+    let formattedText = staticVariables.EMPTY_STRING;
     if (cleanedText.length > 2) {
       formattedText = `${cleanedText.slice(0, 2)}/${cleanedText.slice(2, 4)}`;
     } else {
       formattedText = text;
     }
+
     setCardDetails({ ...cardDetails, exp: formattedText })
   };
 
@@ -308,6 +304,8 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                       error={cardError.number ? true : false}
 
                     />
+
+
                     {cardError.number && <Text style={textStyle.errorText}>{cardError.number}</Text>
                     }
                     <CustomTextInputComponent
@@ -319,8 +317,6 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                       maxLength={3}
                       onChangeText={e => setCardDetails({ ...cardDetails, cvv: e })}
                       error={cardError.cvv ? true : false}
-
-
                     />
                     {cardError.cvv && <Text style={textStyle.errorText}>{cardError.cvv}</Text>
                     }

@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Pressable, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import textStyle from '../../../style/text/style';
 import { useScreenContext } from '../../../context/screenContext';
@@ -9,7 +9,7 @@ import auth, { firebase } from '@react-native-firebase/auth';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { screenNames } from '../../../preferences/staticVariable';
+import { screenNames, staticVariables } from '../../../preferences/staticVariable';
 
 
 interface Props {
@@ -27,7 +27,7 @@ const TodaysProgress: React.FC<Props> = ({ handleDailyProgressModal }) => {
   );
   const navigation: any = useNavigation();
   const currentUid = auth().currentUser?.uid;
-  const [dailyProgressData, setDailyProgressData] = useState<any>([]);
+  const [dailyProgressData, setDailyProgressData] = useState<any>(staticVariables.EMPTY_ARRAY);
   useEffect(() => {
     fetchdata();
   }, []);
@@ -70,7 +70,7 @@ const TodaysProgress: React.FC<Props> = ({ handleDailyProgressModal }) => {
         })
 
     } catch (error) {
-      console.log(error);
+      Alert.alert((error as Error).message)
     }
   };
 

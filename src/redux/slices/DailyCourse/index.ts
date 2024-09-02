@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { staticVariables } from '../../../preferences/staticVariable';
 
 
 type DailyStatus = {
@@ -6,7 +7,7 @@ type DailyStatus = {
 }
 
 let initialState: DailyStatus = {
-    isFirstTime: ''
+    isFirstTime: staticVariables.EMPTY_STRING
 }
 
 export const dailCourseStatus = createSlice({

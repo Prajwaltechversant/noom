@@ -1,18 +1,11 @@
 
-
-
 import React from 'react';
 import { Dimensions, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import { useNavigation } from '@react-navigation/native';
-import { Text } from 'react-native-paper';
-import CustomButton from '../../../components/button/customButton';
-import { colorPalette } from '../../../assets/colorpalette/colorPalette';
-import { screenNames } from '../../../preferences/staticVariable';
-import textStyle from '../../../style/text/style';
 import { useAppSelector } from '../../../redux/hook';
+import { staticVariables } from '../../../preferences/staticVariable';
 
 const EChartFinal = () => {
   const screenContext = useScreenContext();
@@ -24,11 +17,9 @@ const EChartFinal = () => {
     isPortrait ? height : width,
   );
   const state = useAppSelector(state => state.onBoarding)
-
-
   const option = {
     title: {
-      text: '',
+      text: staticVariables.EMPTY_STRING,
     },
     tooltip: {
       trigger: 'axis',

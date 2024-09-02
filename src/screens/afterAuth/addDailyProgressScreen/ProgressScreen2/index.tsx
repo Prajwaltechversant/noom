@@ -30,7 +30,6 @@ const LogWeightScreen: React.FC<Props> = ({ category, item }) => {
     }
   }
 
-  // console.log(item, 'hgd')
   return (
     <ScrollView style={screenStyles.container} contentContainerStyle={{ alignItems: 'center' }}>
       <View style={screenStyles.headerContainer}>

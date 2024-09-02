@@ -1,8 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
+import { staticVariables } from '../../preferences/staticVariable';
 
 export const fetchSurvey = async () => {
   try {
-    let arr: any = [];
+    let arr: any = staticVariables.EMPTY_ARRAY;
     firestore()
       .collection('survey')
       .get()
@@ -11,7 +12,6 @@ export const fetchSurvey = async () => {
           arr.push(i.data());
         })
       })
-      console.log(arr);
 
   } catch (error) {
     return error;

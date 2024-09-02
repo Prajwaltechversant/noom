@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../../screens/afterAuth/HomeScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Coursecarousel from '../../../screens/afterAuth/courseCarousel';
-import { screenNames } from '../../../preferences/staticVariable';
+import { screenNames, staticVariables } from '../../../preferences/staticVariable';
 import DailyProgressScreen from '../../../screens/afterAuth/addDailyProgressScreen';
 import { admin_uid } from "@env"
 import auth from '@react-native-firebase/auth';
@@ -18,7 +18,6 @@ import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import DrawerStack from '../DrawerStack';
 import WeighScreen from '../../../screens/afterAuth/WeighGraphScreen';
 import UserProfile from '../../../screens/afterAuth/UserProfile';
-import ProgressScreen from '../../../module/onboardingSurvey/progressScreen';
 import DailyProgress from '../../../screens/afterAuth/Progress';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 // import WeighGraphScreen from '../../../screens/afterAuth/WeighGraphScreen/s';
@@ -40,20 +39,20 @@ export const HomeNativeStack = () => {
       <Stack.Screen name={screenNames.courseCarouselPage} component={Coursecarousel}
         options={{
           headerShown: true,
-          title: ''
+          title: staticVariables.EMPTY_STRING
         }}
       />
       <Stack.Screen name={screenNames.Daily_ProgressScreen} component={DailyProgressScreen}
         options={{
           headerShown: true,
-          title: ''
+          title: staticVariables.EMPTY_STRING
         }}
       />
       <Stack.Screen name={screenNames.DailyProgress} component={DailyProgress}
 
         options={{
           headerShown: true,
-          title: ''
+          title: staticVariables.EMPTY_STRING
         }}
       />
     </Stack.Navigator>

@@ -9,7 +9,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         backgroundColor: colorPalette.white,
         flex: 1,
         // height:'100%',
-        padding:1
+        padding: 1
     },
     content: {
         paddingHorizontal: screenContext.isPortrait ? height * 0.03 : height * 0.03,
@@ -29,8 +29,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         height: screenContext.isPortrait ? height * 0.3 : width * 0.4,
         alignItems: 'center',
         justifyContent: 'center',
-        width:screenContext.isPortrait ? width * 0.8 : height * 0.8,
-        alignSelf:'center'
+        width: screenContext.isPortrait ? width * 0.8 : height * 0.8,
+        alignSelf: 'center'
     },
     collapseViewBtn: {
         marginVertical: screenContext.isPortrait ? height * 0.03 : height * 0.002,
@@ -62,14 +62,14 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colorPalette.white,
-        elevation:8,
+        elevation: 8,
         borderRadius: 10,
-        padding:screenContext.isPortrait ? width*0.01 : height*0.001
+        padding: screenContext.isPortrait ? width * 0.01 : height * 0.001
     },
-    planBox:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        marginVertical:10
+    planBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 10
     }
 
 })

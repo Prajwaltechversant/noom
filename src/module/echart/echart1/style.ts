@@ -20,7 +20,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         justifyContent: 'center',
         alignContent: 'center',
         elevation: 5,
-        margin:1
+        margin: 1
     },
     chartContainer: {
         width: screenContext.isPortrait ? width * .8 : width * .8,

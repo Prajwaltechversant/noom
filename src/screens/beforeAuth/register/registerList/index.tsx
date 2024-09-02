@@ -1,14 +1,14 @@
-import {View, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import React from 'react';
-import {useScreenContext} from '../../../../context/screenContext';
-import {useNavigation} from '@react-navigation/native';
+import { useScreenContext } from '../../../../context/screenContext';
+import { useNavigation } from '@react-navigation/native';
 import styles from './style';
-import {Divider, Text} from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
 import UidModal from '../../../../components/uidModal';
 
 const RegisterMethods: React.FC = () => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
 
   const screenStyles = styles(

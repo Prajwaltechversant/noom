@@ -45,7 +45,6 @@ const UserProfile = () => {
       .collection(`UserData/${currentUid}/profile`)
       .onSnapshot(documentSnapshot => {
         const resData = documentSnapshot.docs.map(i => i.data())
-        console.log(resData,'yj')
         setProfileData(resData[0])
       });
 

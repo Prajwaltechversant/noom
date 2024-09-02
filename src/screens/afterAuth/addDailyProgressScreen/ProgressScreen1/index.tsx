@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useScreenContext } from '../../../../context/screenContext';
@@ -21,6 +22,7 @@ import auth, { firebase } from '@react-native-firebase/auth';
 import firestore, { doc, Filter } from '@react-native-firebase/firestore';
 import { TextInput } from 'react-native-paper';
 import { addToDailyProgress1 } from '../../../../services/dailyprogress';
+import { staticVariables } from '../../../../preferences/staticVariable';
 interface Props {
   item: any;
   category: string;
@@ -41,9 +43,9 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
   const [selectedItem, setSelectedItem] = useState<any>();
   const [quantity, setQuantity] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchResult, setSeachResult] = useState<any>([]);
+  const [searchResult, setSeachResult] = useState<any>(staticVariables.EMPTY_ARRAY);
   const [isSearching, setIssearching] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(staticVariables.EMPTY_STRING);
 
   const handleSelectedItem = (item: any) => {
     setModalVisible(!modalVisible);
@@ -78,19 +80,19 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
               setSeachResult(searchItems);
               setLoading(false);
             } else {
-              setSeachResult([]);
+              setSeachResult(staticVariables.EMPTY_ARRAY);
               setLoading(false);
             }
           });
       } else {
-        setSeachResult([]);
+        setSeachResult(staticVariables.EMPTY_ARRAY);
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert((error as Error).message)
     }
   };
   useEffect(() => {
-    searchQuery.length < 1 && setSeachResult([]);
+    searchQuery.length < 1 && setSeachResult(staticVariables.EMPTY_ARRAY);
   }, [searchQuery]);
 
 
@@ -107,7 +109,7 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
         count = count + res.data.count
       })
       .finally(
-        ()=>{
+        () => {
           if (count > 0) {
             let newQuantity = quantity + count
             addToDailyProgress1(item, selectedItem, newQuantity)
@@ -190,7 +192,7 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
                 </TouchableOpacity>
                 <View style={screenStyles.addQuantiyBox}>
                   <Text>
-                    {quantity} {category === 'food' ? '' : 'Min'}
+                    {quantity} {category === 'food' ? staticVariables.EMPTY_STRING : 'Min'}
                   </Text>
                 </View>
                 <AntDesign

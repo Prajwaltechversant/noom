@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, TouchableOpacityBase } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TouchableOpacityBase, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from './style';
 import { useNavigation } from '@react-navigation/native';
@@ -45,9 +45,8 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
         });
       }
       setIsPlayerReady(isSetup);
-      // TrackPlayer.getProgress().then((progress) => console.log(progress))
     } catch (error) {
-      console.error('Error setting up player:', error);
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -63,7 +62,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
     try {
       await TrackPlayer.play();
     } catch (error) {
-      console.error('Playing error..', error);
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -71,7 +70,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
     try {
       await TrackPlayer.pause();
     } catch (error) {
-      console.error('Error pausing audio:', error);
+      Alert.alert((error as Error).message)
     }
   };
   const replayTrack = async () => {
@@ -79,7 +78,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
       await TrackPlayer.seekTo(0);
       await TrackPlayer.play();
     } catch (error) {
-      console.error('Error replaying track:', error);
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -89,7 +88,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
 
 
     } catch (error) {
-      console.error('Error', error);
+      Alert.alert((error as Error).message)
 
     }
   }

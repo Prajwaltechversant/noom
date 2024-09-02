@@ -9,7 +9,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../../../components/button/customButton';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import { useNavigation } from '@react-navigation/native';
-import { screenNames } from '../../../preferences/staticVariable';
+import { screenNames, staticVariables } from '../../../preferences/staticVariable';
 import { useDispatch } from 'react-redux';
 import { addPlanData } from '../../../redux/slices/planSlice';
 import auth from '@react-native-firebase/auth';
@@ -23,7 +23,7 @@ const PlanScreen = () => {
     isPortrait ? height : width,
   );
 
-  const [plans, setPlans] = useState<any[]>([]);
+  const [plans, setPlans] = useState<any[]>(staticVariables.EMPTY_ARRAY);
   const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
   const navigation: any = useNavigation();
   const [planId, setPlanId] = useState<string | undefined>();
@@ -42,7 +42,6 @@ const PlanScreen = () => {
           setPlanId(planArray[0].id);
         }
       } catch (error) {
-        console.error("Error fetching plans: ", error);
       }
     };
     loadPlans();
@@ -85,7 +84,7 @@ const PlanScreen = () => {
           <Card style={screenStyles.cardContainer}>
             <Card.Title
               title={item.title || 'Plan Title'}
-              titleStyle={{ textAlign: 'center', color: 'black', textTransform: 'capitalize',fontWeight:'700' }}
+              titleStyle={{ textAlign: 'center', color: 'black', textTransform: 'capitalize', fontWeight: '700' }}
               titleNumberOfLines={2}
               style={screenStyles.cardTitle}
               titleVariant='headlineLarge'
@@ -97,7 +96,7 @@ const PlanScreen = () => {
                   style={{ width: 50, height: 50, borderRadius: 25 }}
                 />
               </View>
-              <Text variant="titleLarge" style={[screenStyles.title,{textTransform:'capitalize',fontWeight:'600'}]}>
+              <Text variant="titleLarge" style={[screenStyles.title, { textTransform: 'capitalize', fontWeight: '600' }]}>
                 {item.title || 'Card title'}
               </Text>
               <View style={screenStyles.descriptionContainer}>
@@ -111,7 +110,7 @@ const PlanScreen = () => {
                       <Text style={
                         textStyle.labelText
                         // { textAlign: 'justify',color:'#00202e',fontSize:20 }
-                        }>
+                      }>
                         {item.slice(0, 60)}
                       </Text>
                     </View>

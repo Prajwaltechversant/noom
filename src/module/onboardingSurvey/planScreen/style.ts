@@ -14,10 +14,10 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         width: screenContext.isPortrait ? width * 0.9 : height * .8,
         marginVertical: screenContext.isPortrait ? width * 0.08 : width * .08,
         justifyContent: 'center',
-        backgroundColor: '#95b8d1' 
+        backgroundColor: '#95b8d1'
         , borderRadius: 20,
         elevation: 1,
-        shadowColor:'black'
+        shadowColor: 'black'
     },
     cardTitle: {
         backgroundColor: '#eac4d5',
@@ -45,7 +45,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
-    
+
         marginVertical: screenContext.isPortrait ? width * 0.03 : width * .02,
 
     },

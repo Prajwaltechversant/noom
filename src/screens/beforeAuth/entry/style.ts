@@ -19,7 +19,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number,
     },
     bannerImg: {
         width: screenContext.isPortrait ? width : height,
-        height: screenContext.isPortrait ? height * 0.6 : width * 0.4            ,
+        height: screenContext.isPortrait ? height * 0.6 : width * 0.4,
         resizeMode: 'stretch',
     },
     subHeading: {

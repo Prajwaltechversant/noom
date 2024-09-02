@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import OnBoardingProgressBar from '../../../components/onBoarding/progressBar';
@@ -9,13 +8,10 @@ import SingleChoiceScreen from '../../../module/onboardingSurvey/singleChoiceScr
 import QuizScreen from '../../../module/onboardingSurvey/quizScreen';
 import styles from './style';
 import { updateSurveyProgress } from '../../../redux/slices/surveyProgressSlice/surveySlice';
-import { screenNames } from '../../../preferences/staticVariable';
+import { screenNames, staticVariables } from '../../../preferences/staticVariable';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import { useScreenContext } from '../../../context/screenContext';
 import { addSurveyData } from '../../../redux/slices/questionsSlice';
-import CustomComponentModal from '../../../components/modal/customComponentModal';
-import InfoScreen1 from '../../../module/onboardingSurvey/infoScreens/infoScreen1';
-import EChartComponent from '../../../module/echart/echart1';
 import Loader from '../../../components/Loader';
 
 const OnboardingScreen = () => {
@@ -29,7 +25,6 @@ const OnboardingScreen = () => {
   const navigation: any = useNavigation();
   const surveyProgress = useAppSelector(state => state.surveyProgressSlice);
   const surveyQuestion = useAppSelector(state => state.questions);
-
   const [currentSectionIndex, setCurrentSectionIndex] = useState(
     surveyProgress.currentSection,
   );
@@ -43,7 +38,6 @@ const OnboardingScreen = () => {
   const [screenIndex, setScreenIndex] = useState(0);
   const [total, setTotal] = useState(0);
   const [visibleModal, setVisibleModal] = React.useState(false);
-
   const dispatch = useAppDispatch();
 
   const getData = async () => {
@@ -52,7 +46,7 @@ const OnboardingScreen = () => {
         .collection('survey')
         .get()
         .then((item): any => {
-          let arr: any = [];
+          let arr: any =[];
           item.forEach(i => {
             arr.push(i.data());
           });
@@ -98,6 +92,7 @@ const OnboardingScreen = () => {
       });
     } else null;
   }, [progress]);
+  console.log(loading)
   if (loading) return <Loader />;
 
   const handleNext = () => {
@@ -151,7 +146,6 @@ const OnboardingScreen = () => {
         setCurrentScreenIndex(lastScreenIndex);
         setSection(prevSection.screens[lastScreenIndex]);
       } else {
-        console.log('Already at the first screen');
       }
     }
 
@@ -159,7 +153,6 @@ const OnboardingScreen = () => {
     const currentProgress = (updatedScreenIndex / total) * 100;
     setScreenIndex(updatedScreenIndex);
     setProgress(currentProgress);
-
     dispatch(
       updateSurveyProgress({
         currentScreen: prevScreenIndex >= 0 ? prevScreenIndex : 0,
