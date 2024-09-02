@@ -61,7 +61,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({ section, handleNext }) => {
   }, []);
   const handleChecked = (item: string) => {
     let arr = [...checkedItem];
-    let checkedId: any = staticVariables.EMPTY_ARRAY;
+    let checkedId: any = [];
     arr.forEach((i, index) => {
       ``;
       if (i.label === item) {

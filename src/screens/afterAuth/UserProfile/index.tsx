@@ -16,6 +16,9 @@ import { useAppDispatch } from '../../../redux/hook';
 import { updateProfileStatus } from '../../../redux/slices/authStatus';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import CustomButton from '../../../components/button/customButton';
+import { removeData } from '../../../redux/slices/onBoardingAnswers';
+import { deleteState } from '../../../redux/slices/planSlice';
+import { removeSurveyProgress } from '../../../redux/slices/surveyProgressSlice/surveySlice';
 
 type Form = {
   lname: string | undefined;
@@ -51,7 +54,7 @@ const UserProfile = () => {
     return () => subscriber();
   }, []);
 
-  const  fullName = profileData?.fname + ' ' + profileData?.lname
+  const fullName = profileData?.fname + ' ' + profileData?.lname
 
   return (
     <View style={screenStyles.container}>
@@ -62,7 +65,7 @@ const UserProfile = () => {
         <Text style={textStyle.headingText}>{fullName}</Text>
         <Text style={textStyle.labelText}>{profileData?.bio}</Text>
       </View>
-   
+
 
       <CustomButton
         label='Logout'
@@ -73,6 +76,9 @@ const UserProfile = () => {
         onPress={() => {
           auth().signOut();
           GoogleSignin.signOut();
+          dispatch(removeData([]))
+          dispatch(deleteState([]))
+          dispatch(removeSurveyProgress([]))
         }}
       />
     </View>

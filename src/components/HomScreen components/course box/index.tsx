@@ -46,10 +46,9 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
       }
       setIsPlayerReady(isSetup);
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
-
   useEffect(() => {
     setupPlayerReady();
 
@@ -62,7 +61,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
     try {
       await TrackPlayer.play();
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
 
@@ -70,7 +69,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
     try {
       await TrackPlayer.pause();
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
   const replayTrack = async () => {
@@ -78,7 +77,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
       await TrackPlayer.seekTo(0);
       await TrackPlayer.play();
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
 
@@ -86,9 +85,8 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
     try {
       await TrackPlayer.seekTo(pos);
 
-
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
 
     }
   }

@@ -57,7 +57,8 @@ const PlayerModal: React.FC<Props> = ({
     };
 
     const handlePlaybackError = (event: PlaybackErrorEvent) => {
-      Alert.alert(event.message)
+      // Alert.alert(event.message)
+      // console.log(event.message)
 
     };
 
@@ -73,7 +74,7 @@ const PlayerModal: React.FC<Props> = ({
         setProgress(progress.position);
         setDuration(progress.duration);
       } catch (error) {
-        Alert.alert((error as Error).message)
+        // Alert.alert((error as Error).message)
       }
     }, 1000);
 
@@ -85,7 +86,7 @@ const PlayerModal: React.FC<Props> = ({
       await playAudio();
       setIsPlaying(true);
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
 
@@ -94,7 +95,7 @@ const PlayerModal: React.FC<Props> = ({
       await pauseAudio();
       setIsPlaying(false);
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
 
@@ -105,7 +106,7 @@ const PlayerModal: React.FC<Props> = ({
       setEnd(false);
       setProgress(0);
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
 
@@ -127,7 +128,7 @@ const PlayerModal: React.FC<Props> = ({
           .update({ isCompleted: true });
       }
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
 

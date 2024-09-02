@@ -19,7 +19,7 @@ const PaymentScreen1 = () => {
     isPortrait ? height : width,
   );
   const navigation: any = useNavigation();
-  const plans = [0.5, 3, 10, 18.37];
+  const plans = [0.5, 3, 10, 18.3];
   const [plan, setPlan] = useState(0);
   return (
     <View style={screenStyles.container}>

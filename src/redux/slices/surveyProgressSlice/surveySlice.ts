@@ -22,9 +22,17 @@ export const surveyProgressSlice = createSlice({
                 progress: action.payload.progress
             })
         },
+
+        removeSurveyProgress: (state, action) => {
+            return ({
+                currentScreen: 0,
+                currentSection: 0,
+                progress:0
+            })
+        },
     }
 
 })
 
-export const { updateSurveyProgress } = surveyProgressSlice.actions;
+export const { updateSurveyProgress ,removeSurveyProgress } = surveyProgressSlice.actions;
 export default surveyProgressSlice.reducer;

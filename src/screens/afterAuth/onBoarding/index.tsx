@@ -92,7 +92,6 @@ const OnboardingScreen = () => {
       });
     } else null;
   }, [progress]);
-  console.log(loading)
   if (loading) return <Loader />;
 
   const handleNext = () => {

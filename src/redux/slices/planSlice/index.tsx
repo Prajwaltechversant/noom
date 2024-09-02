@@ -28,9 +28,13 @@ export const planDetailSlice = createSlice({
 
       return state.filter((item: any) => item.itemId !== action.payload)
 
+    },
+
+    deleteState: (state, action) => {
+      state = staticVariables.EMPTY_ARRAY
     }
   },
 });
 
-export const { addPlanData, removePlan } = planDetailSlice.actions;
+export const { addPlanData, removePlan,deleteState } = planDetailSlice.actions;
 export default planDetailSlice.reducer;

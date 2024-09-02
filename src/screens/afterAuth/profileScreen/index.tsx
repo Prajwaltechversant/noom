@@ -52,7 +52,8 @@ const ProfileScreen1 = () => {
       setImage(result.assets[0].uri);
       setFormData({ ...formData, image: result.assets[0].uri });
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
+      console.log(error)
 
     }
   };
@@ -64,7 +65,9 @@ const ProfileScreen1 = () => {
         isFirst: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(0, 0, 0, 0)
       })
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
+      console.log(error)
+
 
     }
   }
@@ -94,7 +97,9 @@ const ProfileScreen1 = () => {
         dispatch(updateProfileStatus(true));
       }
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
+      console.log(error)
+
     }
   };
 
