@@ -31,9 +31,12 @@ export const addToDailyProgress2 = (item: any, logValue: number) => {
     let existingCount = 0;
     let docId: string;
     const date = new Date()
+    const docDate = `${date.getDate()}${date.getMonth()}${date.getFullYear()}`
+
     firestore()
         .collection(`UserData/${currentUser}/dailyProgress`)
         .where('id', '==', item.id)
+        .where('docDate', '==', docDate)
         .get()
         .then(i => {
             i.size > 0 ? (isExisting = true) : (isExisting = false);
@@ -54,6 +57,7 @@ export const addToDailyProgress2 = (item: any, logValue: number) => {
                             data: { count: logValue },
                             image: item.image,
                             addedDate: firebase.firestore.Timestamp.now(),
+                            docDate:docDate
                         })
                 }
             } else {
@@ -66,6 +70,7 @@ export const addToDailyProgress2 = (item: any, logValue: number) => {
                             data: { count: logValue },
                             image: item.image,
                             addedDate: firebase.firestore.Timestamp.now(),
+                            docDate:docDate
 
 
                         })
