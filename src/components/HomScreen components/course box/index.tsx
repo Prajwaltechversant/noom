@@ -7,17 +7,18 @@ import textStyle from '../../../style/text/style';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { CourseType } from '../../../types/types';
-import PlayerModal from '../playerModal'; 
+import PlayerModal from '../playerModal';
 import { setupPlayer } from '../../../../musicPlayerService';
 import TrackPlayer from 'react-native-track-player';
 
 interface Props {
   item: CourseType;
   isArticle: boolean;
-  handleDelete?: () => void
+  handleDelete?: () => void;
+  audios: any
 }
 
-const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
+const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete, audios }) => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
@@ -32,13 +33,14 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
 
 
 
+
   const setupPlayerReady = async () => {
     try {
       const isSetup = await setupPlayer();
       if (isSetup) {
         await TrackPlayer.add({
           id: item.id,
-          url: item.audio,
+          url: item?.audio,
           title: item.title,
           artist: 'Track Artist',
           artwork: '<https://example.com/track.jpg>',
@@ -46,22 +48,32 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
       }
       setIsPlayerReady(isSetup);
     } catch (error) {
-      // Alert.alert((error as Error).message)
+      Alert.alert((error as Error).message)
     }
   };
+
+
   useEffect(() => {
     setupPlayerReady();
-
     return () => {
       TrackPlayer.reset();
     };
-  }, []);
+  }, [item.audio]);
 
-  const playAudio = async () => {
+  const playAudio = async (audio: string) => {
+    await TrackPlayer.reset();
     try {
+      await TrackPlayer.add({
+        id: item.id,
+        url: audio,
+        title: item.title,
+        artist: 'Track Artist',
+        artwork: '<https://example.com/track.jpg>',
+      });
       await TrackPlayer.play();
     } catch (error) {
       // Alert.alert((error as Error).message)
+      // console.log(error)
     }
   };
 
@@ -70,6 +82,8 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
       await TrackPlayer.pause();
     } catch (error) {
       // Alert.alert((error as Error).message)
+      // console.log(error)
+
     }
   };
   const replayTrack = async () => {
@@ -78,6 +92,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
       await TrackPlayer.play();
     } catch (error) {
       // Alert.alert((error as Error).message)
+      // console.log(error)
     }
   };
 
@@ -87,7 +102,7 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
 
     } catch (error) {
       // Alert.alert((error as Error).message)
-
+      // console.log(error)
     }
   }
 

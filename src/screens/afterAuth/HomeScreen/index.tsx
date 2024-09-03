@@ -40,6 +40,7 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [progressModalVisible, setProgressModalVisible] = useState(false);
   const [dailyProgressData, setDailyProgressData] = useState<any[]>([]);
+  const [audios, setAudios] = useState([])
 
 
 
@@ -190,11 +191,22 @@ const Home: React.FC = () => {
       .onSnapshot(snapshot => {
         const updatedCourses = snapshot.docs.map(doc => doc.data());
         setTodaysCourse(updatedCourses);
+        let audios: any = []
+        for (let item of updatedCourses) {
+          audios.push({
+            id: item.id,
+            url: item?.audio,
+            title: item.title,
+            artist: 'Track Artist',
+            artwork: '<https://example.com/track.jpg>'
+          })
+        }
+
+        setAudios(audios)
       });
 
     return () => subscriber();
   }, [selctedTimestamp]);
-
 
 
   // function to open daily progress modal
@@ -208,6 +220,7 @@ const Home: React.FC = () => {
       Alert.alert((error as Error).message)
     }
   };
+
 
   return (
     <View style={screenStyles.container}>
@@ -246,7 +259,7 @@ const Home: React.FC = () => {
                   <FlatList
                     data={todaysCourse}
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <CourseItem item={item} isArticle={false} />}
+                    renderItem={({ item }) => <CourseItem item={item} isArticle={false} audios={audios} />}
                     ListEmptyComponent={<Loader />}
                   />
                   <TodaysProgress handleDailyProgressModal={handleDailyProgressModal} />

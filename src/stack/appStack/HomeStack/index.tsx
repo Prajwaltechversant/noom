@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import {  Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../../screens/afterAuth/HomeScreen';
@@ -12,7 +12,6 @@ import AdminScreens from '../../../screens/afterAuth/admin';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
-import { TouchableOpacityBase } from 'react-native';
 import textStyle from '../../../style/text/style';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import DrawerStack from '../DrawerStack';

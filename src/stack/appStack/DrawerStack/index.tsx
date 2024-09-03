@@ -7,14 +7,11 @@ import MyArticleScreen from '../../../screens/afterAuth/drawer screens/my articl
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import HeaderTab from '../../../components/headerTab';
 import ChatScreen from '../../../screens/afterAuth/drawer screens/chatScreen';
-import FlowChart from '../../../screens/afterAuth/Progress';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import DailyProgress from '../../../screens/afterAuth/Progress';
 
 const Drawer = createDrawerNavigator();
-
 
 
 const DrawerStack = ({ route }: any) => {
@@ -23,8 +20,6 @@ const DrawerStack = ({ route }: any) => {
       screenOptions={{
         headerRight: () => <HeaderTab />,
       }}
-
-
     >
       <Drawer.Screen
         name={screenNames.HomeNativeStack}
@@ -50,7 +45,6 @@ const DrawerStack = ({ route }: any) => {
         options={{
           drawerIcon: () => <Ionicons name="bookmarks" color={'black'} size={20} />,
           title: 'Articles'
-
         }}
 
       />

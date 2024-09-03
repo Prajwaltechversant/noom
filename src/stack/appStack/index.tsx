@@ -7,14 +7,9 @@ import { colorPalette } from '../../assets/colorpalette/colorPalette';
 import textStyle from '../../style/text/style';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import OnboardingScreen from '../../screens/afterAuth/onBoarding';
 import { screenNames } from '../../preferences/staticVariable';
 import OnboardingStack from './onBoardingStack';
 import ProfileScreen1 from '../../screens/afterAuth/profileScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAppSelector } from '../../redux/hook';
-import Home from '../../screens/afterAuth/HomeScreen';
-import DrawerStack from './DrawerStack';
 import { admin_uid } from "@env"
 import HomeTabStack from './HomeStack';
 import ChatScreen from '../../screens/afterAuth/drawer screens/chatScreen';
@@ -42,13 +37,6 @@ const AppStack = () => {
     isProfileCompleted: false,
     isFirst: 0
   })
-
-  // const onBaodringStatus = useAppSelector(
-  //   state => state.authStatus.isOnBoardingCompleted,
-  // );
-  // const isProfileCompleted = useAppSelector(
-  //   state => state.authStatus.isProfileCompletd,
-  // );
   const currentUid = auth().currentUser?.uid;
   const [isAdmin, setIsAdmin] = useState(false)
   const [isLoading, setIsLoading] = useState(true)

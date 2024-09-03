@@ -15,7 +15,7 @@ import { setupPlayer } from '../../../../musicPlayerService';
 type Props = {
   isModalVisible: boolean;
   setIsModalVisible: (v: boolean) => void;
-  playAudio: () => Promise<void>;
+  playAudio: (url: string) => Promise<void>;
   pauseAudio: () => Promise<void>;
   replayTrack: () => Promise<void>;
   item: any;
@@ -57,8 +57,8 @@ const PlayerModal: React.FC<Props> = ({
     };
 
     const handlePlaybackError = (event: PlaybackErrorEvent) => {
-      // Alert.alert(event.message)
-      // console.log(event.message)
+      Alert.alert(event.message)
+      console.log(event.message)
 
     };
 
@@ -74,19 +74,21 @@ const PlayerModal: React.FC<Props> = ({
         setProgress(progress.position);
         setDuration(progress.duration);
       } catch (error) {
-        // Alert.alert((error as Error).message)
+        Alert.alert((error as Error).message)
       }
     }, 1000);
 
     return () => clearInterval(updateProgress);
   }, []);
 
-  const handlePlay = async () => {
+  const handlePlay = async (audio: string) => {
     try {
-      await playAudio();
+      await playAudio(audio);
       setIsPlaying(true);
     } catch (error) {
-      // Alert.alert((error as Error).message)
+      Alert.alert((error as Error).message)
+      console.log(error)
+
     }
   };
 
@@ -95,7 +97,7 @@ const PlayerModal: React.FC<Props> = ({
       await pauseAudio();
       setIsPlaying(false);
     } catch (error) {
-      // Alert.alert((error as Error).message)
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -106,7 +108,7 @@ const PlayerModal: React.FC<Props> = ({
       setEnd(false);
       setProgress(0);
     } catch (error) {
-      // Alert.alert((error as Error).message)
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -127,8 +129,12 @@ const PlayerModal: React.FC<Props> = ({
           .doc(item.id)
           .update({ isCompleted: true });
       }
+      // TrackPlayer.reset();
+      await TrackPlayer.seekTo(0);
+
+
     } catch (error) {
-      // Alert.alert((error as Error).message)
+      Alert.alert((error as Error).message)
     }
   };
 
@@ -165,7 +171,7 @@ const PlayerModal: React.FC<Props> = ({
                     <AntDesign name="pausecircle" color={colorPalette.black} size={30} />
                   </TouchableOpacity>
                 ) : (
-                  <TouchableOpacity onPress={handlePlay}>
+                  <TouchableOpacity onPress={()=>handlePlay(item.audio)}>
                     <AntDesign name="play" color={colorPalette.black} size={30} />
                   </TouchableOpacity>
                 )

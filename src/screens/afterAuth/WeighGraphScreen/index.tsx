@@ -13,16 +13,13 @@ import {
     TooltipComponent,
     DataZoomComponent,
 } from 'echarts/components';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import Scale from 'echarts/types/src/scale/Scale.js';
 import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import { useScreenContext } from '../../../context/screenContext';
 import textStyle from '../../../style/text/style';
 import { useNavigation } from '@react-navigation/native';
-import AntDesign from 'react-native-vector-icons/AntDesign'
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
-import LogWeightScreen from '../addDailyProgressScreen/ProgressScreen2';
-import CustomModal from '../../../components/modal/customModal';
 import CustomComponentModal from '../../../components/modal/customComponentModal';
 import CustomScale from '../../../components/scale';
 import CustomButton from '../../../components/button/customButton';
