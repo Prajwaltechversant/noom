@@ -6,13 +6,13 @@ import ButtonGroupScreen from '../../../module/onboardingSurvey/multiChoiceScree
 import YesNoScreen from '../../../module/onboardingSurvey/yesnoScreen';
 import SingleChoiceScreen from '../../../module/onboardingSurvey/singleChoiceScreen';
 import QuizScreen from '../../../module/onboardingSurvey/quizScreen';
-import styles from './style';
 import { updateSurveyProgress } from '../../../redux/slices/surveyProgressSlice/surveySlice';
 import { screenNames, staticVariables } from '../../../preferences/staticVariable';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import { useScreenContext } from '../../../context/screenContext';
 import { addSurveyData } from '../../../redux/slices/questionsSlice';
 import Loader from '../../../components/Loader';
+import styles from './style';
 
 const OnboardingScreen = () => {
   const screenContext = useScreenContext();
@@ -30,7 +30,7 @@ const OnboardingScreen = () => {
   );
   const [currentScreenIndex, setCurrentScreenIndex] = useState(
     surveyProgress.currentScreen,
-  );
+  );                      
   const [surveyData, setSurveyData] = useState<any[]>(surveyQuestion);
   const [section, setSection] = useState<any>();
   const [loading, setLoading] = useState(true);
@@ -46,7 +46,7 @@ const OnboardingScreen = () => {
         .collection('survey')
         .get()
         .then((item): any => {
-          let arr: any =[];
+          let arr: any = [];
           item.forEach(i => {
             arr.push(i.data());
           });
@@ -67,6 +67,8 @@ const OnboardingScreen = () => {
       setLoading(false);
     }
   }, []);
+
+
   useMemo(() => {
     let totalLength = 0;
     surveyData.forEach((item: any) => {
@@ -74,6 +76,7 @@ const OnboardingScreen = () => {
     });
     setTotal(totalLength);
   }, [surveyData]);
+
 
   useEffect(() => {
     if (currentSectionIndex === 1 && currentScreenIndex === 1) {
@@ -92,7 +95,7 @@ const OnboardingScreen = () => {
       });
     } else null;
   }, [progress]);
-  if (loading) return <Loader />;
+
 
   const handleNext = () => {
     const currentSection = surveyData[currentSectionIndex];
@@ -164,6 +167,7 @@ const OnboardingScreen = () => {
     );
   };
 
+  if (loading) return <Loader />;
   switch (section?.type) {
     case 'button':
     case 'radio':

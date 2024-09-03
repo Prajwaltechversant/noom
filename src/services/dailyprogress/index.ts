@@ -30,6 +30,7 @@ export const addToDailyProgress2 = (item: any, logValue: number) => {
     let isExisting = false;
     let existingCount = 0;
     let docId: string;
+    const date = new Date()
     firestore()
         .collection(`UserData/${currentUser}/dailyProgress`)
         .where('id', '==', item.id)

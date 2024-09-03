@@ -52,6 +52,8 @@ const CustomScale: React.FC<Props> = ({ minValue, maxValue, setSelectedScaleValu
       scrollViewRef.current.scrollTo({ x: index * itemWidth, animated: true });
     }
   };
+
+
   useEffect(() => {
     scrollToValue(minValue);
   }, []);

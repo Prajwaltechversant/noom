@@ -5,13 +5,14 @@ import auth from '@react-native-firebase/auth';
 import { admin_uid } from "@env"
 import { firebase } from '@react-native-firebase/auth';
 import { useScreenContext } from '../../../context/screenContext';
-import styles from './style';
 import CustomButton from '../../../components/button/customButton';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import { useNavigation } from '@react-navigation/native';
 import { screenNames, staticVariables } from '../../../preferences/staticVariable';
-const AdminScreens: React.FC = () => {
+import styles from './style';
 
+
+const AdminScreens: React.FC = () => {
 
     const screenContext = useScreenContext();
     const { width, fontScale, height, isPortrait, isTabletType, scale } =

@@ -8,7 +8,7 @@ export interface SignupProps {
 }
 export interface ImageBgProps {
 
-    image: string | ImageSourcePropType;
+    image:  ImageSourcePropType ;
     children: React.ReactNode;
     width: number;
     height: number;

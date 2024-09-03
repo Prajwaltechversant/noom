@@ -1,16 +1,16 @@
 import { View, Text, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { useScreenContext } from '../../../context/screenContext';
+import { color } from 'echarts';
+import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import styles from './style';
 import CustomButton from '../../../components/button/customButton';
 import textStyle from '../../../style/text/style';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
-import { Button } from 'react-native-paper';
+import { useScreenContext } from '../../../context/screenContext';
 import { Checkbox } from 'react-native-paper';
 import { addData } from '../../../redux/slices/onBoardingAnswers';
 import { useAppDispatch } from '../../../redux/hook';
-import { color } from 'echarts';
 import { staticVariables } from '../../../preferences/staticVariable';
 
 export interface OnBoardProps {
@@ -47,9 +47,10 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({ section, handleNext }) => {
   const [checkedItem, setCheckedItem] = useState<any>(staticVariables.EMPTY_ARRAY);
   const [isPressed, setIsPressed] = useState(staticVariables.EMPTY_STRING);
   const [answer, setAnswer] = useState<undefined | string>(undefined);
-
   const dispatch = useAppDispatch();
   const qid = section?.id;
+
+  
   useEffect(() => {
     let arr: any = [];
     if (section.type === 'checkbox') {

@@ -8,8 +8,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         justifyContent: 'center',
         alignItems: 'center'
     },
-    msgContainer:{
-        
+    msgContainer: {
+
     }
 })
 

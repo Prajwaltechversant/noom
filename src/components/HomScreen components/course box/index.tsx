@@ -7,7 +7,7 @@ import textStyle from '../../../style/text/style';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { CourseType } from '../../../types/types';
-import PlayerModal from '../playerModal'; // Ensure the path is correct
+import PlayerModal from '../playerModal'; 
 import { setupPlayer } from '../../../../musicPlayerService';
 import TrackPlayer from 'react-native-track-player';
 

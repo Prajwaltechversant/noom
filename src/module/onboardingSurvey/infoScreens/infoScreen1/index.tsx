@@ -1,15 +1,14 @@
 import { View, Text, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import auth, { firebase } from '@react-native-firebase/auth';
 import { useScreenContext } from '../../../../context/screenContext';
-import styles from './style';
 import textStyle from '../../../../style/text/style';
 import CustomButton from '../../../../components/button/customButton';
 import { colorPalette } from '../../../../assets/colorpalette/colorPalette';
 import { useNavigation } from '@react-navigation/native';
 import { screenNames } from '../../../../preferences/staticVariable';
-import auth, { firebase } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import ImageSkeltonComponent from '../../../../components/skeltons/imageSkelton';
+import styles from './style';
 
 
 type Page = 'intro1' | 'intro2';

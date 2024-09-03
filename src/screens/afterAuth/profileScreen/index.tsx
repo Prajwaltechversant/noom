@@ -1,23 +1,23 @@
 import { View, Text, KeyboardAvoidingView, Alert, Image, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { useScreenContext } from '../../../context/screenContext';
-import styles from './style';
-import textStyle from '../../../style/text/style';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { colorPalette } from '../../../assets/colorpalette/colorPalette';
-import { TouchableOpacity } from 'react-native';
-import CustomTextInputComponent from '../../../components/textInput';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { showMessage } from 'react-native-flash-message';
+import FlashMessage from "react-native-flash-message";
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import firestore from '@react-native-firebase/firestore';
+import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useScreenContext } from '../../../context/screenContext';
+import textStyle from '../../../style/text/style';
+import { colorPalette } from '../../../assets/colorpalette/colorPalette';
+import CustomTextInputComponent from '../../../components/textInput';
 import { useAppDispatch } from '../../../redux/hook';
 import { updateProfileStatus } from '../../../redux/slices/authStatus';
 import Loader from '../../../components/Loader';
 import ActivityLoader from '../../../components/ActivityLoader';
-import { showMessage } from 'react-native-flash-message';
-import FlashMessage from "react-native-flash-message";
+import styles from './style';
 
 type Form = {
   lname: string | undefined;
@@ -26,6 +26,7 @@ type Form = {
   image: string | undefined;
 
 };
+
 const ProfileScreen1 = () => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
@@ -52,9 +53,6 @@ const ProfileScreen1 = () => {
       setImage(result.assets[0].uri);
       setFormData({ ...formData, image: result.assets[0].uri });
     } catch (error) {
-      // Alert.alert((error as Error).message)
-      console.log(error)
-
     }
   };
   const updateAuthStatus = async () => {
@@ -65,10 +63,6 @@ const ProfileScreen1 = () => {
         isFirst: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(0, 0, 0, 0)
       })
     } catch (error) {
-      // Alert.alert((error as Error).message)
-      console.log(error)
-
-
     }
   }
 
@@ -97,9 +91,6 @@ const ProfileScreen1 = () => {
         dispatch(updateProfileStatus(true));
       }
     } catch (error) {
-      // Alert.alert((error as Error).message)
-      console.log(error)
-
     }
   };
 
@@ -116,7 +107,9 @@ const ProfileScreen1 = () => {
       },
     });
   }, [formData, image]);
+
   if (loading) return <ActivityLoader style={StyleSheet.absoluteFill} />
+  
   return (
     <KeyboardAvoidingView style={screenStyles.container}>
       <FlashMessage position="top" />
@@ -140,7 +133,6 @@ const ProfileScreen1 = () => {
       <View>
         <CustomTextInputComponent
           textColor='black'
-
           mode="outlined"
           label={'First Name'}
           onChangeText={e => setFormData({ ...formData, fname: e })}
@@ -155,7 +147,6 @@ const ProfileScreen1 = () => {
         />
         <CustomTextInputComponent
           textColor='black'
-
           mode="outlined"
           label={'Bio'}
           multiline

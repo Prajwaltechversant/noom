@@ -1,15 +1,15 @@
 import { View, Text, SectionList, FlatList, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import styles from './style';
 import { useScreenContext } from '../../../context/screenContext';
 import auth, { firebase } from '@react-native-firebase/auth';
+import { Divider } from 'react-native-paper';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import textStyle from '../../../style/text/style';
-import { Divider } from 'react-native-paper';
 import { dailCourseStatus } from '../../../redux/slices/DailyCourse';
 import Loader from '../../../components/Loader';
 import { staticVariables } from '../../../preferences/staticVariable';
+import styles from './style';
 
 const DailyProgress = ({ route }: any) => {
   const screenContext = useScreenContext();
@@ -38,12 +38,9 @@ const DailyProgress = ({ route }: any) => {
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.headingText}>{data[0].title}</Text>
-      {/* {data.length > 1 && <Text style={textStyle.headingText}>{total}</Text>} */}
-
       <Text style={[textStyle.labelText, { textAlign: 'center' }]}>
         {data.length > 1 ? `You have Logged ${data.length}  Today` : staticVariables.EMPTY_STRING}
       </Text>
-
       <FlatList
         data={data}
         renderItem={({ item, index }) => (
@@ -56,10 +53,8 @@ const DailyProgress = ({ route }: any) => {
         }
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
-
       />
     </View>
-    // <Loader/>
   )
 }
 

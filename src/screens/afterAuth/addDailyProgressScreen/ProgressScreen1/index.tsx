@@ -43,7 +43,9 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
   const [selectedItem, setSelectedItem] = useState<any>();
   const [quantity, setQuantity] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchResult, setSeachResult] = useState<any>(staticVariables.EMPTY_ARRAY);
+  const [searchResult, setSeachResult] = useState<any>(
+    staticVariables.EMPTY_ARRAY,
+  );
   const [isSearching, setIssearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState(staticVariables.EMPTY_STRING);
 
@@ -60,7 +62,6 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
       setQuantity(newQuantiy);
     }
   };
-
 
   const searchItem = (e: string) => {
     setLoading(true);
@@ -88,48 +89,36 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
         setSeachResult(staticVariables.EMPTY_ARRAY);
       }
     } catch (error) {
-      Alert.alert((error as Error).message)
+      Alert.alert((error as Error).message);
     }
   };
   useEffect(() => {
     searchQuery.length < 1 && setSeachResult(staticVariables.EMPTY_ARRAY);
   }, [searchQuery]);
 
-
-
   const handleSave = () => {
+    let count = 0;
 
-    let count = 0
-
-    firestore().collection(`UserData/${currentUser}/dailyProgress`)
+    firestore()
+      .collection(`UserData/${currentUser}/dailyProgress`)
       .doc(`${item.id}-${selectedItem.id}`)
       .get()
       .then(item => {
-        const res: any = item.data()
-        count = count + res.data.count
+        const res: any = item.data();
+        count = count + res.data.count;
       })
-      .finally(
-        () => {
-          if (count > 0) {
-            let newQuantity = quantity + count
-            addToDailyProgress1(item, selectedItem, newQuantity)
-
-          } else {
-            addToDailyProgress1(item, selectedItem, quantity)
-          }
-          setQuantity(0);
-          setModalVisible(!modalVisible);
-          navigation.goBack()
+      .finally(() => {
+        if (count > 0) {
+          let newQuantity = quantity + count;
+          addToDailyProgress1(item, selectedItem, newQuantity);
+        } else {
+          addToDailyProgress1(item, selectedItem, quantity);
         }
-      )
-  }
-
-  // const startOfDay = new Date(
-  //   new Date().setHours(0, 0, 0, 0),
-  // );
-  // const endOfDay = new Date(
-  //   new Date().setHours(23, 59, 59, 999),
-  // );
+        setQuantity(0);
+        setModalVisible(!modalVisible);
+        navigation.goBack();
+      });
+  };
 
   return (
     <View style={screenStyles.container}>
@@ -192,7 +181,8 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
                 </TouchableOpacity>
                 <View style={screenStyles.addQuantiyBox}>
                   <Text>
-                    {quantity} {category === 'food' ? staticVariables.EMPTY_STRING : 'Min'}
+                    {quantity}{' '}
+                    {category === 'food' ? staticVariables.EMPTY_STRING : 'Min'}
                   </Text>
                 </View>
                 <AntDesign

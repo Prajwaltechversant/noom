@@ -6,12 +6,6 @@ import RegisterMethods from '../../screens/beforeAuth/register/registerList';
 import Signup from '../../screens/beforeAuth/register/signup';
 import Login from '../../screens/beforeAuth/login';
 import EmailSignup from '../../screens/beforeAuth/register/EmailSignup';
-import textStyle from '../../style/text/style';
-import {colorPalette} from '../../assets/colorpalette/colorPalette';
-import {validation} from '../../services/validation';
-import {addError} from '../../redux/slices/Auth/loginSlice';
-import {SignupWithEmailErrorType} from '../../types/signup';
-import {signUpWithEmail} from '../../services/signup';
 import { screenNames } from '../../preferences/staticVariable';
 import { useAppDispatch } from '../../redux/hook';
 
@@ -21,7 +15,6 @@ const RegisterStack = () => {
   const dispatch = useAppDispatch()
   return (
     <Stack.Navigator 
-    
     >
       <Stack.Screen name={screenNames.REGISTER_METHODS} component={RegisterMethods}
        options={{
@@ -48,7 +41,6 @@ const AuthStack: React.FC = () => {
         component={EntryScreen}
       />
       <Stack.Screen name={screenNames.REGISTER_STACK} component={RegisterStack}
-      
       options={{
         title:'Signup to use Noom'
       }}

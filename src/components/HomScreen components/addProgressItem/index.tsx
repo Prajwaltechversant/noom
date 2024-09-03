@@ -46,9 +46,6 @@ const AddProgressItemComponent: React.FC<Props> = ({ item, setProgressModalVisib
           item: { ...item }
 
         })
-        // navigation.setOptions({
-        //   headerShown: false
-        // })
         setProgressModalVisible(false)
       }
       }>
