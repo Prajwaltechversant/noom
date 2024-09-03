@@ -1,7 +1,6 @@
 import { View, Text, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { useScreenContext } from '../../../../context/screenContext';
-import styles from './style';
 import { useNavigation } from '@react-navigation/native';
 import Scale from '../../../../components/scale';
 import CustomScale from '../../../../components/scale';
@@ -9,6 +8,7 @@ import { Image } from 'react-native';
 import CustomButton from '../../../../components/button/customButton';
 import { colorPalette } from '../../../../assets/colorpalette/colorPalette';
 import { addToDailyProgress2 } from '../../../../services/dailyprogress';
+import styles from './style';
 interface Props {
   item: any;
   category: string;

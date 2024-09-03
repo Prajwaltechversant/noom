@@ -1,8 +1,5 @@
 import {Alert, Modal, ModalProps, Pressable, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-// import {
-//   ModalProps,
-// } from 'react-native-paper';
 import {useScreenContext} from '../../../context/screenContext';
 import styles from './style';
 import { Text } from 'react-native';

@@ -5,7 +5,6 @@ import { ScreenContextType } from "../../../../types/types";
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent:'center',
         alignItems: 'center',
         paddingHorizontal: screenContext.isPortrait ? height * 0.03 : height * 0.002,
         backgroundColor: colorPalette.white,

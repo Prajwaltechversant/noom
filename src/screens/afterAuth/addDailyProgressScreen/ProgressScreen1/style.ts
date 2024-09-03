@@ -17,7 +17,6 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         margin: 1
     },
     textInput: {
-        // borderWidth:1,
         width: width * 0.9,
 
     },

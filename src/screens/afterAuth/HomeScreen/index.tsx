@@ -31,9 +31,7 @@ const Home: React.FC = () => {
   const [weekdays, setWeekdays] = useState<string[]>(staticVariables.EMPTY_ARRAY);
   const [selctedDate, setSelctedDate] = useState<string>(staticVariables.EMPTY_STRING);
   const [todaysCourse, setTodaysCourse] = useState<any[]>(staticVariables.EMPTY_ARRAY);
-  const [selctedTimestamp, setSelctedTimeStamp] = useState(
-    firebase.firestore.Timestamp.fromDate(new Date())
-  );
+  const [selctedTimestamp, setSelctedTimeStamp] = useState(firebase.firestore.Timestamp.fromDate(new Date()));
   const [dayText, setDayText] = useState<string>('Today');
   const [isSelected, setIsSelected] = useState(false);
   const [isPrev, setIsPrev] = useState(false);

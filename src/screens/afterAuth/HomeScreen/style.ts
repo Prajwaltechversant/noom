@@ -13,7 +13,6 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
     },
     headerContainer: {
-        // borderBottomWidth: 1,
         height: screenContext.isPortrait ? width * 0.12 : width * 0.12, justifyContent: 'center',
         alignItems: 'center',
         width: '100%',

@@ -20,7 +20,6 @@ import WeighScreen from '../../../screens/afterAuth/WeighGraphScreen';
 import UserProfile from '../../../screens/afterAuth/UserProfile';
 import DailyProgress from '../../../screens/afterAuth/Progress';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-// import WeighGraphScreen from '../../../screens/afterAuth/WeighGraphScreen/s';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

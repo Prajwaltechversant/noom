@@ -24,10 +24,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
     },
     col2: {
-        // borderWidth: 1
         justifyContent: 'center',
         alignItems: 'center',
-        // padding
     },
     text: {
         color: colorPalette.black,
