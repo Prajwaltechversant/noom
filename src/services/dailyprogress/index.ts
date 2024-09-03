@@ -3,15 +3,6 @@ import firestore, { doc, Filter } from '@react-native-firebase/firestore';
 const currentUser = auth().currentUser?.uid;
 
 export const addToDailyProgress1 = async (item: any, selectedItem: any, quantity: number) => {
-    let isExisting = false;
-    let existingCount = 0;
-    let docId: string;
-    const startOfDay = new Date(
-        new Date().setHours(0, 0, 0, 0),
-    );
-    const endOfDay = new Date(
-        new Date().setHours(23, 59, 59, 999),
-    );
     firestore()
         .collection(`UserData/${currentUser}/dailyProgress`)
         .doc(`${item.id}-${selectedItem.id}`)
@@ -71,11 +62,8 @@ export const addToDailyProgress2 = (item: any, logValue: number) => {
                             image: item.image,
                             addedDate: firebase.firestore.Timestamp.now(),
                             docDate:docDate
-
-
                         })
                 }
             }
-
         });
 };

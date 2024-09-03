@@ -146,7 +146,6 @@ export default function WeighScreen() {
 
     const addWeight = async () => {
         try {
-
             const ref = await firestore().collection('dailyProgress')
                 .where('id', '==', 'logweight')
                 .get()
@@ -155,7 +154,6 @@ export default function WeighScreen() {
             setVisible(!visible)
             setSelctedvalue(0)
             await fetchDailyProgressWeight()
-
         } catch (error) {
             Alert.alert((error as Error).message)
         }
