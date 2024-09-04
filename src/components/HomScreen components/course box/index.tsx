@@ -15,10 +15,9 @@ interface Props {
   item: CourseType;
   isArticle: boolean;
   handleDelete?: () => void;
-  audios: any
 }
 
-const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete, audios }) => {
+const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
@@ -72,8 +71,6 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete, audios }) 
       });
       await TrackPlayer.play();
     } catch (error) {
-      // Alert.alert((error as Error).message)
-      // console.log(error)
     }
   };
 
@@ -119,7 +116,6 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete, audios }) 
           >
             {item?.title}
           </Text>
-          {/* <Text style={screenStyles.text}>{trackDuration}</Text> */}
           <View style={screenStyles.actionContainer}>
             <TouchableOpacity
               style={screenStyles.actionBox}
@@ -165,9 +161,6 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete, audios }) 
             </TouchableOpacity>
           </View>
         }
-
-
-
       </View>
       <PlayerModal
         isModalVisible={isModalVisible}

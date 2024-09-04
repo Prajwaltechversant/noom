@@ -191,18 +191,7 @@ const Home: React.FC = () => {
       .onSnapshot(snapshot => {
         const updatedCourses = snapshot.docs.map(doc => doc.data());
         setTodaysCourse(updatedCourses);
-        let audios: any = []
-        for (let item of updatedCourses) {
-          audios.push({
-            id: item.id,
-            url: item?.audio,
-            title: item.title,
-            artist: 'Track Artist',
-            artwork: '<https://example.com/track.jpg>'
-          })
-        }
 
-        setAudios(audios)
       });
 
     return () => subscriber();
@@ -259,7 +248,7 @@ const Home: React.FC = () => {
                   <FlatList
                     data={todaysCourse}
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <CourseItem item={item} isArticle={false} audios={audios} />}
+                    renderItem={({ item }) => <CourseItem item={item} isArticle={false} />}
                     ListEmptyComponent={<Loader />}
                   />
                   <TodaysProgress handleDailyProgressModal={handleDailyProgressModal} />

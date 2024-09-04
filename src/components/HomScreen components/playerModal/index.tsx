@@ -129,7 +129,6 @@ const PlayerModal: React.FC<Props> = ({
           .doc(item.id)
           .update({ isCompleted: true });
       }
-      // TrackPlayer.reset();
       await TrackPlayer.seekTo(0);
 
 
