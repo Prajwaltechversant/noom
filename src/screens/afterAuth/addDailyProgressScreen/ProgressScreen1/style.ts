@@ -60,7 +60,9 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         width: 40,
         borderRadius: 50,
         resizeMode: 'cover'
-    }
+    },
+    imageLoadingIndicator:
+        { position: 'absolute', justifyContent: 'center', alignItems: 'center' }
 
 })
 

@@ -20,8 +20,6 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     col1: {
         flexDirection: 'column',
         width: '70%',
-
-
     },
     col2: {
         justifyContent: 'center',

@@ -1,15 +1,15 @@
 import { View, Text, Image, TouchableOpacity, TouchableOpacityBase, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import styles from './style';
+import TrackPlayer from 'react-native-track-player';
 import { useNavigation } from '@react-navigation/native';
-import { useScreenContext } from '../../../context/screenContext';
-import textStyle from '../../../style/text/style';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import { useScreenContext } from '../../../context/screenContext';
+import textStyle from '../../../style/text/style';
 import { CourseType } from '../../../types/types';
 import PlayerModal from '../playerModal';
 import { setupPlayer } from '../../../../musicPlayerService';
-import TrackPlayer from 'react-native-track-player';
+import styles from './style';
 
 interface Props {
   item: CourseType;
@@ -57,10 +57,9 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
     return () => {
       TrackPlayer.reset();
     };
-  }, [item.audio]);
+  }, []);
 
   const playAudio = async (audio: string) => {
-    await TrackPlayer.reset();
     try {
       await TrackPlayer.add({
         id: item.id,

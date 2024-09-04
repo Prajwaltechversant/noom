@@ -94,10 +94,7 @@ const AppStack = () => {
                               }}>
                               <Text
                                 style={textStyle.headingText}
-                                onPress={() => {
-                                  auth().signOut();
-                                  GoogleSignin.signOut();
-                                }}>
+                                >
                                 NOOM
                               </Text>
                               <Text

@@ -1,15 +1,15 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import { useScreenContext } from '../../../context/screenContext';
-import styles from './style';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import textStyle from '../../../style/text/style';
+import { useNavigation } from '@react-navigation/native';
 import { Divider } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useNavigation } from '@react-navigation/native';
 import { screenNames } from '../../../preferences/staticVariable';
+import { useScreenContext } from '../../../context/screenContext';
+import textStyle from '../../../style/text/style';
+import styles from './style';
 interface Props {
   item: any;
   setProgressModalVisible: (b: boolean) => void

@@ -1,8 +1,8 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import styles from './style';
 import { useScreenContext } from '../../../context/screenContext';
 import textStyle from '../../../style/text/style';
+import styles from './style';
 
 
 interface Props {

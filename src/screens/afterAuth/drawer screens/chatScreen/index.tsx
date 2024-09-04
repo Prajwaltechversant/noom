@@ -4,7 +4,7 @@ import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
 import ChatItem from '../../../../components/chat Components/chatItem';
 import ChatBox from '../../../../components/chat Components/chat box';
-import firestore, { Filter } from '@react-native-firebase/firestore';
+import firestore, { arrayUnion, Filter } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { admin_uid } from "@env"
 import { firebase } from '@react-native-firebase/auth';
@@ -30,27 +30,95 @@ const ChatScreen: React.FC = ({ route }: any) => {
     const chatRef = firestore().collection(`Chats`)
     const [message, setMessage] = useState<string>(staticVariables.EMPTY_STRING)
     const listRef = useRef<FlatList>(null)
+    const [isSending, setIsSending] = useState(false)
+
+
+    // const sendMessage = async () => {
+    //     try {
+    //         if (message && message.length > 0) {
+    //             if (!isAdmin) {
+    //                 await chatRef.add({
+    //                     message: message,
+    //                     sendTime: firebase.firestore.Timestamp.now(),
+    //                     fromId: currentUid,
+    //                     toId: admin_uid,
+    //                     role: 'user',
+    //                     userID: currentUid,
+    //                     email: currentEmail
+    //                 })
+    //             } else {
+    //                 await chatRef.add({
+    //                     message: message,
+    //                     sendTime: firebase.firestore.Timestamp.now(),
+    //                     fromId: currentUid,
+    //                     toId: userID,
+    //                     role: 'admin',
+    //                 })
+    //             }
+    //             setMessage(staticVariables.EMPTY_STRING)
+    //             listRef.current?.scrollToEnd()
+    //         }
+    //     } catch (error) {
+    //         Alert.alert((error as Error).message)
+    //     }
+    // }
+
     const sendMessage = async () => {
         try {
             if (message && message.length > 0) {
+                setIsSending(true)
+
                 if (!isAdmin) {
-                    await chatRef.add({
-                        message: message,
-                        sendTime: firebase.firestore.Timestamp.now(),
-                        fromId: currentUid,
-                        toId: admin_uid,
-                        role: 'user',
-                        userID: currentUid,
-                        email: currentEmail
-                    })
+                    const isExisting = (await firestore().collection(`Chats`).doc(currentUid).get()).exists
+                    if (!isExisting) {
+                        await firestore().collection(`Chats`).doc(currentUid)
+                            .set({
+                                messages: arrayUnion({
+                                    message: message,
+                                    sendTime: firebase.firestore.Timestamp.now(),
+                                    fromId: currentUid,
+                                    toId: admin_uid,
+                                    role: 'user',
+                                    userID: currentUid,
+                                    email: currentEmail
+                                }),
+                                id: currentUid
+                            });
+                        setIsSending(false)
+
+
+                    } else {
+                        await firestore().collection(`Chats`).doc(currentUid)
+                            .update({
+                                messages: arrayUnion({
+                                    message: message,
+                                    sendTime: firebase.firestore.Timestamp.now(),
+                                    fromId: currentUid,
+                                    toId: admin_uid,
+                                    role: 'user',
+                                    userID: currentUid,
+                                    email: currentEmail
+                                })
+                            });
+                        setIsSending(false)
+
+                    }
+
                 } else {
-                    await chatRef.add({
-                        message: message,
-                        sendTime: firebase.firestore.Timestamp.now(),
-                        fromId: currentUid,
-                        toId: userID,
-                        role: 'admin',
-                    })
+                    await firestore().collection(`Chats`).doc(userID)
+                        .update({
+                            messages: arrayUnion({
+                                message: message,
+                                sendTime: firebase.firestore.Timestamp.now(),
+                                fromId: currentUid,
+                                toId: userID,
+                                role: 'admin',
+                                userID: currentUid,
+                                email: currentEmail
+                            })
+                        });
+                    setIsSending(false)
+
                 }
                 setMessage(staticVariables.EMPTY_STRING)
                 listRef.current?.scrollToEnd()
@@ -59,21 +127,25 @@ const ChatScreen: React.FC = ({ route }: any) => {
             Alert.alert((error as Error).message)
         }
     }
+
+
     useEffect(() => {
         const subscriber = firestore()
             .collection('Chats')
-            .where(Filter.or(
-                Filter('fromId', '==', userID ? userID : currentUid),
-                Filter('toId', '==', userID ? userID : currentUid)
-            ))
+            .doc(isAdmin ? userID : currentUid)
+            // .where(Filter.or(
+            //     Filter('fromId', '==', userID ? userID : currentUid),
+            //     Filter('toId', '==', userID ? userID : currentUid)
+            // ))
             .onSnapshot(documentSnapshot => {
-                const resData: any = documentSnapshot.docs.map(i => i.data());
-                const filtered = resData.sort((a: any, b: any) => a.sendTime - b.sendTime)
+                const resData: any = documentSnapshot.data()
+                const filtered = resData.messages.sort((a: any, b: any) => a.sendTime - b.sendTime)
                 SetAllMessages(filtered)
             });
         return () => subscriber();
     }, []);
 
+    console.log(isSending)
     return (
         <View style={screenStyles.container}>
             <View style={screenStyles.messageContainer}>
@@ -85,7 +157,7 @@ const ChatScreen: React.FC = ({ route }: any) => {
                     )}
                 />
             </View>
-            <ChatBox setMessage={setMessage} sendMessage={sendMessage} message={message} />
+            <ChatBox  setMessage={setMessage} sendMessage={sendMessage} message={message} isMessageSending={isSending} />
         </View>
     )
 }

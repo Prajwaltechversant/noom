@@ -16,6 +16,8 @@ import { staticVariables } from '../../../preferences/staticVariable';
 import CourseItem from '../../../components/HomScreen components/course box';
 import DayItem from '../../../components/HomScreen components/dayItemComponent';
 import styles from './style';
+import { useNavigation } from '@react-navigation/native';
+import HeaderTab from '../../../components/headerTab';
 
 const Home: React.FC = () => {
   const screenContext = useScreenContext();
@@ -41,6 +43,7 @@ const Home: React.FC = () => {
   const [progressModalVisible, setProgressModalVisible] = useState(false);
   const [dailyProgressData, setDailyProgressData] = useState<any[]>([]);
   const [audios, setAudios] = useState([])
+  const navigation = useNavigation()
 
 
 
@@ -58,7 +61,13 @@ const Home: React.FC = () => {
     }
     setWeekdays(weekdays);
     setSelctedDate(weekdays[new Date().getDay()]);
+
   }, [locale]);
+
+
+
+
+
 
 
   // function to update the profile completion status of user to firebase
@@ -136,7 +145,7 @@ const Home: React.FC = () => {
 
 
 
-  // Create dayily course and add to firebase at once in a day or first time user run noom
+  // fetch course and add to firebase at once in a day or first time user run noom
   useEffect(() => {
     const fetchAndAddCourses = async () => {
       setIsLoading(true);

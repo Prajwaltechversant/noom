@@ -27,20 +27,37 @@ const AdminScreens: React.FC = () => {
     const currentEmail = auth().currentUser?.email;
     const navigation: any = useNavigation()
 
-    useEffect(() => {
-        let arr: any = []
-        const subscriber = firestore()
-            .collection('Chats')
-            .where('toId', '==', admin_uid)
-            .onSnapshot(documentSnapshot => {
-                const resData: any = documentSnapshot?.docs.map(i => i.data());
-                const unique = resData.filter((obj: any, index: any) => {
-                    return index === resData.findIndex((o: any) => obj.userID === o.userID);
-                });
-                setAllRequests(unique)
-            });
+    // useEffect(() => {
+    //     let arr: any = []
+    //     const subscriber = firestore()
+    //         .collection('Chats')
+    //         .where('toId', '==', admin_uid)
+    //         .onSnapshot(documentSnapshot => {
+    //             const resData: any = documentSnapshot?.docs.map(i => i.data());
+    //             console.log(resData);
 
-        return () => subscriber();
+    //             const unique = resData.filter((obj: any, index: any) => {
+    //                 return index === resData.findIndex((o: any) => obj.userID === o.userID);
+    //             });
+    //             setAllRequests(unique)
+    //         });
+
+    //     return () => subscriber();
+    // }, []);
+
+    const fetchData = async () => {
+        try {
+
+            const res: any = (await firestore().collection('Chats').get()).docs.map(i => i.data())
+            setAllRequests(res)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchData()
     }, []);
 
     const handleNavigation = (uid: any) => {
@@ -63,8 +80,8 @@ const AdminScreens: React.FC = () => {
                 renderItem={({ item, index }: any) => (
                     <View style={screenStyles.msgContainer}>
                         <CustomButton
-                            label={item.email}
-                            onPress={() => handleNavigation(item.userID)}
+                            label={item.messages[0].email}
+                            onPress={() => handleNavigation(item.id)}
                             btnColor={colorPalette.salmon}
                             btnHeight={width * 0.1}
                             btnWidth={width * 0.8}

@@ -1,4 +1,4 @@
-import { View, Text, KeyboardAvoidingView, Alert, Image, StyleSheet } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Alert, Image, StyleSheet, Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import FlashMessage from "react-native-flash-message";
@@ -109,57 +109,65 @@ const ProfileScreen1 = () => {
   }, [formData, image]);
 
   if (loading) return <ActivityLoader style={StyleSheet.absoluteFill} />
-  
+
   return (
-    <KeyboardAvoidingView style={screenStyles.container}>
-      <FlashMessage position="top" />
+    <TouchableWithoutFeedback style={screenStyles.container} onPress={Keyboard.dismiss} >
+      <KeyboardAvoidingView keyboardVerticalOffset={0}
+        behavior={'padding'}
+        enabled
+        style={screenStyles.keyboardAvoidingContainer}
+      >
+        <FlashMessage position="top" />
+        <>
+          <View style={screenStyles.profileSection}>
+            <Text style={textStyle.questionText}>Profile Picture</Text>
+            {!image ? (
+              <TouchableOpacity
+                style={screenStyles.profileIcon}
+                onPress={handleImagePicker}>
+                <AntDesign name="camera" size={20} color={colorPalette.black} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={screenStyles.profileIcon}
+                onPress={handleImagePicker}>
+                <Image source={{ uri: image }} style={screenStyles.profileImage} />
+              </TouchableOpacity>
+            )}
+          </View>
+          <View>
+            <CustomTextInputComponent
+              textColor='black'
+              mode="outlined"
+              label={'First Name'}
+              onChangeText={e => setFormData({ ...formData, fname: e })}
+              value={formData.fname}
 
-      <View style={screenStyles.profileSection}>
-        <Text style={textStyle.questionText}>Profile Picture</Text>
-        {!image ? (
-          <TouchableOpacity
-            style={screenStyles.profileIcon}
-            onPress={handleImagePicker}>
-            <AntDesign name="camera" size={20} color={colorPalette.black} />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={screenStyles.profileIcon}
-            onPress={handleImagePicker}>
-            <Image source={{ uri: image }} style={screenStyles.profileImage} />
-          </TouchableOpacity>
-        )}
-      </View>
-      <View>
-        <CustomTextInputComponent
-          textColor='black'
-          mode="outlined"
-          label={'First Name'}
-          onChangeText={e => setFormData({ ...formData, fname: e })}
-          value={formData.fname}
-        />
-        <CustomTextInputComponent
-          textColor='black'
-          mode="outlined"
-          label={'Last Name'}
-          onChangeText={e => setFormData({ ...formData, lname: e })}
-          value={formData.lname}
-        />
-        <CustomTextInputComponent
-          textColor='black'
-          mode="outlined"
-          label={'Bio'}
-          multiline
-          contentStyle={{ height: 100 }}
-          onChangeText={e => setFormData({ ...formData, bio: e })}
-        />
-      </View>
+            />
+            <CustomTextInputComponent
+              textColor='black'
+              mode="outlined"
+              label={'Last Name'}
+              onChangeText={e => setFormData({ ...formData, lname: e })}
+              value={formData.lname}
+            />
+            <CustomTextInputComponent
+              textColor='black'
+              mode="outlined"
+              label={'Bio'}
+              multiline
+              contentStyle={{ height: 100 }}
+              onChangeText={e => setFormData({ ...formData, bio: e })}
+            />
+          </View>
 
-      <Text style={[textStyle.labelText, { textAlign: 'center' }]}>
-        Your group will be able to read this , Lorem ipsum dolor, sit amet
-        consectetur adipisicing elit. Repudiandae, facere molestiae adipisci
-      </Text>
-    </KeyboardAvoidingView>
+          <Text style={[textStyle.labelText, { textAlign: 'center' }]}>
+            Your group will be able to read this , Lorem ipsum dolor, sit amet
+            consectetur adipisicing elit. Repudiandae, facere molestiae adipisci
+          </Text>
+        </>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback >
   );
 };
 

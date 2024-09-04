@@ -113,7 +113,9 @@ const Coursecarousel = ({ route }: any) => {
                     onLoad={() => setIsImageLoading(false)}
                   />
                   {
-                    isImageLoading && <ImageSkeltonComponent width={width} height={height * 0.3} />
+                    isImageLoading && <View style={[screenStyles.image, { position: 'absolute' }]}
+                    >
+                      <ImageSkeltonComponent /></View>
                   }
                 </View>
                 <Text style={textStyle.headingText}>{item.title}</Text>
@@ -124,7 +126,7 @@ const Coursecarousel = ({ route }: any) => {
                 </Text>
               </View>
             )}
-            scrollEnabled={false}
+            scrollEnabled={true}
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}

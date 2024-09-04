@@ -5,7 +5,6 @@ export const staticVariables = {
     EMPTY_STRING: '',
     EMPTY_ARRAY: [],
     EMPTY_OBJECT: {}
-
 }
 
 export const screenNames = {
@@ -31,16 +30,13 @@ export const screenNames = {
     Recipies: 'recipiesScreen',
     Setting: 'settingsScreen',
     Weighgraph: 'WeighGraph',
-    Daily_ProgressScreen:'dailyProgressScreen',
-    courseCarouselPage:'courseCarouselPage',
-    ChatScreen:'ChatScreen',
-    HomeNativeStack:'HomeScreen',
-    WeighGraphScreen:'WeighGraphScreen',
-    HomeScreen :'Home',
-    UserProfile:'UserProfileTab',
-    Homepage:'Homepage',
-    DailyProgress:'progress'
-
-
-
+    Daily_ProgressScreen: 'dailyProgressScreen',
+    courseCarouselPage: 'courseCarouselPage',
+    ChatScreen: 'ChatScreen',
+    HomeNativeStack: 'HomeScreen',
+    WeighGraphScreen: 'WeighGraphScreen',
+    HomeScreen: 'Home',
+    UserProfile: 'UserProfileTab',
+    Homepage: 'Homepage',
+    DailyProgress: 'progress'
 }

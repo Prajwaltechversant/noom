@@ -32,10 +32,11 @@ const PlayerModal: React.FC<Props> = ({
   seekToPosition
 }) => {
   const [duration, setDuration] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<any>(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [end, setEnd] = useState(false);
   const currentUid = auth().currentUser?.uid;
+  const [time, setTime] = useState<any>(0)
 
   const screenContext = useScreenContext();
   const { width, height, isPortrait } = screenContext;
@@ -58,7 +59,7 @@ const PlayerModal: React.FC<Props> = ({
 
     const handlePlaybackError = (event: PlaybackErrorEvent) => {
       Alert.alert(event.message)
-      console.log(event.message)
+      // console.log(event.message)
 
     };
 
@@ -71,7 +72,11 @@ const PlayerModal: React.FC<Props> = ({
     const updateProgress = setInterval(async () => {
       try {
         const progress = await TrackPlayer.getProgress();
-        setProgress(progress.position);
+        let secs = (Math.trunc(progress.position) % 60).toString().padStart(2, '0');
+        const minutes = Math.floor(progress.position / 60).toString().padStart(2, '0');
+        let time = `${minutes}:${secs}`
+        setTime(time)
+        setProgress(progress.position)
         setDuration(progress.duration);
       } catch (error) {
         Alert.alert((error as Error).message)
@@ -120,9 +125,11 @@ const PlayerModal: React.FC<Props> = ({
 
   const closePlayer = async () => {
     try {
+      await TrackPlayer.reset();
       await pauseAudio();
       setIsModalVisible(false);
       setProgress(0);
+      setIsPlaying(false)
       if (end && currentUid) {
         await firestore()
           .collection(`UserData/${currentUid}/dailyCourse`)
@@ -133,7 +140,7 @@ const PlayerModal: React.FC<Props> = ({
 
 
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
 
@@ -161,7 +168,7 @@ const PlayerModal: React.FC<Props> = ({
                   onValueChange={handleSeek}
                   value={progress}
                 />
-                <Text style={[textStyle.labelText,]}>{progress.toFixed(0)}</Text>
+                <Text style={[textStyle.labelText,]}>{time}</Text>
               </View>
 
               {!end ? (
@@ -170,7 +177,7 @@ const PlayerModal: React.FC<Props> = ({
                     <AntDesign name="pausecircle" color={colorPalette.black} size={30} />
                   </TouchableOpacity>
                 ) : (
-                  <TouchableOpacity onPress={()=>handlePlay(item.audio)}>
+                  <TouchableOpacity onPress={() => handlePlay(item.audio)}>
                     <AntDesign name="play" color={colorPalette.black} size={30} />
                   </TouchableOpacity>
                 )

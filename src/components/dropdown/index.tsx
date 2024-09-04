@@ -1,8 +1,8 @@
 import {View, Text} from 'react-native';
+import {Button, Menu, Divider, PaperProvider} from 'react-native-paper';
 import React from 'react';
 import {useScreenContext} from '../../context/screenContext';
 import styles from './style';
-import {Button, Menu, Divider, PaperProvider} from 'react-native-paper';
 
 const PaperDropdown: React.FC = () => {
 

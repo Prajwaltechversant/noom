@@ -17,9 +17,6 @@ const Drawer = createDrawerNavigator();
 const DrawerStack = ({ route }: any) => {
   return (
     <Drawer.Navigator
-      screenOptions={{
-        headerRight: () => <HeaderTab />,
-      }}
     >
       <Drawer.Screen
         name={screenNames.HomeNativeStack}
@@ -27,6 +24,7 @@ const DrawerStack = ({ route }: any) => {
         options={{
           title: 'Home',
           drawerIcon: () => <FontAwesome name="home" color={'black'} size={20} />,
+          headerRight: () => <HeaderTab />,
         }}
       />
       <Drawer.Screen

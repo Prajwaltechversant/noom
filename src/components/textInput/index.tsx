@@ -30,16 +30,7 @@ const CustomTextInputComponent: React.FC<Props> = ({
       style={screenStyles.container}
       textColor={'black'}
       {...props}
-      theme={{
-        colors: {
-          primary: 'black',
-          onSurface: 'white',
-          background: 'red',
-
-        },
-        roundness: 9,
-        
-      }}
+      caretHidden
 
 
     />

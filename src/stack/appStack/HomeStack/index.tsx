@@ -1,4 +1,4 @@
-import {  Text } from 'react-native';
+import { Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../../screens/afterAuth/HomeScreen';
@@ -19,6 +19,7 @@ import WeighScreen from '../../../screens/afterAuth/WeighGraphScreen';
 import UserProfile from '../../../screens/afterAuth/UserProfile';
 import DailyProgress from '../../../screens/afterAuth/Progress';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import HeaderTab from '../../../components/headerTab';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -60,11 +61,17 @@ export const HomeNativeStack = () => {
 const HomeTabStack = ({ route }: any) => {
   const currentUid = auth().currentUser?.uid;
   const [isAdmin, setIsAdmin] = useState(false)
+  const navigation = useNavigation();
+
   useEffect(() => {
+
     if (admin_uid === currentUid) {
       setIsAdmin(true)
     } else {
       setIsAdmin(false)
+
+
+
     }
   }, [])
   return (
@@ -78,7 +85,8 @@ const HomeTabStack = ({ route }: any) => {
                 <Entypo name='home' size={20} color={'black'} />
               ),
               title: 'Home',
-              headerShown: false
+              headerShown: false,
+
             }}
 
 

@@ -23,6 +23,7 @@ import firestore, { doc, Filter } from '@react-native-firebase/firestore';
 import { TextInput } from 'react-native-paper';
 import { addToDailyProgress1 } from '../../../../services/dailyprogress';
 import { staticVariables } from '../../../../preferences/staticVariable';
+import ActivityLoader from '../../../../components/ActivityLoader';
 interface Props {
   item: any;
   category: string;
@@ -48,6 +49,8 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
   );
   const [isSearching, setIssearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState(staticVariables.EMPTY_STRING);
+  const [imageLoading, setImageLoading] = useState(true)
+
 
   const handleSelectedItem = (item: any) => {
     setModalVisible(!modalVisible);
@@ -144,10 +147,16 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
               <TouchableOpacity
                 style={screenStyles.item}
                 onPress={() => handleSelectedItem(item)}>
-                <Image
-                  source={{ uri: item?.image }}
-                  style={screenStyles.itemImage}
-                />
+                <View>
+                  <Image
+                    source={{ uri: item?.image }}
+                    style={screenStyles.itemImage}
+                    onLoad={() => setImageLoading(false)}
+                  />
+                  {imageLoading && <View style={screenStyles.imageLoadingIndicator}>
+                    <ActivityLoader />
+                  </View>}
+                </View>
                 <Text style={textStyle.labelText}>{item.title}</Text>
               </TouchableOpacity>
             )}

@@ -9,11 +9,12 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         alignItems: 'center',
     },
     btnContainer: {
-        marginTop: screenContext.isPortrait ? width * 0.2 : width * 0.001
+        marginTop: screenContext.isPortrait ? width * 0.2 : 0
     },
     privacyPolicy: {
         position: 'absolute',
-        bottom: 10,
+        bottom:screenContext.isPortrait ? width * 0.07 : width * 0.01,
+        padding:screenContext.isPortrait ? width * 0.02 : width * 0.001,
         alignSelf: 'center'
     },
 })

@@ -15,13 +15,14 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         width: width * .8,
         height: height * .4,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     profileImage: {
         width: width * .3,
         height: width * .3,
         borderRadius: 100,
-        resizeMode: 'cover'
+        resizeMode: 'cover',
+        alignSelf:'center'
     }
 
 

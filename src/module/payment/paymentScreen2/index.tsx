@@ -1,4 +1,4 @@
-import { View, ScrollView, TouchableOpacity, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, ScrollView, TouchableOpacity, FlatList, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
@@ -26,6 +26,7 @@ import { staticVariables } from '../../../preferences/staticVariable';
 
 
 type CardDetails = 'number' | 'cvv' | 'exp'
+type PaymentType = 'card' | 'paypal'
 
 const PaymementScreen2: React.FC = ({ route }: any) => {
   const screenContext = useScreenContext();
@@ -54,6 +55,9 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
   const [cardError, setCardError] = useState<DebitCardError>({
     number: undefined, cvv: undefined, exp: undefined
   })
+
+
+
   useEffect(() => {
     const loadItems = async () => {
       try {
@@ -87,6 +91,18 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
     }
   }
 
+
+
+  const handlePaymentSelection = (type: PaymentType) => {
+
+    if (type === 'paypal') {
+      Alert.alert('Unavailable', 'Paypal is not available, Please try with debit card', [
+        { text: 'OK', },
+      ]);
+    } else {
+      setShowCardOptions(!showCardOption)
+    }
+  }
   const handlepayment = () => {
 
     let isCardError: any = validation('cardNo', cardDetails.number)
@@ -227,7 +243,8 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
 
             <TouchableOpacity
               style={screenStyles.collapseViewBtn}
-              onPress={() => setShowPaymentInfo(!showPaymentInfo)}>
+              onPress={() => setShowPaymentInfo(!showPaymentInfo)}
+            >
               <Text style={textStyle.questionText}>Add Payment Info</Text>
               <Divider />
             </TouchableOpacity>
@@ -245,7 +262,8 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                   Select Paymement Method
                 </Text>
 
-                <TouchableOpacity style={screenStyles.paymentBtn}>
+                <TouchableOpacity style={[screenStyles.paymentBtn,]}
+                  onPress={() => handlePaymentSelection('paypal')}>
                   <FontAwesome6
                     name="circle"
                     color={colorPalette.gold}
@@ -261,8 +279,8 @@ const PaymementScreen2: React.FC = ({ route }: any) => {
                 <Divider />
 
                 <TouchableOpacity
-                  style={screenStyles.paymentBtn}
-                  onPress={() => setShowCardOptions(!showCardOption)}>
+                  style={[screenStyles.paymentBtn, { backgroundColor: showCardOption ? colorPalette.salmon :colorPalette.white }]}
+                  onPress={() => handlePaymentSelection('card')}>
                   <FontAwesome6
                     name="circle"
                     color={colorPalette.gold}

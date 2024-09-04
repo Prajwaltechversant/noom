@@ -34,7 +34,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     collapseViewBtn: {
         marginVertical: screenContext.isPortrait ? height * 0.03 : height * 0.002,
-        // backgroundColor: colorPalette.sand,
+        backgroundColor: colorPalette.sand,
         borderRadius: 10,
 
     },
@@ -49,8 +49,8 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         borderWidth: 1,
         gap: 30,
         borderRadius: 10,
-        padding: 10,
-        marginVertical: 10
+        padding: screenContext.isPortrait ? height * 0.01 : height * 0.02,
+        marginVertical: 10,
     },
     logo: {
         resizeMode: 'contain',

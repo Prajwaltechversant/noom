@@ -19,6 +19,8 @@ import CustomButton from '../../../components/button/customButton';
 import { removeData } from '../../../redux/slices/onBoardingAnswers';
 import { deleteState } from '../../../redux/slices/planSlice';
 import { removeSurveyProgress } from '../../../redux/slices/surveyProgressSlice/surveySlice';
+import { ActivityIndicator } from 'react-native-paper';
+import ActivityLoader from '../../../components/ActivityLoader';
 
 type Form = {
   lname: string | undefined;
@@ -40,10 +42,25 @@ const UserProfile = () => {
   const navigation: any = useNavigation();
   const dispatch = useAppDispatch();
   const [profileData, setProfileData] = useState<any>()
+  const [image, setImage] = useState<undefined | string>('')
+  const [loading, setLoading] = useState(true)
 
 
+
+
+  const getImageFromStorage = async () => {
+    const res = await storage().ref(`Users/${currentUid}/profile`).getDownloadURL();
+    if (res) {
+      setImage(res)
+
+    } else {
+      setImage(undefined)
+    }
+    
+  }
 
   useEffect(() => {
+    getImageFromStorage()
     const subscriber = firestore()
       .collection(`UserData/${currentUid}/profile`)
       .onSnapshot(documentSnapshot => {
@@ -59,9 +76,14 @@ const UserProfile = () => {
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.profileContainer}>
-        <View>
-          <Image source={{ uri: profileData?.image ? profileData.image : 'https://th.bing.com/th/id/OIP.w4xdC_D4ZatjQpDeBBbaFQAAAA?rs=1&pid=ImgDetMain' }} style={screenStyles.profileImage} />
+        <View >
+          <Image source={{ uri: image ? image : 'https://i0.wp.com/toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png' }} style={screenStyles.profileImage}
+            onLoad={() => setLoading(false)}
+          />
         </View>
+        {loading && <View style={[screenStyles.profileImage, { justifyContent: 'center', alignItems: 'center', position: 'absolute' }]}><ActivityLoader /></View>}
+
+
         <Text style={textStyle.headingText}>{fullName}</Text>
         <Text style={textStyle.labelText}>{profileData?.bio}</Text>
       </View>
