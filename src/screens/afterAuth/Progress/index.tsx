@@ -12,6 +12,7 @@ import { staticVariables } from '../../../preferences/staticVariable';
 import styles from './style';
 
 const DailyProgress = ({ route }: any) => {
+
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
@@ -25,6 +26,8 @@ const DailyProgress = ({ route }: any) => {
   const data = route.params.item
   const [unit, setUnit] = useState(staticVariables.EMPTY_STRING)
 
+
+
   useEffect(() => {
     firestore().collection('dailyProgress').where('id', '==', data[0].id)
       .get().then(i => {
@@ -34,7 +37,7 @@ const DailyProgress = ({ route }: any) => {
 
   }, [])
   let total = 0
-  const cal = data.map((i: any) => { total = total + i.data.count })
+  // const cal = data.map((i: any) => { total = total + i.data.count })
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.headingText}>{data[0].title}</Text>

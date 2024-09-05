@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity, TouchableOpacityBase, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { AppKilledPlaybackBehavior, Capability } from 'react-native-track-player';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
@@ -33,21 +33,14 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
 
 
 
+
+  // function to initialize player 
   const setupPlayerReady = async () => {
     try {
       const isSetup = await setupPlayer();
-      if (isSetup) {
-        await TrackPlayer.add({
-          id: item.id,
-          url: item?.audio,
-          title: item.title,
-          artist: 'Track Artist',
-          artwork: '<https://example.com/track.jpg>',
-        });
-      }
       setIsPlayerReady(isSetup);
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
 
@@ -66,10 +59,22 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
         url: audio,
         title: item.title,
         artist: 'Track Artist',
-        artwork: '<https://example.com/track.jpg>',
+        artwork: require('../../../assets/images/logo/ic_launcher.png'),
       });
       await TrackPlayer.play();
+      TrackPlayer.updateOptions({
+        android: {
+          appKilledPlaybackBehavior: AppKilledPlaybackBehavior.ContinuePlayback,
+
+        },
+        notificationCapabilities: [
+          Capability.Pause, Capability.SeekTo
+        ],
+
+      });
     } catch (error) {
+      // Alert.alert((error as Error).message)
+
     }
   };
 

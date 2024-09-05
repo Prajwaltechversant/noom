@@ -14,7 +14,7 @@ const ActivityLoader: React.FC<Props> = ({ ...props }) => {
         isPortrait ? height : width,
     );
     return (
-        <ActivityIndicator  {...props} />
+        <ActivityIndicator  {...props} size={30} />
     )
 }
 

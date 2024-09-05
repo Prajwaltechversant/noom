@@ -15,7 +15,6 @@ const MyArticleScreen = () => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
-
   const screenStyles = styles(
     screenContext,
     isPortrait ? width : height,
@@ -25,6 +24,9 @@ const MyArticleScreen = () => {
   const currentUid = auth().currentUser?.uid;
   const [allRticles, setAllArticles] = useState(staticVariables.EMPTY_ARRAY)
 
+
+
+  // listener to fetch saved articles
   useEffect(() => {
     const subscriber = firestore()
       .collection(`UserData/${currentUid}/savedArticles`)
@@ -36,13 +38,14 @@ const MyArticleScreen = () => {
   }, []);
 
 
+
+  // function to delete artcle from userData db
   const handleDelete = async (id: string) => {
     try {
       const querySnapshot = await firestore()
         .collection(`UserData/${currentUid}/savedArticles`)
         .where('id', '==', id)
         .get();
-
       if (!querySnapshot.empty) {
         await Promise.all(querySnapshot.docs.map(doc => doc.ref.delete()));
         showMessage({
@@ -51,9 +54,11 @@ const MyArticleScreen = () => {
         });
       }
     } catch (error) {
-      Alert.alert((error as Error).message)
+      // Alert.alert((error as Error).message)
     }
   };
+
+
   return (
     <View style={screenStyles.container}>
       <FlatList
@@ -62,7 +67,6 @@ const MyArticleScreen = () => {
         renderItem={({ item }: any) => <CourseItem item={item} isArticle handleDelete={() => handleDelete(item.id)} />}
         ListEmptyComponent={
           <NoDataComponent />
-
         }
       />
 

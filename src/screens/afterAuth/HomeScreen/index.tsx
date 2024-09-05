@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, BackHandler } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth';
@@ -16,10 +16,10 @@ import { staticVariables } from '../../../preferences/staticVariable';
 import CourseItem from '../../../components/HomScreen components/course box';
 import DayItem from '../../../components/HomScreen components/dayItemComponent';
 import styles from './style';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import HeaderTab from '../../../components/headerTab';
 
-const Home: React.FC = () => {
+const Home: React.FC = ({ route }: any) => {
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait } = screenContext;
   const screenStyles = styles(
@@ -44,6 +44,7 @@ const Home: React.FC = () => {
   const [dailyProgressData, setDailyProgressData] = useState<any[]>([]);
   const [audios, setAudios] = useState([])
   const navigation = useNavigation()
+
 
 
 
@@ -218,6 +219,32 @@ const Home: React.FC = () => {
       Alert.alert((error as Error).message)
     }
   };
+
+
+  //backhandler
+  useFocusEffect(
+    React.useCallback(() => {
+      const backAction = () => {
+        Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          { text: 'YES', onPress: () => BackHandler.exitApp() ,isPreferred:true},
+        ]);
+        return true;
+      };
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+
+      return () => backHandler.remove();
+    }, [])
+  );
+
+
 
 
   return (

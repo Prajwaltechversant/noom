@@ -21,6 +21,9 @@ const EChartComponent = () => {
     isPortrait ? height : width,
   );
   const state = useAppSelector(state => state.onBoarding)
+
+  const dummyUserWeights = [state.userWeight + 2];
+  console.log(state.userWeight + 2)
   const option = {
     title: {
       text: staticVariables.EMPTY_STRING,
@@ -52,7 +55,7 @@ const EChartComponent = () => {
       {
         type: 'category',
         boundaryGap: true,
-        data: ['Month1', '', '', '', '', '', 'Month6'],
+        data: ['Month1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month6'],
       },
     ],
     yAxis: [
@@ -70,7 +73,7 @@ const EChartComponent = () => {
           focus: 'series',
         },
         smooth: true,
-        data: [state.userWeight, state.userWeight - 5, state.userWeight - 10, state.userWeight - 15, state.userWeight - 20, state.userWeight - 25, state.idealWeight],
+        data: [state.userWeight, state.userWeight - 5, state.userWeight - 10, state.userWeight - 15, state.userWeight - 18, state.idealWeight],
       },
       {
         name: 'Without Diet',
@@ -84,7 +87,7 @@ const EChartComponent = () => {
           focus: 'series',
         },
         smooth: true,
-        data: [state.userWeight, state.userWeight, state.userWeight - 2, state.userWeight + 2, state.userWeight - 2, state.userWeight + 2, state.userWeight],
+        data: [state.userWeight, state.userWeight, Number(state.userWeight) + 4, Number(state.userWeight) + 2, state.userWeight - 2, Number(state.userWeight) + 5],
       },
     ],
   };
@@ -124,6 +127,8 @@ const EChartComponent = () => {
           style={screenStyles.chartContainer}
           setBuiltInZoomControls={false}
           setDisplayZoomControls={false}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         />
       </View>
       <Text>

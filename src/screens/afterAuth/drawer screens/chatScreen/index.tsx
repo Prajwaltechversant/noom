@@ -33,36 +33,8 @@ const ChatScreen: React.FC = ({ route }: any) => {
     const [isSending, setIsSending] = useState(false)
 
 
-    // const sendMessage = async () => {
-    //     try {
-    //         if (message && message.length > 0) {
-    //             if (!isAdmin) {
-    //                 await chatRef.add({
-    //                     message: message,
-    //                     sendTime: firebase.firestore.Timestamp.now(),
-    //                     fromId: currentUid,
-    //                     toId: admin_uid,
-    //                     role: 'user',
-    //                     userID: currentUid,
-    //                     email: currentEmail
-    //                 })
-    //             } else {
-    //                 await chatRef.add({
-    //                     message: message,
-    //                     sendTime: firebase.firestore.Timestamp.now(),
-    //                     fromId: currentUid,
-    //                     toId: userID,
-    //                     role: 'admin',
-    //                 })
-    //             }
-    //             setMessage(staticVariables.EMPTY_STRING)
-    //             listRef.current?.scrollToEnd()
-    //         }
-    //     } catch (error) {
-    //         Alert.alert((error as Error).message)
-    //     }
-    // }
 
+    // function to send message
     const sendMessage = async () => {
         try {
             if (message && message.length > 0) {
@@ -85,8 +57,6 @@ const ChatScreen: React.FC = ({ route }: any) => {
                                 id: currentUid
                             });
                         setIsSending(false)
-
-
                     } else {
                         await firestore().collection(`Chats`).doc(currentUid)
                             .update({
@@ -101,9 +71,7 @@ const ChatScreen: React.FC = ({ route }: any) => {
                                 })
                             });
                         setIsSending(false)
-
                     }
-
                 } else {
                     await firestore().collection(`Chats`).doc(userID)
                         .update({
@@ -118,7 +86,6 @@ const ChatScreen: React.FC = ({ route }: any) => {
                             })
                         });
                     setIsSending(false)
-
                 }
                 setMessage(staticVariables.EMPTY_STRING)
                 listRef.current?.scrollToEnd()
@@ -129,23 +96,22 @@ const ChatScreen: React.FC = ({ route }: any) => {
     }
 
 
+
+
+    // listener fetch messages
     useEffect(() => {
         const subscriber = firestore()
             .collection('Chats')
             .doc(isAdmin ? userID : currentUid)
-            // .where(Filter.or(
-            //     Filter('fromId', '==', userID ? userID : currentUid),
-            //     Filter('toId', '==', userID ? userID : currentUid)
-            // ))
             .onSnapshot(documentSnapshot => {
                 const resData: any = documentSnapshot.data()
-                const filtered = resData.messages.sort((a: any, b: any) => a.sendTime - b.sendTime)
+                const filtered = resData?.messages?.sort((a: any, b: any) => a.sendTime - b.sendTime)
                 SetAllMessages(filtered)
+                listRef.current?.scrollToEnd()
             });
         return () => subscriber();
     }, []);
 
-    console.log(isSending)
     return (
         <View style={screenStyles.container}>
             <View style={screenStyles.messageContainer}>
@@ -155,9 +121,11 @@ const ChatScreen: React.FC = ({ route }: any) => {
                     renderItem={({ item }) => (
                         <ChatItem item={item} currentUid={currentUid} />
                     )}
+
+                    showsVerticalScrollIndicator={false}
                 />
             </View>
-            <ChatBox  setMessage={setMessage} sendMessage={sendMessage} message={message} isMessageSending={isSending} />
+            <ChatBox setMessage={setMessage} sendMessage={sendMessage} message={message} isMessageSending={isSending} />
         </View>
     )
 }

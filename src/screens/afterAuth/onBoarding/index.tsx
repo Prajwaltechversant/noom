@@ -13,6 +13,7 @@ import { useScreenContext } from '../../../context/screenContext';
 import { addSurveyData } from '../../../redux/slices/questionsSlice';
 import Loader from '../../../components/Loader';
 import styles from './style';
+import { Alert, BackHandler } from 'react-native';
 
 const OnboardingScreen = () => {
   const screenContext = useScreenContext();
@@ -30,7 +31,7 @@ const OnboardingScreen = () => {
   );
   const [currentScreenIndex, setCurrentScreenIndex] = useState(
     surveyProgress.currentScreen,
-  );                      
+  );
   const [surveyData, setSurveyData] = useState<any[]>(surveyQuestion);
   const [section, setSection] = useState<any>();
   const [loading, setLoading] = useState(true);
@@ -40,6 +41,8 @@ const OnboardingScreen = () => {
   const [visibleModal, setVisibleModal] = React.useState(false);
   const dispatch = useAppDispatch();
 
+
+  //function to fetch survey data from db
   const getData = async () => {
     if (surveyData.length === 0) {
       firestore()
@@ -167,7 +170,33 @@ const OnboardingScreen = () => {
     );
   };
 
+
+
+  //Backhandler
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        { text: 'YES', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+
   if (loading) return <Loader />;
+
+
   switch (section?.type) {
     case 'button':
     case 'radio':

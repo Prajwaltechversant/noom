@@ -7,6 +7,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
 
         alignItems: 'center',
         backgroundColor: colorPalette.white,
+        flex:1
 
     },
     keyboardAvoidingContainer: {
@@ -19,6 +20,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         justifyContent: 'space-evenly',
         alignItems: 'center',
         width: width * 0.8,
+        alignSelf:'center'
     },
     profileIcon: {
         width: screenContext.isPortrait ? width * 0.2 : width * 0.1,

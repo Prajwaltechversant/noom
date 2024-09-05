@@ -1,4 +1,4 @@
-import { View, Text, KeyboardAvoidingView, Alert, Image, StyleSheet, Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Alert, Image, StyleSheet, Keyboard, Platform, TouchableWithoutFeedback, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import FlashMessage from "react-native-flash-message";
@@ -47,6 +47,8 @@ const ProfileScreen1 = () => {
   const navigation: any = useNavigation();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false)
+
+  // function to handle image Picker
   const handleImagePicker = async () => {
     try {
       const result: any = await launchImageLibrary({ mediaType: 'photo' });
@@ -55,6 +57,9 @@ const ProfileScreen1 = () => {
     } catch (error) {
     }
   };
+
+
+  // function to upadate user profile status
   const updateAuthStatus = async () => {
     try {
       await firestore().collection(`UserData/${currentUid}/profileCompletionStatus`).doc(currentUid).set({
@@ -66,6 +71,8 @@ const ProfileScreen1 = () => {
     }
   }
 
+
+  // function to save userdata to userData db
   const handleSubmit = async () => {
     const { fname, lname } = formData;
     try {
@@ -94,6 +101,8 @@ const ProfileScreen1 = () => {
     }
   };
 
+
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
@@ -111,7 +120,7 @@ const ProfileScreen1 = () => {
   if (loading) return <ActivityLoader style={StyleSheet.absoluteFill} />
 
   return (
-    <TouchableWithoutFeedback style={screenStyles.container} onPress={Keyboard.dismiss} >
+    <Pressable style={screenStyles.container} onPress={Keyboard.dismiss} >
       <KeyboardAvoidingView keyboardVerticalOffset={0}
         behavior={'padding'}
         enabled
@@ -167,7 +176,7 @@ const ProfileScreen1 = () => {
           </Text>
         </>
       </KeyboardAvoidingView>
-    </TouchableWithoutFeedback >
+    </Pressable >
   );
 };
 

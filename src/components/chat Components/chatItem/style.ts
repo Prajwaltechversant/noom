@@ -5,12 +5,12 @@ import { colorPalette } from "../../../assets/colorpalette/colorPalette";
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
 
     container: {
-        marginVertical: 15,
+        marginVertical: screenContext ? height * 0.01 : width * 0.01,
         height: 'auto',
         justifyContent: 'center',
         width: 'auto',
         borderRadius: 10,
-        paddingHorizontal: screenContext.isPortrait ? width * 0.08 : height * 0.02,
+        padding: screenContext.isPortrait ? width * 0.008 : height * 0.008,
         elevation: 1,
         margin: 1
 

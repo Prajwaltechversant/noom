@@ -1,24 +1,12 @@
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import { SvgChart, SVGRenderer } from '@wuba/react-native-echarts';
-import * as echarts from 'echarts/core';
-import { useRef, useEffect, useState } from 'react';
-import {
-    LineChart
-} from 'echarts/charts';
-import {
-    TitleComponent,
-    GridComponent,
-    LegendComponent,
-    TooltipComponent,
-    DataZoomComponent,
-} from 'echarts/components';
+import React, { useRef, useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { ActivityIndicator, Button, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
+import { Alert, BackHandler, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useScreenContext } from '../../../context/screenContext';
 import textStyle from '../../../style/text/style';
-import { useNavigation } from '@react-navigation/native';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import CustomComponentModal from '../../../components/modal/customComponentModal';
 import CustomScale from '../../../components/scale';
@@ -26,46 +14,15 @@ import CustomButton from '../../../components/button/customButton';
 import { addToDailyProgress2 } from '../../../services/dailyprogress';
 import ActivityLoader from '../../../components/ActivityLoader';
 import { staticVariables } from '../../../preferences/staticVariable';
+import ChartComponent from '../../../module/echart/echartForWeightGraph';
 import styles from './style';
 
 
-echarts.use([
-    TitleComponent,
-    TooltipComponent,
-    GridComponent,
-    SVGRenderer,
-    LineChart,
-    LegendComponent,
-    DataZoomComponent,
-]);
 
-function ChartComponent({ option }: { option: any }) {
-    const screenContext = useScreenContext();
-    const { width, height, isPortrait } = screenContext;
-    const screenStyles = styles(
-        screenContext,
-        isPortrait ? width : height,
-        isPortrait ? height : width,
-    );
-    const chartRef = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-        let chart: echarts.ECharts | null = null;
-        if (chartRef.current) {
-            chart = echarts.init(chartRef.current, 'light', {
-                renderer: 'svg',
-                width: width,
-                height: screenContext.isPortrait ? height * 0.78 : height * 0.6,
-            });
-            chart.setOption(option);
-        }
-        return () => chart?.dispose();
-    }, [option, width, height]);
-
-    return <ScrollView horizontal><SvgChart ref={chartRef} /></ScrollView>;
-}
 
 export default function WeighScreen() {
+
     const screenContext = useScreenContext();
     const { width, height, isPortrait } = screenContext;
     const screenStyles = styles(
@@ -82,35 +39,25 @@ export default function WeighScreen() {
     const [visible, setVisible] = useState(false)
     const [selectedValue, setSelctedvalue] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
-    const [confirmWeight, setConfirmWeight] = useState(false)
 
-    const fetchDailyProgressWeight = async () => {
+
+    // function to fetch current and idealweight of user from db
+    const fetchWeightDetails = async () => {
         try {
-            const res = await firestore()
-                .collection(`UserData/${currentUid}/dailyProgress`)
-                .where('id', '==', 'logweight')
-                .get()
-            const data = res.docs.map(i => i.data())
-            const sorted = data.sort((a, b) => a.addedDate.toDate().getTime() - b.addedDate.toDate().getTime());
-            const dateSet = sorted.map((item: any) => item.addedDate.toDate().toDateString());
-            const weightSet = sorted.map((item: any) => item.data.count);
-            if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
-                setAllData([weight, ...weightSet]);
-                setAllDate(['first', ...dateSet]);
-
-            } else {
-                setAllData(weightSet);
-                setAllDate(dateSet);
-
-            }
+            const snapshot = await firestore().collection(`UserData/${currentUid}/survey`).get();
+            const data = snapshot.docs.map(doc => doc.data());
+            setWeight(data[0]?.userWeight || 0);
+            setWeightGoal(data[0]?.idealWeight || 0);
         } catch (error) {
-            Alert.alert((error as Error).message)
-
+            // Alert.alert((error as Error).message)
         }
-    }
-
-
+    };
     useEffect(() => { fetchWeightDetails() }, [])
+
+
+
+
+    //listener to fetch weight details
 
     useEffect(() => {
         const subscriber = firestore()
@@ -124,7 +71,6 @@ export default function WeighScreen() {
                 if (weightSet.length < 1) {
                     Alert.alert("Please Log Weight to see the graph")
                 }
-
                 if (weight !== 0 && weightSet.length > 0 && weightSet[0] !== weight) {
                     setAllData([weight, ...weightSet]);
                     setAllDate(['first', ...dateSet]);
@@ -132,7 +78,6 @@ export default function WeighScreen() {
                 } else {
                     setAllData(weightSet);
                     setAllDate(dateSet);
-
                 }
             });
         setIsLoading(false)
@@ -141,6 +86,8 @@ export default function WeighScreen() {
     }, [weight, weightGoal]);
 
 
+
+    //fucntion to add weight
     const addWeight = async () => {
         try {
             const ref = await firestore().collection('dailyProgress')
@@ -150,11 +97,12 @@ export default function WeighScreen() {
             await addToDailyProgress2(docs[0], selectedValue)
             setVisible(!visible)
             setSelctedvalue(0)
-            await fetchDailyProgressWeight()
         } catch (error) {
             Alert.alert((error as Error).message)
         }
     }
+
+
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => {
@@ -170,16 +118,31 @@ export default function WeighScreen() {
         })
     }, []);
 
-    const fetchWeightDetails = async () => {
-        try {
-            const snapshot = await firestore().collection(`UserData/${currentUid}/survey`).get();
-            const data = snapshot.docs.map(doc => doc.data());
-            setWeight(data[0]?.userWeight || 0);
-            setWeightGoal(data[0]?.idealWeight || 0);
-        } catch (error) {
-            Alert.alert((error as Error).message)
-        }
-    };
+
+
+    //backhandler
+    useFocusEffect(
+        React.useCallback(() => {
+            const backAction = () => {
+                Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+                    {
+                        text: 'Cancel',
+                        onPress: () => null,
+                        style: 'cancel',
+                    },
+                    { text: 'YES', onPress: () => BackHandler.exitApp() },
+                ]);
+                return true;
+            };
+            const backHandler = BackHandler.addEventListener(
+                'hardwareBackPress',
+                backAction,
+            );
+
+            return () => backHandler.remove();
+        }, [])
+    );
+
 
     const option = {
         title: {

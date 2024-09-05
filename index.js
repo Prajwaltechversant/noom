@@ -8,6 +8,8 @@ import { name as appName } from './app.json';
 import TrackPlayer from 'react-native-track-player';
 import { playBackService } from './musicPlayerService';
 
+
+// register playbackservice
 TrackPlayer.registerPlaybackService(() => playBackService);
 
 AppRegistry.registerComponent(appName, () => App);

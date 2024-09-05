@@ -50,7 +50,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({ section, handleNext }) => {
   const dispatch = useAppDispatch();
   const qid = section?.id;
 
-  
+
   useEffect(() => {
     let arr: any = [];
     if (section.type === 'checkbox') {
@@ -98,7 +98,7 @@ const ButtonGroupScreen: React.FC<OnBoardProps> = ({ section, handleNext }) => {
           renderItem={({ item, index }) =>
             section.type != 'checkbox' ? (
               <CustomButton
-                btnWidth={width * 0.8}
+                btnWidth={screenContext.isPortrait ? width * 0.8 : width * 0.4}
                 btnHeight={isPortrait ? width * 0.2 : width * 0.08}
                 btnColor={
                   isPressed === item.label

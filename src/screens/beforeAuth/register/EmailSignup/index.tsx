@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Pressable } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './style';
 import { useScreenContext } from '../../../../context/screenContext';
@@ -36,13 +36,14 @@ const EmailSignup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
   const dispatch = useAppDispatch()
+  
   const handleStateUpdate = (
     input: keyof SignupWithEmailtype,
     value: string,
   ) => {
     setFormData(prevFormData => ({
       ...prevFormData,
-      [input]: value,
+      [input]: value.trim(),
     }));
     dispatch(addData(formData));
   };
@@ -86,45 +87,47 @@ const EmailSignup = () => {
     });
   }, [formData, error, navigation]);
   return (
-    <KeyboardAvoidingView style={screenStyles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
-    >
-      <Text style={textStyle.headingText}>Create Your Account</Text>
-      <View>
-        <CustomTextInputComponent
-          backgroundColor="white"
-          label="Email"
-          textColor="Black"
-          onChangeText={e => handleStateUpdate('email', e)}
-          error={error?.emailErr ? true : false}
-          value={formData.email}
+    <Pressable onPress={() => Keyboard.dismiss()} style={screenStyles.container}>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+      >
+        <Text style={textStyle.headingText}>Create Your Account</Text>
+        <View>
+          <CustomTextInputComponent
+            backgroundColor="white"
+            label="Email"
+            textColor="Black"
+            onChangeText={e => handleStateUpdate('email', e)}
+            error={error?.emailErr ? true : false}
+            value={formData.email}
 
-        />
-        {error.emailErr && (
-          <Text style={textStyle.errorText}>{error.emailErr}</Text>
-        )}
+          />
+          {error.emailErr && (
+            <Text style={textStyle.errorText}>{error.emailErr}</Text>
+          )}
 
-        <CustomTextInputComponent
-          backgroundColor="white"
-          label="Password"
-          textColor="Black"
-          inputMode="text"
-          value={formData.password}
-          secureTextEntry={showPassword}
-          onChangeText={e => handleStateUpdate('password', e)}
-          error={error?.passwordErr ? true : false}
-          right={
-            <TextInput.Icon
-              icon={showPassword ? 'eye-off' : 'eye'}
-              onPress={() => setShowPassword(!showPassword)}
-            />
-          }
-        />
-        {error.passwordErr && (
-          <Text style={textStyle.errorText}>{error.passwordErr}</Text>
-        )}
-      </View>
-    </KeyboardAvoidingView>
+          <CustomTextInputComponent
+            backgroundColor="white"
+            label="Password"
+            textColor="Black"
+            inputMode="text"
+            value={formData.password}
+            secureTextEntry={showPassword}
+            onChangeText={e => handleStateUpdate('password', e)}
+            error={error?.passwordErr ? true : false}
+            right={
+              <TextInput.Icon
+                icon={showPassword ? 'eye-off' : 'eye'}
+                onPress={() => setShowPassword(!showPassword)}
+              />
+            }
+          />
+          {error.passwordErr && (
+            <Text style={textStyle.errorText}>{error.passwordErr}</Text>
+          )}
+        </View>
+      </KeyboardAvoidingView>
+    </Pressable>
   );
 };
 

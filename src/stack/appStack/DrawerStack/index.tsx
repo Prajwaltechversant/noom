@@ -10,11 +10,14 @@ import ChatScreen from '../../../screens/afterAuth/drawer screens/chatScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import { log } from 'echarts/types/src/util/log.js';
 
 const Drawer = createDrawerNavigator();
 
 
 const DrawerStack = ({ route }: any) => {
+  const navigation: any = useNavigation()
   return (
     <Drawer.Navigator
     >
@@ -26,6 +29,12 @@ const DrawerStack = ({ route }: any) => {
           drawerIcon: () => <FontAwesome name="home" color={'black'} size={20} />,
           headerRight: () => <HeaderTab />,
         }}
+        listeners={{
+          drawerItemPress: (e) => {
+            navigation.popToTop()
+          }
+        }}
+
       />
       <Drawer.Screen
         name={screenNames.Message_Screen}
@@ -34,7 +43,8 @@ const DrawerStack = ({ route }: any) => {
           drawerIcon: () => (
             <MaterialIcons name="message" color={'black'} size={20} />
           ),
-          title: 'Contact Us'
+          title: 'Contact Us',
+
         }}
       />
       <Drawer.Screen
@@ -42,7 +52,7 @@ const DrawerStack = ({ route }: any) => {
         component={MyArticleScreen}
         options={{
           drawerIcon: () => <Ionicons name="bookmarks" color={'black'} size={20} />,
-          title: 'Articles'
+          title: 'Articles',
         }}
 
       />

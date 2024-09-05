@@ -13,6 +13,7 @@ import { screenNames, staticVariables } from '../../../preferences/staticVariabl
 import { useDispatch } from 'react-redux';
 import { addPlanData } from '../../../redux/slices/planSlice';
 import auth from '@react-native-firebase/auth';
+import ImageSkeltonComponent from '../../../components/skeltons/imageSkelton';
 
 const PlanScreen = () => {
   const screenContext = useScreenContext();
@@ -27,6 +28,7 @@ const PlanScreen = () => {
   const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
   const navigation: any = useNavigation();
   const [planId, setPlanId] = useState<string | undefined>();
+  const [isImageLoading, setIsImageLoading] = useState(true)
   const currentUId = auth().currentUser?.uid;
 
   const dispatch = useDispatch();
@@ -92,9 +94,15 @@ const PlanScreen = () => {
             <Card.Content style={screenStyles.cardBody}>
               <View style={screenStyles.imageContainer}>
                 <Image
-                  source={{ uri: item.image }}
+                  source={{ uri: item.image ? item.image : 'https://th.bing.com/th/id/OIP.UTrS1TkhQrRJtvhu-0RC-gHaHa?rs=1&pid=ImgDetMain' }}
                   style={{ width: 50, height: 50, borderRadius: 25 }}
+                  onLoad={() => setIsImageLoading(false)}
                 />
+
+                {
+                  isImageLoading && <View style={{ position: 'absolute' }}>
+                    <ImageSkeltonComponent width={isPortrait ? width * 0.1 : height * 0.1} height={isPortrait ? width * 0.1 : height * 0.1} /></View>
+                }
               </View>
               <Text variant="titleLarge" style={[screenStyles.title, { textTransform: 'capitalize', fontWeight: '600' }]}>
                 {item.title || 'Card title'}

@@ -16,6 +16,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         height: height * .4,
         alignItems: 'center',
         justifyContent: 'center',
+        alignSelf:'center',
     },
     profileImage: {
         width: width * .3,

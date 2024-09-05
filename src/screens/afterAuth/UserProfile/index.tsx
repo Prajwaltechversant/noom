@@ -1,4 +1,4 @@
-import { View, Text, KeyboardAvoidingView, Alert, Image } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Alert, Image, BackHandler } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
@@ -11,7 +11,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../../redux/hook';
 import { updateProfileStatus } from '../../../redux/slices/authStatus';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -21,6 +21,7 @@ import { deleteState } from '../../../redux/slices/planSlice';
 import { removeSurveyProgress } from '../../../redux/slices/surveyProgressSlice/surveySlice';
 import { ActivityIndicator } from 'react-native-paper';
 import ActivityLoader from '../../../components/ActivityLoader';
+import ImageSkeltonComponent from '../../../components/skeltons/imageSkelton';
 
 type Form = {
   lname: string | undefined;
@@ -46,19 +47,19 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true)
 
 
-
-
+  // function fetch user profile image from firebase storage
   const getImageFromStorage = async () => {
     const res = await storage().ref(`Users/${currentUid}/profile`).getDownloadURL();
     if (res) {
       setImage(res)
-
     } else {
       setImage(undefined)
     }
-    
   }
 
+
+
+  // to fetch userData from firestore userData db
   useEffect(() => {
     getImageFromStorage()
     const subscriber = firestore()
@@ -71,20 +72,42 @@ const UserProfile = () => {
     return () => subscriber();
   }, []);
 
-  const fullName = profileData?.fname + ' ' + profileData?.lname
+
+  // Backhandler
+  useFocusEffect(
+    React.useCallback(() => {
+      const backAction = () => {
+        Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          { text: 'YES', onPress: () => BackHandler.exitApp() },
+        ]);
+        return true;
+      };
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+
+      return () => backHandler.remove();
+    }, [])
+  );
 
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.profileContainer}>
-        <View >
-          <Image source={{ uri: image ? image : 'https://i0.wp.com/toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png' }} style={screenStyles.profileImage}
-            onLoad={() => setLoading(false)}
-          />
+        <View>
+          <View>
+            <Image source={{ uri: image }} style={screenStyles.profileImage}
+              onLoad={() => setLoading(false)}
+            />
+          </View>
+          {loading && <View style={[{ justifyContent: 'center', alignItems: 'center', position: 'absolute', }]}><ImageSkeltonComponent width={width * .3} height={width * .3} borderRadius={100} /></View>}
         </View>
-        {loading && <View style={[screenStyles.profileImage, { justifyContent: 'center', alignItems: 'center', position: 'absolute' }]}><ActivityLoader /></View>}
-
-
-        <Text style={textStyle.headingText}>{fullName}</Text>
+        <Text style={textStyle.headingText}>{profileData?.fname}</Text>
         <Text style={textStyle.labelText}>{profileData?.bio}</Text>
       </View>
 

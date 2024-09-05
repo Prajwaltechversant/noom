@@ -11,6 +11,11 @@ interface Props {
 const DatePickerComponent: React.FC<Props> = ({ setAnswer }) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [isDateSelected, setIsdateSelected] = useState(false)
+
+
+
+
   return (
     <>
       <CustomTextInputComponent
@@ -20,7 +25,7 @@ const DatePickerComponent: React.FC<Props> = ({ setAnswer }) => {
         }
         mode="outlined"
         editable={false}
-        placeholder={date.toDateString()}
+        placeholder={!isDateSelected ? 'Please pick the date' : date.toDateString()}
         textColor={'black'}
       />
       <DatePicker
@@ -31,6 +36,7 @@ const DatePickerComponent: React.FC<Props> = ({ setAnswer }) => {
           setOpen(false);
           setDate(date);
           setAnswer(date.toDateString());
+          setIsdateSelected(true)
         }}
         onCancel={() => {
           setOpen(false);

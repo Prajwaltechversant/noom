@@ -8,14 +8,14 @@ import styles from './style';
 interface Props {
     width?: number;
     height?: number;
+    borderRadius?:number
 }
 
-const ImageSkeltonComponent: React.FC<Props> = ({ height, width }) => {
+const ImageSkeltonComponent: React.FC<Props> = ({ height, width,borderRadius=0 }) => {
     return (
-        <View style={{borderWidth:1,justifyContent:'center'}}>
-            <Skeleton width={width ? width : 'auto'} height={height ? height : 'auto'} />
+        <View style={{ justifyContent: 'center',}}>
+            <Skeleton width={width ? width : 'auto'} height={height ? height : 'auto'} style={{borderRadius}}/>
             <View style={styles.activityLoader}><ActivityIndicator /></View>
-
         </View>
     )
 }

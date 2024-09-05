@@ -1,4 +1,4 @@
-import { Text } from 'react-native';
+import { Alert, BackHandler, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../../screens/afterAuth/HomeScreen';
@@ -10,7 +10,7 @@ import { admin_uid } from "@env"
 import auth from '@react-native-firebase/auth';
 import AdminScreens from '../../../screens/afterAuth/admin';
 import Entypo from 'react-native-vector-icons/Entypo'
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useScrollToTop } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 import textStyle from '../../../style/text/style';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
@@ -29,11 +29,16 @@ const Stack = createNativeStackNavigator();
 export const HomeNativeStack = () => {
   const navigation = useNavigation();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+
+    >
       <Stack.Screen name={screenNames.HomeScreen} component={Home}
         options={{
-          headerShown: false
+          headerShown: false,
+          customAnimationOnGesture: true
         }}
+
+
       />
       <Stack.Screen name={screenNames.courseCarouselPage} component={Coursecarousel}
         options={{
@@ -61,7 +66,8 @@ export const HomeNativeStack = () => {
 const HomeTabStack = ({ route }: any) => {
   const currentUid = auth().currentUser?.uid;
   const [isAdmin, setIsAdmin] = useState(false)
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
+  const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
 
@@ -69,11 +75,11 @@ const HomeTabStack = ({ route }: any) => {
       setIsAdmin(true)
     } else {
       setIsAdmin(false)
-
-
-
     }
   }, [])
+
+
+
   return (
     <Tab.Navigator
     >
@@ -86,9 +92,13 @@ const HomeTabStack = ({ route }: any) => {
               ),
               title: 'Home',
               headerShown: false,
-
             }}
-
+            listeners={{
+              tabPress: ({ preventDefault, type, target }) => {
+                preventDefault()
+                navigation.goBack()
+              }
+            }}
 
           />
           <Tab.Screen name={screenNames.WeighGraphScreen} component={WeighScreen}
@@ -111,7 +121,6 @@ const HomeTabStack = ({ route }: any) => {
 
             }}
           />
-          {/* UserProfile */}
         </>
         :
         <Tab.Screen name={screenNames.ChatScreen} component={AdminScreens}

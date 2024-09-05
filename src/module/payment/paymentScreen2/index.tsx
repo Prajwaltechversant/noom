@@ -2,7 +2,7 @@ import { View, ScrollView, TouchableOpacity, FlatList, KeyboardAvoidingView, Pla
 import React, { useEffect, useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import EChartFinal from '../../echart/echartfinal';
+import EChartFinal from '../../echart/echart2';
 import textStyle from '../../../style/text/style';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';

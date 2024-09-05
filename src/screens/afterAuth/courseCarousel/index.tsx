@@ -23,8 +23,9 @@ const Coursecarousel = ({ route }: any) => {
   );
   const navigation: any = useNavigation();
   const ref = useRef<FlatList>(null);
+  const containerFlatListRef = useRef<FlatList>(null)
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [buttonLabel, setButtonLabel] = useState('Continue');
+  const [buttonLabel, setButtonLabel] = useState('Go Back');
   const currentUid = auth().currentUser?.uid;
   const data = route.params.data;
   const id = route.params.id;
@@ -35,26 +36,17 @@ const Coursecarousel = ({ route }: any) => {
   const artiCle = route.params
 
 
-  const handleScroll = () => {
-    let nextIndex = currentIndex + 1;
-    if (nextIndex < data.length) {
-      setCurrentIndex(nextIndex);
-      ref.current?.scrollToIndex({ index: nextIndex });
+  const handleSubmit = () => {
+    if (!isCompleted) {
+      firestore()
+        .collection(`UserData/${currentUid}/dailyCourse`)
+        .doc(id)
+        .update({ isCompleted: true })
+        .then(() => navigation.navigate(screenNames.HomeScreen))
+        .catch(error => Alert.alert((error as Error).message)
+        );
     } else {
-      if (!isCompleted) {
-        firestore()
-          .collection(`UserData/${currentUid}/dailyCourse`)
-          .doc(id)
-          .update({ isCompleted: true })
-          .then(() => navigation.navigate(screenNames.HomeScreen))
-          .catch(error => Alert.alert((error as Error).message)
-          );
-      } else {
-        navigation.navigate(screenNames.HomeScreen);
-      }
-    }
-    if (nextIndex === data.length - 1) {
-      setButtonLabel('Save and Go Back');
+      navigation.navigate(screenNames.HomeScreen);
     }
   };
 
@@ -73,9 +65,13 @@ const Coursecarousel = ({ route }: any) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={saveToArticle}>
-          <MaterialCommunityIcons name='bookmark' color={color} size={30} />
-        </TouchableOpacity>
+        <>
+          <TouchableOpacity onPress={saveToArticle}>
+            <MaterialCommunityIcons name='bookmark' color={color} size={30} />
+          </TouchableOpacity>
+
+        </>
+
       ),
     });
   }, [color, navigation]);
@@ -95,16 +91,26 @@ const Coursecarousel = ({ route }: any) => {
 
     return () => subscriber();
   }, [currentUid, id]);
+
+
+
   return (
     <>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        data={Array(1)}
-        renderItem={({ i }: any) => <View style={screenStyles.container}>
-          <FlatList
-            ref={ref}
-            data={data}
-            renderItem={({ item }) => (
+      <View style={screenStyles.container}>
+
+        <View style={screenStyles.pageNoIcon}>
+          <Text numberOfLines={1} style={{ color: 'white' }}>
+            {
+              currentIndex + 1 + ' '
+            }
+            / {data.length}
+          </Text>
+        </View>
+        <FlatList
+          ref={ref}
+          data={data}
+          renderItem={({ item, index }) => (
+            <ScrollView>
               <View style={screenStyles.eachItem}>
                 <View>
                   <Image
@@ -125,25 +131,39 @@ const Coursecarousel = ({ route }: any) => {
                   {item.todo}
                 </Text>
               </View>
-            )}
-            scrollEnabled={true}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>}
-      />
-      <View style={{ position: 'absolute', bottom: 0, alignSelf: 'center' }}>
-        <CustomButton
-          label={buttonLabel}
-          btnWidth={width * 0.4}
-          btnHeight={50}
-          btnColor={colorPalette.berry}
-          onPress={handleScroll}
-          labelColor="white"
-          borderRadius={10}
+            </ScrollView>
+          )}
+          scrollEnabled={true}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+          onScroll={(e) => {
+            const totalWidth = e.nativeEvent.layoutMeasurement.width
+            const x = e.nativeEvent.contentOffset.x
+            const index = Math.round(x / totalWidth)
+            if (index !== currentIndex) {
+              setCurrentIndex(index)
+            }
+            // containerFlatListRef.current?.scrollToIndex({ index: 0 })
+          }}
+          pagingEnabled={true}
         />
       </View>
+      {
+        currentIndex === data.length - 1 &&
+        <View style={{ position: 'absolute', bottom: 0, alignSelf: 'center' }}>
+          <CustomButton
+            label={isCompleted ? 'Go Back' : 'Save and GoBack'}
+            btnWidth={width * 0.4}
+            btnHeight={50}
+            btnColor={colorPalette.berry}
+            onPress={handleSubmit}
+            labelColor="white"
+            borderRadius={10}
+          />
+        </View>
+      }
     </>
   );
 };
