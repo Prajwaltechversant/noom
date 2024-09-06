@@ -31,8 +31,14 @@ const AdminScreens: React.FC = () => {
         const subscriber = firestore()
             .collection('Chats')
             .onSnapshot(documentSnapshot => {
-                const resData: any = documentSnapshot?.docs.map(i => i.data());
-                setAllRequests(resData)
+                const resData = documentSnapshot?.docs
+                let formatteddata = resData.map(i=>(
+                    {
+                        ...i.data(),
+                        uid:i.id   
+                    }
+                ))
+                setAllRequests(formatteddata as never)
             });
 
         return () => subscriber();
@@ -59,9 +65,9 @@ const AdminScreens: React.FC = () => {
                 renderItem={({ item, index }: any) => (
                     <View style={screenStyles.msgContainer}>
                         <CustomButton
-                            label={item.messages[0].email
+                            label={item.uid
                             }
-                            onPress={() => handleNavigation(item.id)}
+                            onPress={() => handleNavigation(item.uid)}
                             btnColor={colorPalette.salmon}
                             btnHeight={width * 0.1}
                             btnWidth={width * 0.8}

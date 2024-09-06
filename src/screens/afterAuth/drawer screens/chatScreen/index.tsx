@@ -1,142 +1,103 @@
-import { View, Text, Alert, FlatList } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { useScreenContext } from '../../../../context/screenContext';
-import styles from './style';
-import ChatItem from '../../../../components/chat Components/chatItem';
-import ChatBox from '../../../../components/chat Components/chat box';
-import firestore, { arrayUnion, Filter } from '@react-native-firebase/firestore';
+import { arrayUnion } from '@react-native-firebase/firestore'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
+import { Alert } from 'react-native'
+import { GiftedChat, GiftedChatProps, IMessage, Send, SendProps } from 'react-native-gifted-chat'
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
 import { admin_uid } from "@env"
-import { firebase } from '@react-native-firebase/auth';
-import { staticVariables } from '../../../../preferences/staticVariable';
-import { useNavigation } from '@react-navigation/native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
+export default function ChatScreen({ route }: any) {
 
 
+  const [allRequest, setAllRequest] = useState<IMessage[]>([])
+  const currentUid = auth().currentUser?.uid;
+  const currentEmail = auth().currentUser?.email;
+  const userID = route.params?.userId
+  const isAdmin = admin_uid === currentUid;
+  const chatRef = useRef<any>(null)
 
-
-const ChatScreen: React.FC = ({ route }: any) => {
-    const screenContext = useScreenContext();
-    const { width, fontScale, height, isPortrait, isTabletType, scale } =
-        screenContext;
-    const screenStyles = styles(
-        screenContext,
-        isPortrait ? width : height,
-        isPortrait ? height : width,
-    );
-    const currentUid = auth().currentUser?.uid;
-    const currentEmail = auth().currentUser?.email;
-    const userID = route.params?.userId
-    const isAdmin = admin_uid === currentUid
-    const [allMessages, SetAllMessages] = useState(staticVariables.EMPTY_ARRAY)
-    const chatRef = firestore().collection(`Chats`)
-    const [message, setMessage] = useState<string>(staticVariables.EMPTY_STRING)
-    const listRef = useRef<FlatList>(null)
-    const [isSending, setIsSending] = useState(false)
-    const navigation = useNavigation()
-
-
-
-    // function to send message
-    const sendMessage = async () => {
-        try {
-            if (message && message.length > 0) {
-                setIsSending(true)
-
-                if (!isAdmin) {
-                    const isExisting = (await firestore().collection(`Chats`).doc(currentUid).get()).exists
-                    if (!isExisting) {
-                        await firestore().collection(`Chats`).doc(currentUid)
-                            .set({
-                                messages: arrayUnion({
-                                    message: message,
-                                    sendTime: firebase.firestore.Timestamp.now(),
-                                    fromId: currentUid,
-                                    toId: admin_uid,
-                                    role: 'user',
-                                    userID: currentUid,
-                                    email: currentEmail
-                                }),
-                                id: currentUid
-                            });
-                        setIsSending(false)
-                    } else {
-                        await firestore().collection(`Chats`).doc(currentUid)
-                            .update({
-                                messages: arrayUnion({
-                                    message: message,
-                                    sendTime: firebase.firestore.Timestamp.now(),
-                                    fromId: currentUid,
-                                    toId: admin_uid,
-                                    role: 'user',
-                                    userID: currentUid,
-                                    email: currentEmail
-                                })
-                            });
-                        setIsSending(false)
-                    }
-                } else {
-                    await firestore().collection(`Chats`).doc(userID)
-                        .update({
-                            messages: arrayUnion({
-                                message: message,
-                                sendTime: firebase.firestore.Timestamp.now(),
-                                fromId: currentUid,
-                                toId: userID,
-                                role: 'admin',
-                                userID: currentUid,
-                                email: currentEmail
-                            })
-                        });
-                    setIsSending(false)
-                }
-                setMessage(staticVariables.EMPTY_STRING)
-                // listRef.current?.scrollToEnd()
-            }
-        } catch (error) {
-            Alert.alert((error as Error).message)
-        }
+  const onSend = useCallback((messages = []) => {
+    let newMsg: IMessage = messages[0]
+    let formatted = {
+      ...newMsg,
+      createdAt: Date.now()
     }
+    sendMessage(formatted)
+    // chatRef.current.scrollToBottom()
+  }, [])
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('Chats')
+      .doc(isAdmin ? userID : currentUid)
+      .onSnapshot(documentSnapshot => {
+        if (documentSnapshot.exists) {
+          const resData: any = documentSnapshot.data()
+          const filtered = resData?.messages?.sort((a: any, b: any) => a.createdAt - b.createdAt)
+          setAllRequest(filtered)
+        }
+      });
+    return () => {
+      subscriber()
+    };
+  }, []);
 
 
-
-
-    // listener fetch messages
-    useEffect(() => {
-
-        const subscriber = firestore()
-            .collection('Chats')
-            .doc(isAdmin ? userID : currentUid)
-            .onSnapshot(documentSnapshot => {
-                const resData: any = documentSnapshot.data()
-                const filtered = resData?.messages?.sort((a: any, b: any) => a.sendTime - b.sendTime)
-                SetAllMessages(filtered)
+  const sendMessage = async (message: any) => {
+    try {
+      if (!isAdmin) {
+        const isExisting = (await firestore().collection(`Chats`).doc(currentUid).get()).exists
+        if (!isExisting) {
+          await firestore().collection(`Chats`).doc(currentUid)
+            .set({
+              messages: arrayUnion(
+                message
+              ),
             });
-        return () => {
-            subscriber()
-        };
-    }, []);
+        } else {
+          await firestore().collection(`Chats`).doc(currentUid)
+            .update({
+              messages: arrayUnion(
+                message
+              )
+            });
+        }
+      } else {
+        await firestore().collection(`Chats`).doc(userID)
+          .update({
+            messages: arrayUnion(message
+            )
+          });
+      }
+    } catch (error) {
+      Alert.alert((error as Error).message)
+    }
+  }
 
-
-
+  const renderSend = useCallback((props: SendProps<IMessage>) => {
     return (
-        <View style={screenStyles.container}>
-            <View style={screenStyles.messageContainer}>
-                <FlatList
-                    data={allMessages}
-                    
-                    ref={listRef}
-                    renderItem={({ item }) => (
-                        <ChatItem item={item} currentUid={currentUid} />
-                    )}
-
-                    showsVerticalScrollIndicator={false}
-                    onContentSizeChange={()=>listRef.current?.scrollToEnd()}
-
-                />
-            </View>
-            <ChatBox setMessage={setMessage} sendMessage={sendMessage} message={message} isMessageSending={isSending} />
-        </View>
+      <Send {...props} containerStyle={{ justifyContent: 'center', paddingHorizontal: 10 }}>
+        <MaterialIcons size={30} color={'send'} name={'send'} />
+      </Send>
     )
-}
+  }, [])
 
-export default ChatScreen
+  return (
+    <GiftedChat
+      messageContainerRef={chatRef}
+      messages={allRequest}
+      onSend={messages => onSend(messages as never)}
+      user={{
+        _id: currentUid as string,
+      }}
+      inverted={false}
+      renderSend={renderSend}
+      renderAvatar={null}
+      scrollToBottom
+      infiniteScroll
+      
+    />
+  )
+}   
