@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Pressable, ScrollView } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './style';
 import { useScreenContext } from '../../../../context/screenContext';
@@ -36,7 +36,7 @@ const EmailSignup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
   const dispatch = useAppDispatch()
-  
+
   const handleStateUpdate = (
     input: keyof SignupWithEmailtype,
     value: string,
@@ -87,10 +87,11 @@ const EmailSignup = () => {
     });
   }, [formData, error, navigation]);
   return (
-    <Pressable onPress={() => Keyboard.dismiss()} style={screenStyles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
-      >
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+      style={screenStyles.container}
+    >
+      <ScrollView>
         <Text style={textStyle.headingText}>Create Your Account</Text>
         <View>
           <CustomTextInputComponent
@@ -126,8 +127,8 @@ const EmailSignup = () => {
             <Text style={textStyle.errorText}>{error.passwordErr}</Text>
           )}
         </View>
-      </KeyboardAvoidingView>
-    </Pressable>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

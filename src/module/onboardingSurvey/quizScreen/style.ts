@@ -4,9 +4,9 @@ import { colorPalette } from "../../../assets/colorpalette/colorPalette";
 
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
-        padding: screenContext.isPortrait ? height * 0.03 : height * 0.03,
+        padding: screenContext.isPortrait ? height * 0.03 : 0,
         backgroundColor: colorPalette.white,
-        flex: 1,
+        // flex: 1,
         // alignItems: 'center',
     },
     contentContainer: {
@@ -15,7 +15,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     optionContainer: {
         width: screenContext.isPortrait ? width * 0.8 : height * 0.8,
-        height: screenContext.isPortrait ? height * .4 : height * .2,
+        height: screenContext.isPortrait ? height * .4 : height * .15,
         justifyContent: 'center',
 
     },

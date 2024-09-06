@@ -13,6 +13,7 @@ import {
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
+  withClamp,
   withSpring,
 } from 'react-native-reanimated';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -55,7 +56,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
     })
     .onEnd(() => {
       const closestPosition = findClosestValue(translateX.value);
-      translateX.value = withSpring(closestPosition);
+      translateX.value = withClamp({min:0 - tabWidth / 2, max:tabWidth / 2},withSpring(closestPosition));
       if (closestPosition == sliderPositions[3]) {
         setAnswer('3');
       } else if (closestPosition == sliderPositions[1]) {
@@ -145,7 +146,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
 
       <CustomButton
         btnColor="red"
-        btnHeight={isPortrait ? width * 0.1 : width * 0.1}
+        btnHeight={isPortrait ? width * 0.1 : width * 0.07}
         btnWidth={isPortrait ? width * 0.5 : width * 0.4}
         label="Next"
         onPress={() => {

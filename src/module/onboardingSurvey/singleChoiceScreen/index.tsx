@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, KeyboardAvoidingView, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
@@ -60,63 +60,71 @@ const SingleChoiceScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => 
   }
 
   return (
-    <View style={screenStyles.container}>
+    <KeyboardAvoidingView style={{ flex: 1 }} >
       <FlashMessage position="top" />
 
-      <View style={screenStyles.contentContainer}>
-        <Text style={textStyle.questionText}>{section.question}</Text>
-        {section.content && (
-          <Text style={textStyle.labelText}>{section.content}</Text>
-        )}
-        <View>
-          {section.type === 'input' ? (
-            <CustomTextInputComponent
-              textColor='black'
-              label={section.question}
-              mode="outlined"
-              value={answer}
-              inputMode={section.value === 'number' ? 'numeric' : section.value === 'email' ? 'email' : 'text'}
-              right={<Text style={textStyle.labelText}>lb</Text>}
-              onChangeText={e => setAnswer(e)}
-            />
-          ) : section.type === 'dropdown' ? (
-            <PaperDropdown />
-          ) : section.type === 'date' ? (
-            <DatePickerComponent setAnswer={setAnswer} />
-          ) : null}
+      <ScrollView 
+
+        contentContainerStyle={{ flex:1 }}
+      >
+       <View style={screenStyles.container}>
+       <View style={screenStyles.contentContainer}>
+          <Text style={textStyle.questionText}>{section.question}</Text>
+          {section.content && (
+            <Text style={textStyle.labelText}>{section.content}</Text>
+          )}
+          <View>
+            {section.type === 'input' ? (
+              <CustomTextInputComponent
+                textColor='black'
+                label={section.question}
+                mode="outlined"
+                value={answer}
+                inputMode={section.value === 'number' ? 'numeric' : section.value === 'email' ? 'email' : 'text'}
+                right={<Text style={textStyle.labelText}>lb</Text>}
+                onChangeText={e => setAnswer(e)}
+              />
+            ) : section.type === 'dropdown' ? (
+              <PaperDropdown />
+            ) : section.type === 'date' ? (
+              <DatePickerComponent setAnswer={setAnswer} />
+            ) : null}
+          </View>
+          {section.extraContent && (
+            <Text style={textStyle.labelText}>{section.extraContent}</Text>
+          )}
         </View>
-        {section.extraContent && (
-          <Text style={textStyle.labelText}>{section.extraContent}</Text>
-        )}
-      </View>
 
-      <View style={screenStyles.btnContainer}>
-        <CustomButton
-          btnWidth={width * 0.4}
-          btnHeight={isPortrait ? width * 0.1 : width * 0.08}
-          label={'Next'}
-          btnColor={colorPalette.berry}
-          onPress={() => {
-            handleAnswer()
-          }}
-          borderRadius={10}
-          labelColor='white'
-        />
-
-        {section.optional && (
+        <View style={screenStyles.btnContainer}>
           <CustomButton
             btnWidth={width * 0.4}
             btnHeight={isPortrait ? width * 0.1 : width * 0.08}
-            label={'Skip'}
-            btnColor={colorPalette.Lagoon}
-            onPress={handleNext}
+            label={'Next'}
+            btnColor={colorPalette.berry}
+            onPress={() => {
+              handleAnswer()
+            }}
             borderRadius={10}
             labelColor='white'
-
           />
-        )}
-      </View>
-    </View>
+
+          {section.optional && (
+            <CustomButton
+              btnWidth={width * 0.4}
+              btnHeight={isPortrait ? width * 0.1 : width * 0.08}
+              label={'Skip'}
+              btnColor={colorPalette.Lagoon}
+              onPress={handleNext}
+              borderRadius={10}
+              labelColor='white'
+
+            />
+          )}
+        </View>
+       </View>
+
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

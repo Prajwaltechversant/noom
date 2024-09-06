@@ -22,8 +22,6 @@ const EChartComponent = () => {
   );
   const state = useAppSelector(state => state.onBoarding)
 
-  const dummyUserWeights = [state.userWeight + 2];
-  console.log(state.userWeight + 2)
   const option = {
     title: {
       text: staticVariables.EMPTY_STRING,

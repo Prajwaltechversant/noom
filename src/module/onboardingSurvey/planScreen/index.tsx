@@ -130,10 +130,10 @@ const PlanScreen = () => {
               <View style={screenStyles.actionContainer}>
                 <CustomButton
                   label="Add it to my plan"
-                  btnWidth={width * 0.4}
-                  btnHeight={width * 0.1}
+                  btnWidth={isPortrait ? width * 0.4 : width * 0.2}
+                  btnHeight={isPortrait ? width * 0.1 : height * 0.12}
                   btnColor={'#2c4875'}
-                  borderRadius={20}
+                  borderRadius={isPortrait ? width* 0.04 : height* 0.04}
                   labelColor="white"
                   onPress={() => handleNext(item.id)}
                 />

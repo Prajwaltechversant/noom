@@ -59,8 +59,6 @@ const PlayerModal: React.FC<Props> = ({
 
     const handlePlaybackError = (event: PlaybackErrorEvent) => {
       Alert.alert(event.message)
-      // console.log(event.message)
-
     };
 
     TrackPlayer.addEventListener(Event.PlaybackState, handlePlaybackStateChange);
@@ -92,7 +90,6 @@ const PlayerModal: React.FC<Props> = ({
       setIsPlaying(true);
     } catch (error) {
       Alert.alert((error as Error).message)
-      console.log(error)
 
     }
   };

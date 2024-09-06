@@ -21,7 +21,8 @@ const ChatItem: React.FC<Props> = ({ item, currentUid }) => {
         isPortrait ? width : height,
         isPortrait ? height : width,
     );
-    // console.log(item)
+
+
     const [weekDays, setWeekDays] = useState<any>()
     useEffect(() => {
         const locale = 'en-US';
@@ -50,7 +51,6 @@ const ChatItem: React.FC<Props> = ({ item, currentUid }) => {
             const HourComplete = Number(sendTime) && Number(today) && Number(sendTime) < Number(today) ? day : 'Today ' + Hours + ':' + Minutes
             return HourComplete.toString()
         } catch (error) {
-            // console.log(error)
         }
     }
     return (
@@ -75,6 +75,7 @@ const ChatItem: React.FC<Props> = ({ item, currentUid }) => {
                     {
                         textAlign: item.role === 'admin' ? 'left' : 'right',
                         color: 'gray'
+                        ,fontSize:isPortrait ? width * 0.015 : height * 0.015
                     }
                 ]}>{formatTime(item.sendTime)}</Text>
 

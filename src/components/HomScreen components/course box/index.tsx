@@ -82,7 +82,6 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
     try {
       await TrackPlayer.pause();
     } catch (error) {
-      // Alert.alert((error as Error).message)
       // console.log(error)
 
     }
@@ -92,7 +91,6 @@ const CourseItem: React.FC<Props> = ({ item, isArticle, handleDelete }) => {
       await TrackPlayer.seekTo(0);
       await TrackPlayer.play();
     } catch (error) {
-      // Alert.alert((error as Error).message)
       // console.log(error)
     }
   };

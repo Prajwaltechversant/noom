@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Alert } from 'react-native'
+import { View, Text, Alert, FlatList } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useScreenContext } from '../../../../context/screenContext';
 import styles from './style';
@@ -9,6 +9,7 @@ import auth from '@react-native-firebase/auth';
 import { admin_uid } from "@env"
 import { firebase } from '@react-native-firebase/auth';
 import { staticVariables } from '../../../../preferences/staticVariable';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -31,6 +32,7 @@ const ChatScreen: React.FC = ({ route }: any) => {
     const [message, setMessage] = useState<string>(staticVariables.EMPTY_STRING)
     const listRef = useRef<FlatList>(null)
     const [isSending, setIsSending] = useState(false)
+    const navigation = useNavigation()
 
 
 
@@ -88,7 +90,7 @@ const ChatScreen: React.FC = ({ route }: any) => {
                     setIsSending(false)
                 }
                 setMessage(staticVariables.EMPTY_STRING)
-                listRef.current?.scrollToEnd()
+                // listRef.current?.scrollToEnd()
             }
         } catch (error) {
             Alert.alert((error as Error).message)
@@ -100,6 +102,7 @@ const ChatScreen: React.FC = ({ route }: any) => {
 
     // listener fetch messages
     useEffect(() => {
+
         const subscriber = firestore()
             .collection('Chats')
             .doc(isAdmin ? userID : currentUid)
@@ -107,22 +110,28 @@ const ChatScreen: React.FC = ({ route }: any) => {
                 const resData: any = documentSnapshot.data()
                 const filtered = resData?.messages?.sort((a: any, b: any) => a.sendTime - b.sendTime)
                 SetAllMessages(filtered)
-                listRef.current?.scrollToEnd()
             });
-        return () => subscriber();
+        return () => {
+            subscriber()
+        };
     }, []);
+
+
 
     return (
         <View style={screenStyles.container}>
             <View style={screenStyles.messageContainer}>
                 <FlatList
                     data={allMessages}
+                    
                     ref={listRef}
                     renderItem={({ item }) => (
                         <ChatItem item={item} currentUid={currentUid} />
                     )}
 
                     showsVerticalScrollIndicator={false}
+                    onContentSizeChange={()=>listRef.current?.scrollToEnd()}
+
                 />
             </View>
             <ChatBox setMessage={setMessage} sendMessage={sendMessage} message={message} isMessageSending={isSending} />

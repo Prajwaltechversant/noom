@@ -7,7 +7,7 @@ const styles = (screenContext: any, width: number, height: number) => StyleSheet
         padding: screenContext.isPortrait ? height * 0.03 : height * 0.002,
         backgroundColor: colorPalette.white,
         flex: 1,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     btnContainer: {
 

@@ -1,4 +1,4 @@
-import { View, Text, KeyboardAvoidingView, Alert, Image, StyleSheet, Keyboard, Platform, TouchableWithoutFeedback, Pressable } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Alert, Image, StyleSheet, Keyboard, Platform, TouchableWithoutFeedback, Pressable, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import FlashMessage from "react-native-flash-message";
@@ -120,12 +120,12 @@ const ProfileScreen1 = () => {
   if (loading) return <ActivityLoader style={StyleSheet.absoluteFill} />
 
   return (
-    <Pressable style={screenStyles.container} onPress={Keyboard.dismiss} >
-      <KeyboardAvoidingView keyboardVerticalOffset={0}
-        behavior={'padding'}
-        enabled
-        style={screenStyles.keyboardAvoidingContainer}
-      >
+    <KeyboardAvoidingView keyboardVerticalOffset={0}
+      behavior={'padding'}
+      enabled
+      style={screenStyles.keyboardAvoidingContainer}
+    >
+      <ScrollView>
         <FlashMessage position="top" />
         <>
           <View style={screenStyles.profileSection}>
@@ -175,8 +175,8 @@ const ProfileScreen1 = () => {
             consectetur adipisicing elit. Repudiandae, facere molestiae adipisci
           </Text>
         </>
-      </KeyboardAvoidingView>
-    </Pressable >
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

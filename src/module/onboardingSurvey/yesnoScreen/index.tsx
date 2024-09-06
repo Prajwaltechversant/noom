@@ -1,11 +1,12 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import { useNavigation } from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
 import { addData } from '../../../redux/slices/onBoardingAnswers';
 import { useAppDispatch } from '../../../redux/hook';
+import ImageSkeltonComponent from '../../../components/skeltons/imageSkelton';
 
 interface OnBoardProps {
   section: {
@@ -36,11 +37,21 @@ const YesNoScreen: React.FC<OnBoardProps> = ({ section, handleNext }) => {
   );
   const qid = section.id;
   const dispatch = useAppDispatch()
+  const [isImageLoading, setIsImageLoading] = useState(true)
   return (
     <View style={screenStyles.container}>
       <Text style={textStyle.questionText}>{section.question}</Text>
       <View style={screenStyles.contentContainer}>
-        <Image source={{ uri: section.img }} style={screenStyles.image} />
+        <View>
+          <Image source={{ uri: section.img }} style={screenStyles.image}
+
+            onLoad={() => setIsImageLoading(false)}
+
+          />
+          {
+            isImageLoading && <View style={{ position: 'absolute' }}><ImageSkeltonComponent width={isPortrait ? width * 0.8 : width * 0.8} height={isPortrait ? width * 0.4 : width * 0.4} /></View>
+          }
+        </View>
         <Text style={textStyle.questionText}>{section.content}</Text>
         <View style={screenStyles.optionContainer}>
           {section.options.map(i => (
