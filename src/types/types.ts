@@ -41,7 +41,8 @@ export type ScreenContextType = {
     height: number;
     isPortrait: boolean;
     scale: number;
-    fontScale: number
+    fontScale: number;
+    isTabletType:boolean
 }
 
 export type CourseType = {

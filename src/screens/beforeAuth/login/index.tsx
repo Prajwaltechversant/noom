@@ -39,12 +39,16 @@ export default function Login() {
     email: undefined,
     password: undefined,
   });
+
+
   const handleStateUpdate = (
     input: keyof SignupWithEmailtype,
     value: string,
   ) => {
     setFormData({ ...formData, [input]: value });
   };
+
+  
   const handleLogin = async () => {
     const { email, password } = formData;
     if (!password || !email) {
