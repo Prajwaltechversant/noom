@@ -40,7 +40,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number,
         height: screenContext.isPortrait ? width * 0.12 : width * 0.12,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10,
+        marginVertical: screenContext.isPortrait ? height*0.01 :width*0.01,
         borderRadius: 15
     },
     loginBtn: {
@@ -49,7 +49,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number,
         height: screenContext.isPortrait ? width * 0.12 : width * 0.12,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10,
+        marginTop: screenContext.isPortrait ? height*0.01 :0,
         borderRadius: 15
     },
     authBtnText: {

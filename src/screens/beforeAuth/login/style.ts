@@ -13,7 +13,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     privacyPolicy: {
         position:screenContext.isTabletType && !screenContext.isPortrait ? 'relative' : 'absolute',
-        bottom:screenContext.isPortrait ? width * 0.04 : width * 0.007,
+        bottom:screenContext.isPortrait ? width * 0.01 : width * 0.007,
         padding:screenContext.isPortrait ? width * 0.02 : width * 0.001,
         alignSelf: 'center'
     },
