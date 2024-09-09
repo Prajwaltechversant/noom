@@ -68,7 +68,7 @@ export default function Login() {
         width={isPortrait ? width : height}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
           enabled
           keyboardVerticalOffset={0}
           style={[screenStyles.container]}>
@@ -126,6 +126,8 @@ export default function Login() {
                     alignSelf: 'center'
 
                   }}
+
+                  
                 />
                 <CustomTextInputComponent
                   mode="flat"
