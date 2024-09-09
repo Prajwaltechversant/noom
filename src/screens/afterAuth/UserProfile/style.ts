@@ -8,10 +8,11 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
         backgroundColor: colorPalette.white,
         flex: 1,
         alignItems: 'center',
+        justifyContent:'center'
     },
     profileContainer: {
-        width: width * .8,
-        height: height * .4,
+        width: screenContext.isPortrait ? width * .8 : height * .8,
+        height: screenContext.isPortrait ? height * .4 : width * .5,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf:'center',

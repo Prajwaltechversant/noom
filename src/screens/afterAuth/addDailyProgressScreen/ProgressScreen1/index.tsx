@@ -164,17 +164,16 @@ const LogFoodScreen: React.FC<Props> = ({ item, category }) => {
         )}
 
         <CustomComponentModal
-          modalHeight={height * 0.4}
+          modalHeight={screenContext.isPortrait ? height * 0.4 : width * 0.4}
           visible={modalVisible}
           setProgressModalVisible={setModalVisible}>
           <View style={{ alignItems: 'center' }}>
             <Image
               source={{ uri: selectedItem?.image }}
-              width={120}
-              height={120}
-              style={{ marginBottom: 60, borderRadius: 100 }}
+              width={isPortrait ? height * .1 : height * .2}
+              height={isPortrait ? height * .1 : height * .2}
+              style={{ borderRadius: 100 }}
             />
-
             <View>
               <Text style={textStyle.questionText}>
                 {category === 'food' ? 'Add Quantity' : 'Add time'}

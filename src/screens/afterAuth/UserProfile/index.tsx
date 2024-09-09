@@ -103,13 +103,11 @@ const UserProfile = () => {
         <Text style={textStyle.headingText}>{profileData?.fname}</Text>
         <Text style={textStyle.labelText}>{profileData?.bio}</Text>
       </View>
-
-
       <CustomButton
         label='Logout'
         btnColor={colorPalette.btnPrimary}
-        btnHeight={height * 0.08}
-        btnWidth={width * 0.7}
+        btnHeight={screenContext.isPortrait ? height * 0.08 : width * 0.06}
+        btnWidth={isPortrait ? width * 0.7 : height * 0.7}
         borderRadius={20}
         onPress={() => {
           auth().signOut();
