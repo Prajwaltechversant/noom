@@ -30,9 +30,6 @@ const CustomTextInputComponent: React.FC<Props> = ({
       style={screenStyles.container}
       textColor={'black'}
       {...props}
-      caretHidden
-
-
     />
   );
 };

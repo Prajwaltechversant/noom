@@ -1,20 +1,20 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
-import {useScreenContext} from '../../../context/screenContext';
+import { useNavigation } from '@react-navigation/native';
+import { useScreenContext } from '../../../context/screenContext';
 import textStyle from '../../../style/text/style';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import {CourseType} from '../../../types/types';
+import { CourseType } from '../../../types/types';
 
 interface Props {
   item: CourseType;
 }
 
-const ProgressItem: React.FC<Props> = ({item}) => {
+const ProgressItem: React.FC<Props> = ({ item }) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
   const screenStyles = styles(
     screenContext,
@@ -28,7 +28,7 @@ const ProgressItem: React.FC<Props> = ({item}) => {
         <Text
           style={[
             textStyle.questionText,
-            {textAlign: 'left', textTransform: 'capitalize'},
+            { textAlign: 'left', textTransform: 'capitalize' },
           ]}>
           {item?.title}
         </Text>
@@ -51,7 +51,7 @@ const ProgressItem: React.FC<Props> = ({item}) => {
         </View>
       </View>
       <View style={screenStyles.col2}>
-        <Image source={{uri: item?.thumbnail}} style={screenStyles.thumbnail} />
+        <Image source={{ uri: item?.thumbnail }} style={screenStyles.thumbnail} />
       </View>
     </View>
   );

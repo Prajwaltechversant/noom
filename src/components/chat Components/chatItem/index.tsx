@@ -75,7 +75,7 @@ const ChatItem: React.FC<Props> = ({ item, currentUid }) => {
                     {
                         textAlign: item.role === 'admin' ? 'left' : 'right',
                         color: 'gray'
-                        ,fontSize:isPortrait ? width * 0.015 : height * 0.015
+                        , fontSize: isPortrait ? width * 0.015 : height * 0.015
                     }
                 ]}>{formatTime(item.sendTime)}</Text>
 

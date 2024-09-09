@@ -45,7 +45,7 @@ const EChartFinal = () => {
       {
         type: 'category',
         boundaryGap: true,
-        data: ['Month1', '', '', '', '', '', 'Month6'],
+        data: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'],
       },
     ],
     yAxis: [

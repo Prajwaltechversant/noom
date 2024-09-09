@@ -24,7 +24,7 @@ const EntryScreen: React.FC = () => {
   const navigation: any = useNavigation();
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+    <ScrollView style={{ flex: 1, backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
       <View style={screenStyles.container}>
         <StatusBar
           backgroundColor={'white'}

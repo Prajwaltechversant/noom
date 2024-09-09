@@ -13,7 +13,7 @@ const styles = (screenContext: ScreenContextType, width: number, height: number)
     },
     privacyPolicy: {
         position: 'absolute',
-        bottom:screenContext.isPortrait ? width * 0.07 : width * 0.01,
+        bottom:screenContext.isPortrait ? width * 0.04 : width * 0.007,
         padding:screenContext.isPortrait ? width * 0.02 : width * 0.001,
         alignSelf: 'center'
     },

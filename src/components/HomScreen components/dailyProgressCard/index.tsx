@@ -6,7 +6,7 @@ import textStyle from '../../../style/text/style';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { CourseType } from '../../../types/types';
-import PlayerModal from '../playerModal'; 
+import PlayerModal from '../playerModal';
 import { setupPlayer } from '../../../../musicPlayerService';
 import TrackPlayer from 'react-native-track-player';
 import styles from '../course box/style';
@@ -42,17 +42,17 @@ const DailyProgressCard: React.FC = () => {
           </View>
         </View>
         <View style={screenStyles.col2}>
-            <Image
-              source={{
-                uri: 'https://uxwing.com/wp-content/themes/uxwing/download/checkmark-cross/success-green-check-mark-icon.png',
-              }}
-              style={screenStyles.thumbnail}
-            />
-          
+          <Image
+            source={{
+              uri: 'https://uxwing.com/wp-content/themes/uxwing/download/checkmark-cross/success-green-check-mark-icon.png',
+            }}
+            style={screenStyles.thumbnail}
+          />
+
         </View>
 
       </View>
-      
+
     </>
   );
 };

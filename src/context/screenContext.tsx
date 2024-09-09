@@ -1,21 +1,21 @@
-import React, {createContext, ReactNode, useContext} from 'react';
-import {useWindowDimensions} from 'react-native';
-import {isTablet} from 'react-native-device-info';
+import React, { createContext, ReactNode, useContext } from 'react';
+import { useWindowDimensions } from 'react-native';
+import { isTablet } from 'react-native-device-info';
 interface ScreenContextProps {
   fontScale: number;
   height: number;
   scale: number;
   width: number;
   isTabletType: boolean;
-  isPortrait:boolean
+  isPortrait: boolean
 }
 
 const ScreenContext = createContext<ScreenContextProps | undefined>(undefined);
 
-export const ScreenContextProvider: React.FC<{children: ReactNode}> = ({
+export const ScreenContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const {fontScale, height, scale, width} = useWindowDimensions();
+  const { fontScale, height, scale, width } = useWindowDimensions();
 
   let isTabletType = isTablet();
   let isPortrait = height > width;

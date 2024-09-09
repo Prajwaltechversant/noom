@@ -13,13 +13,10 @@ export const onBoardingSlice = createSlice({
         addData: (state, action) => {
             const { qId, aId } = action.payload;
             return ({
-                ...state,    
+                ...state,
                 [qId]: aId
             });
         },
-        // fetchData : (state,action)=>{
-
-        // }
         removeData: (state, action) => {
             state = initialState
         }
@@ -27,5 +24,5 @@ export const onBoardingSlice = createSlice({
 
 })
 
-export const { addData,removeData } = onBoardingSlice.actions;
+export const { addData, removeData } = onBoardingSlice.actions;
 export default onBoardingSlice.reducer;

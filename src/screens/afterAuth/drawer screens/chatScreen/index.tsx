@@ -97,7 +97,7 @@ export default function ChatScreen({ route }: any) {
       renderAvatar={null}
       scrollToBottom
       infiniteScroll
-      
+
     />
   )
 }   

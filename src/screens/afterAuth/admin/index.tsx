@@ -32,10 +32,10 @@ const AdminScreens: React.FC = () => {
             .collection('Chats')
             .onSnapshot(documentSnapshot => {
                 const resData = documentSnapshot?.docs
-                let formatteddata = resData.map(i=>(
+                let formatteddata = resData.map(i => (
                     {
                         ...i.data(),
-                        uid:i.id   
+                        uid: i.id
                     }
                 ))
                 setAllRequests(formatteddata as never)
