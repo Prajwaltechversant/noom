@@ -26,7 +26,7 @@ const Loader: React.FC = () => {
         rotation.value = withRepeat(withTiming(2, { duration, easing }), -1);
     }, []);
 
- 
+
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{ rotate: `${rotation.value * 360}deg` }, { scale: scale.value }],
     }));

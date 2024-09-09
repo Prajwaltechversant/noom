@@ -24,12 +24,12 @@ export const loginSlice = createSlice({
             state.formData = action.payload
         },
         addError: (state, action) => {
-            const type:keyof SignupWithEmailtype = action.payload.type
+            const type: keyof SignupWithEmailtype = action.payload.type
             state.error = action.payload
         }
     }
 
 })
 
-export const { addData,addError } = loginSlice.actions;
+export const { addData, addError } = loginSlice.actions;
 export default loginSlice.reducer;

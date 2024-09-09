@@ -56,7 +56,7 @@ const QuizScreen: React.FC<OnBoardProps> = ({ handleNext, section }) => {
     })
     .onEnd(() => {
       const closestPosition = findClosestValue(translateX.value);
-      translateX.value = withClamp({min:0 - tabWidth / 2, max:tabWidth / 2},withSpring(closestPosition));
+      translateX.value = withClamp({ min: 0 - tabWidth / 2, max: tabWidth / 2 }, withSpring(closestPosition));
       if (closestPosition == sliderPositions[3]) {
         setAnswer('3');
       } else if (closestPosition == sliderPositions[1]) {

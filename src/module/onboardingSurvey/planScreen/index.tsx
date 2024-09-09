@@ -133,7 +133,7 @@ const PlanScreen = () => {
                   btnWidth={isPortrait ? width * 0.4 : width * 0.2}
                   btnHeight={isPortrait ? width * 0.1 : height * 0.12}
                   btnColor={'#2c4875'}
-                  borderRadius={isPortrait ? width* 0.04 : height* 0.04}
+                  borderRadius={isPortrait ? width * 0.04 : height * 0.04}
                   labelColor="white"
                   onPress={() => handleNext(item.id)}
                 />

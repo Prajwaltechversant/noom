@@ -93,8 +93,9 @@ const UserProfile = () => {
       <View style={screenStyles.profileContainer}>
         <View>
           <View>
-            <Image source={{ uri: image ? image : 'https://th.bing.com/th/id/OIP.TctatNGs7RN-Dfc3NZf91AAAAA?rs=1&pid=ImgDetMain' }} style={screenStyles.profileImage}
-              onLoad={() => setLoading(false)}
+            <Image source={{ uri: image }} style={screenStyles.profileImage}
+              onLoadEnd={() => setLoading(false)}
+              onError={() => setImage('https://th.bing.com/th/id/OIP.TctatNGs7RN-Dfc3NZf91AAAAA?rs=1&pid=ImgDetMain')}
             />
           </View>
           {loading && <View style={[{ justifyContent: 'center', alignItems: 'center', position: 'absolute', }]}><ImageSkeltonComponent width={width * .3} height={width * .3} borderRadius={100} /></View>}

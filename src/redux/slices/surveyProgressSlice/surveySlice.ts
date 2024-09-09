@@ -3,11 +3,12 @@ import { createSlice, current } from "@reduxjs/toolkit";
 
 
 let initialState = {
-
     currentSection: 0,
     currentScreen: 0,
     progress: 0
 }
+
+
 
 export const surveyProgressSlice = createSlice({
     name: 'surveyProgressSlice',
@@ -27,12 +28,12 @@ export const surveyProgressSlice = createSlice({
             return ({
                 currentScreen: 0,
                 currentSection: 0,
-                progress:0
+                progress: 0
             })
         },
     }
 
 })
 
-export const { updateSurveyProgress ,removeSurveyProgress } = surveyProgressSlice.actions;
+export const { updateSurveyProgress, removeSurveyProgress } = surveyProgressSlice.actions;
 export default surveyProgressSlice.reducer;

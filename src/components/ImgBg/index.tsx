@@ -8,7 +8,7 @@ const ImageBg: React.FC<ImageBgProps> = ({ image, children, height, width }) => 
       justifyContent: 'center',
       alignItems: 'center',
     }}>
-      { children }
+      {children}
     </ImageBackground >
   );
 };

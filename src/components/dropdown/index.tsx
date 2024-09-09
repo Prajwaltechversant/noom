@@ -1,7 +1,7 @@
-import {View, Text} from 'react-native';
-import {Button, Menu, Divider, PaperProvider} from 'react-native-paper';
+import { View, Text } from 'react-native';
+import { Button, Menu, Divider, PaperProvider } from 'react-native-paper';
 import React from 'react';
-import {useScreenContext} from '../../context/screenContext';
+import { useScreenContext } from '../../context/screenContext';
 import styles from './style';
 
 const PaperDropdown: React.FC = () => {
@@ -11,7 +11,7 @@ const PaperDropdown: React.FC = () => {
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
 
   const screenStyles = styles(
@@ -21,23 +21,23 @@ const PaperDropdown: React.FC = () => {
   );
   return (
     <PaperProvider>
-    <View
-      style={{
-        paddingTop: 50,
-        flexDirection: 'row',
-        justifyContent: 'center',
-      }}>
-      <Menu
-        visible={visible}
-        onDismiss={closeMenu}
-        anchor={<Button onPress={openMenu} textColor='red'>Show menu</Button>}>
-        <Menu.Item onPress={() => {}} title="Item 1" />
-        <Menu.Item onPress={() => {}} title="Item 2" />
-        <Divider />
-        <Menu.Item onPress={() => {}} title="Item 3" />
-      </Menu>
-    </View>
-  </PaperProvider>
+      <View
+        style={{
+          paddingTop: 50,
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <Menu
+          visible={visible}
+          onDismiss={closeMenu}
+          anchor={<Button onPress={openMenu} textColor='red'>Show menu</Button>}>
+          <Menu.Item onPress={() => { }} title="Item 1" />
+          <Menu.Item onPress={() => { }} title="Item 2" />
+          <Divider />
+          <Menu.Item onPress={() => { }} title="Item 3" />
+        </Menu>
+      </View>
+    </PaperProvider>
   );
 };
 

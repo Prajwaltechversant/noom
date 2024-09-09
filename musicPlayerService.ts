@@ -5,9 +5,8 @@ export async function playBackService() {
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
     try {
       await TrackPlayer.play();
-
     } catch (error) {
-      console.error('Error playing ..', error);
+      // console.error('Error playing ..', error);
     }
   });
 

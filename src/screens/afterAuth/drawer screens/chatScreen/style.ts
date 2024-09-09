@@ -4,10 +4,10 @@ import { colorPalette } from "../../../../assets/colorpalette/colorPalette";
 
 const styles = (screenContext: ScreenContextType, width: number, height: number) => StyleSheet.create({
     container: {
-        backgroundColor: colorPalette.white,
+        // backgroundColor: colorPalette.white,
         flex: 1,
-        padding: screenContext.isPortrait ? width * .01 : height * .01,
-        alignItems: 'center',
+        // padding: screenContext.isPortrait ? width * .01 : height * .01,
+        // alignItems: 'center',
         // borderWidth: 1
     },
     messageContainer: {

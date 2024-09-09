@@ -1,9 +1,9 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
-import {useScreenContext} from '../../../context/screenContext';
+import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
-import {Button, ButtonProps} from 'react-native-paper';
-import {CustomButtonProps} from '../../../types/types';
+import { Button, ButtonProps } from 'react-native-paper';
+import { CustomButtonProps } from '../../../types/types';
 
 type Props = CustomButtonProps & ButtonProps;
 const PaperButton: React.FC<Props> = ({
@@ -17,7 +17,7 @@ const PaperButton: React.FC<Props> = ({
   ...props
 }) => {
   const screenContext = useScreenContext();
-  const {width, fontScale, height, isPortrait, isTabletType, scale} =
+  const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
 
   const screenStyles = styles(

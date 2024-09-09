@@ -231,7 +231,7 @@ const Home: React.FC = ({ route }: any) => {
             onPress: () => null,
             style: 'cancel',
           },
-          { text: 'YES', onPress: () => BackHandler.exitApp() ,isPreferred:true},
+          { text: 'YES', onPress: () => BackHandler.exitApp(), isPreferred: true },
         ]);
         return true;
       };

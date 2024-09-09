@@ -14,7 +14,7 @@ export const addToDailyProgress1 = async (item: any, selectedItem: any, quantity
             image: item.image,
             addedDate: firebase.firestore.Timestamp.now(),
         })
-   
+
 };
 
 export const addToDailyProgress2 = (item: any, logValue: number) => {
@@ -48,7 +48,7 @@ export const addToDailyProgress2 = (item: any, logValue: number) => {
                             data: { count: logValue },
                             image: item.image,
                             addedDate: firebase.firestore.Timestamp.now(),
-                            docDate:docDate
+                            docDate: docDate
                         })
                 }
             } else {
@@ -61,7 +61,7 @@ export const addToDailyProgress2 = (item: any, logValue: number) => {
                             data: { count: logValue },
                             image: item.image,
                             addedDate: firebase.firestore.Timestamp.now(),
-                            docDate:docDate
+                            docDate: docDate
                         })
                 }
             }

@@ -1,4 +1,5 @@
 import { ImageSourcePropType, TextInput } from "react-native";
+import { QuickReplies, User } from "react-native-gifted-chat";
 import { ButtonProps, TextInputProps } from "react-native-paper";
 
 
@@ -40,7 +41,8 @@ export type ScreenContextType = {
     height: number;
     isPortrait: boolean;
     scale: number;
-    fontScale: number
+    fontScale: number;
+    isTabletType:boolean
 }
 
 export type CourseType = {
@@ -58,3 +60,18 @@ export type CourseType = {
 
 
 export type DailyProgressCategory = "food" | "exercise" | "weight" | "bp" | "bc"
+
+export interface IMessage {
+    _id: string | number
+    text: string
+    createdAt: Date | number
+    user: User
+    image?: string
+    video?: string
+    audio?: string
+    system?: boolean
+    sent?: boolean
+    received?: boolean
+    pending?: boolean
+    quickReplies?: QuickReplies
+  }[]
