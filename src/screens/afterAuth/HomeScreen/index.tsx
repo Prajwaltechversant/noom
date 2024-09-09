@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, BackHandler } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, BackHandler, NativeModules } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth';
@@ -18,6 +18,7 @@ import DayItem from '../../../components/HomScreen components/dayItemComponent';
 import styles from './style';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import HeaderTab from '../../../components/headerTab';
+
 
 const Home: React.FC = ({ route }: any) => {
   const screenContext = useScreenContext();
@@ -42,8 +43,6 @@ const Home: React.FC = ({ route }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [progressModalVisible, setProgressModalVisible] = useState(false);
   const [dailyProgressData, setDailyProgressData] = useState<any[]>([]);
-  const [audios, setAudios] = useState([])
-  const navigation = useNavigation()
 
 
 
@@ -190,7 +189,7 @@ const Home: React.FC = ({ route }: any) => {
 
 
 
-  // realtime listener to fetch updated data
+  //  listener to fetch updated data
   useEffect(() => {
     const startOfDay = new Date(selctedTimestamp.toDate().setHours(0, 0, 0, 0));
     const endOfDay = new Date(selctedTimestamp.toDate().setHours(23, 59, 59, 999));
@@ -246,7 +245,6 @@ const Home: React.FC = ({ route }: any) => {
 
 
 
-
   return (
     <View style={screenStyles.container}>
       <View style={screenStyles.headerContainer}>
@@ -292,7 +290,6 @@ const Home: React.FC = ({ route }: any) => {
               </>
               )}
             />
-
             <AddProgressModal visible={progressModalVisible} setProgressModalVisible={setProgressModalVisible}>
               <FlatList
                 data={dailyProgressData}
