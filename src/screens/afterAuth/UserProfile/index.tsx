@@ -37,7 +37,7 @@ const UserProfile = () => {
   const navigation: any = useNavigation();
   const dispatch = useAppDispatch();
   const [profileData, setProfileData] = useState<any>()
-  const [image, setImage] = useState<undefined | string>(undefined)
+  const [image, setImage] = useState<undefined | string>('https://i0.wp.com/toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png')
   const [loading, setLoading] = useState(true)
 
 

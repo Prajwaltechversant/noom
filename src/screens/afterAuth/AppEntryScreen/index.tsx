@@ -52,7 +52,7 @@ const EntryScreen = () => {
 
           <TouchableOpacity>
             <Text style={[textStyle.labelText, { textAlign: 'center' }]}>
-              Enter Your enique program Id
+              Enter Your unique program Id
             </Text>
           </TouchableOpacity>
         </View>

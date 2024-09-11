@@ -22,10 +22,10 @@ export default function ChatScreen({ route }: any) {
     let newMsg: IMessage = messages[0]
     let formatted = {
       ...newMsg,
-      createdAt: Date.now()
+      createdAt: Date.now(),
+      currentEmail:currentEmail
     }
     sendMessage(formatted)
-    // chatRef.current.scrollToBottom()
   }, [])
 
   useEffect(() => {

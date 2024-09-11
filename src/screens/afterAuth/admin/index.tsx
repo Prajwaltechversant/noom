@@ -35,7 +35,8 @@ const AdminScreens: React.FC = () => {
                 let formatteddata = resData.map(i => (
                     {
                         ...i.data(),
-                        uid: i.id
+                        uid: i.id,
+                        email: i.data().messages[0].currentEmail
                     }
                 ))
                 setAllRequests(formatteddata as never)
@@ -55,7 +56,6 @@ const AdminScreens: React.FC = () => {
         }
     }
 
-
     return (
         <View style={screenStyles.container}>
             <Text >All requests</Text>
@@ -65,12 +65,13 @@ const AdminScreens: React.FC = () => {
                 renderItem={({ item, index }: any) => (
                     <View style={screenStyles.msgContainer}>
                         <CustomButton
-                            label={item.uid
+                            label={item.email
                             }
                             onPress={() => handleNavigation(item.uid)}
                             btnColor={colorPalette.salmon}
                             btnHeight={width * 0.1}
                             btnWidth={width * 0.8}
+                            borderRadius={isPortrait ? width * 0.01 : height * 0.01}
                         />
                     </View>
                 )}
