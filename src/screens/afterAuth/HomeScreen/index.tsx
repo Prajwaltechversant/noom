@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import textStyle from '../../../style/text/style';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import DailyCourse, { addDailyStatus } from '../../../redux/slices/DailyCourse';
@@ -16,8 +17,6 @@ import { staticVariables } from '../../../preferences/staticVariable';
 import CourseItem from '../../../components/HomScreen components/course box';
 import DayItem from '../../../components/HomScreen components/dayItemComponent';
 import styles from './style';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import HeaderTab from '../../../components/headerTab';
 
 
 const Home: React.FC = ({ route }: any) => {
