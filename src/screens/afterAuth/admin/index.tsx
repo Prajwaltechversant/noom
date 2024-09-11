@@ -27,14 +27,14 @@ const AdminScreens: React.FC = () => {
             .collection('Chats')
             .onSnapshot(documentSnapshot => {
                 const resData = documentSnapshot?.docs
-                let formatteddata = resData.map(i => (
+                let formattedData = resData.map(i => (
                     {
                         ...i.data(),
                         uid: i.id,
                         email: i.data().messages[0].currentEmail
                     }
                 ))
-                setAllRequests(formatteddata as never)
+                setAllRequests(formattedData as never)
             });
 
         return () => subscriber();
