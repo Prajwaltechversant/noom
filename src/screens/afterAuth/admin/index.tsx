@@ -2,8 +2,6 @@ import { View, Text, FlatList, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import firestore, { Filter } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import { admin_uid } from "@env"
-import { firebase } from '@react-native-firebase/auth';
 import { useScreenContext } from '../../../context/screenContext';
 import CustomButton from '../../../components/button/customButton';
 import { colorPalette } from '../../../assets/colorpalette/colorPalette';
@@ -13,7 +11,6 @@ import styles from './style';
 
 
 const AdminScreens: React.FC = () => {
-
     const screenContext = useScreenContext();
     const { width, fontScale, height, isPortrait, isTabletType, scale } =
         screenContext;
@@ -23,8 +20,6 @@ const AdminScreens: React.FC = () => {
         isPortrait ? height : width,
     );
     const [allRequests, setAllRequests] = useState(staticVariables.EMPTY_ARRAY)
-    const currentUid = auth().currentUser?.uid;
-    const currentEmail = auth().currentUser?.email;
     const navigation: any = useNavigation()
 
     useEffect(() => {

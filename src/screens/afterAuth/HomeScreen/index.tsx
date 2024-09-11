@@ -67,9 +67,6 @@ const Home: React.FC = ({ route }: any) => {
 
 
 
-
-
-
   // function to update the profile completion status of user to firebase
   const updateAuthStatus = async (todayStart: any) => {
     try {
@@ -134,6 +131,8 @@ const Home: React.FC = ({ route }: any) => {
     }
   };
 
+
+
   // filtering of course data from firestore 
   const getRandomItems = (array: any, n: number) => {
     if (array.length <= n) {
@@ -157,7 +156,6 @@ const Home: React.FC = ({ route }: any) => {
         const coursesSnapshot = await firestore().collection('courses').get();
         const courses = coursesSnapshot.docs.map(doc => doc.data());
         const availableCourses = courses.filter(course => !existingCoursesArray.includes(course.id));
-
         if (selctedDate === weekdays[new Date().getDay()] && availableCourses.length > 0) {
           const todayStart = new Date().setHours(0, 0, 0, 0);
           if (test > 0 && Number(test) < Number(todayStart)) {
@@ -200,7 +198,6 @@ const Home: React.FC = ({ route }: any) => {
       .onSnapshot(snapshot => {
         const updatedCourses = snapshot.docs.map(doc => doc.data());
         setTodaysCourse(updatedCourses);
-
       });
 
     return () => subscriber();
@@ -238,7 +235,6 @@ const Home: React.FC = ({ route }: any) => {
         'hardwareBackPress',
         backAction,
       );
-
       return () => backHandler.remove();
     }, [])
   );

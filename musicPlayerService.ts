@@ -2,6 +2,8 @@ import TrackPlayer, { AppKilledPlaybackBehavior, Capability, Event, State } from
 import { getPlaybackState } from 'react-native-track-player/lib/src/trackPlayer';
 
 export async function playBackService() {
+
+  
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
     try {
       await TrackPlayer.play();

@@ -14,7 +14,6 @@ interface Props {
 }
 
 const CustomScale: React.FC<Props> = ({ minValue, maxValue, setSelectedScaleValue, selectedScaleValue }) => {
-
   const screenContext = useScreenContext();
   const { width, fontScale, height, isPortrait, isTabletType, scale } =
     screenContext;
@@ -23,7 +22,6 @@ const CustomScale: React.FC<Props> = ({ minValue, maxValue, setSelectedScaleValu
     isPortrait ? width : height,
     isPortrait ? height : width,
   );
-  const [selectedValue, setSelectedValue] = useState(minValue);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const generateScale = () => {
@@ -33,6 +31,7 @@ const CustomScale: React.FC<Props> = ({ minValue, maxValue, setSelectedScaleValu
     }
     return scale;
   };
+  
   const scaleItems = generateScale();
 
   const handleScroll = (e: any) => {

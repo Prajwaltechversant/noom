@@ -1,7 +1,6 @@
 import { View, Text, Animated, TouchableOpacity } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import textStyle from '../../../style/text/style';
-import Slider from '@react-native-community/slider';
 import { useScreenContext } from '../../../context/screenContext';
 import styles from './style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
