@@ -55,7 +55,7 @@ const EntryScreen: React.FC = () => {
             style={screenStyles.loginBtn}
             onPress={() => navigation.navigate('login')}>
             <Text style={screenStyles.subHeading}>
-              Already Have an account ?{' '}
+              Already Have an account ?
               <Text style={{ color: 'blue' }}>Login</Text>
             </Text>
           </TouchableOpacity>
